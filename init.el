@@ -104,6 +104,8 @@
  'org-mode-hook
  (lambda ()
    (face-remap-add-relative 'default :family "Terminus")))
+(setq org-todo-keywords
+      '((sequence "TODO" "WORK" "DONE")))
 
 ;; Company
 (require 'company)
