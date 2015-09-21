@@ -10,6 +10,35 @@
 ;;   '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (package-initialize)
 
+;; Download packages
+(setq my-packages
+      '(exec-path-from-shell
+        evil
+        evil-leader
+        evil-org
+        evil-nerd-commenter
+        flx-ido
+        flycheck
+        auctex
+        ag
+        powerline
+        powerline-evil
+        moe-theme
+        company
+        smex
+        projectile
+        markdown-mode+
+        magit
+        paredit
+
+        ;; Themes
+        solarized-theme
+        moe-theme
+        twilight-theme
+        ujelly-theme
+        base16-theme))
+(mapc #'package-install my-packages)
+
 ;; My custom code
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
@@ -156,7 +185,3 @@
 
 ;; Haskell
 (require 'haskell-init)
-
-;; move-text
-;; (global-set-key (kbd "M-n") 'move-text-down)
-;; (global-set-key (kbd "M-p") 'move-text-up)

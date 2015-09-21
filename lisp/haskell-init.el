@@ -1,6 +1,14 @@
 ;; haskell-init
 ;; Matthew Wraith <wraithm@gmail.com>
 
+;; Install packages
+(setq my-haskell-packages
+      '(haskell-mode
+        haskell-snippets
+        ;; shm
+        hindent))
+(mapc #'package-install my-haskell-packages)
+
 ;; stack-mode
 (add-to-list 'load-path "~/.emacs.d/stack-ide/stack-mode")
 
