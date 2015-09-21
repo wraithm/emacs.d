@@ -23,7 +23,6 @@
         ag
         powerline
         powerline-evil
-        moe-theme
         company
         smex
         projectile
