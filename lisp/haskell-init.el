@@ -113,6 +113,7 @@
 ;; (define-key map (kbd "C-c C-l") 'stack-mode-load)
 (evil-leader/set-key-for-mode 'stack-mode-map "t" 'stack-mode-type)
 (evil-leader/set-key-for-mode 'stack-mode-map "i" 'stack-mode-info)
+(evil-set-initial-state 'haskell-interactive-mode 'emacs)
 
 
 (message "Loading haskell-init... Done.")

@@ -4,9 +4,14 @@
   '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
    '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+    '("gnu" . "http://elpa.gnu.org/packages/") t)
 ;; (add-to-list 'package-archives
 ;;   '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (package-initialize)
+
+;; My custom code
+(add-to-list 'load-path "~/.emacs.d/lisp")
 
 ;; PATH
 (require 'exec-path-from-shell)
@@ -80,7 +85,8 @@
 (custom-set-variables
  '(custom-safe-themes
    (quote
-    ("113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2"
+    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879"
+     "113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2"
      "d76af04d97252fafacedc7860f862f60d61fdcfbd026aeba90f8d07d8da51375"
      "01d8c9140c20e459dcc18addb6faebd7803f7d6c46d626c7966d3f18284c4502"
      "3328e7238e0f6d0a5e1793539dfe55c2685f24b6cdff099c9a0c185b71fbfff9"
@@ -91,8 +97,18 @@
      "133222702a3c75d16ea9c50743f66b987a7209fb8b964f2c0938a816a83379a0"
      "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4"
      default))))
-(if window-system
-    (load-theme 'base16-tomorrow-dark))
+
+;; (if window-system
+;;     (load-theme 'base16-tomorrow-dark))
+
+(require 'powerline)
+(require 'moe-theme)
+(require 'powerline-evil-moe) ; My hack powerline moe-theme
+
+(setq moe-theme-highlight-buffer-id t)
+
+(powerline-moe-theme)
+(moe-dark)
 
 ;; Fundamental
 (add-hook 'fundamental-mode-hook 'flyspell-mode)
@@ -130,8 +146,7 @@
 (setq-default yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt)) ; use ido for multiple snippets
 (yas-global-mode t)
 
-;; Custom code
-(add-to-list 'load-path "~/.emacs.d/lisp")
+;; Haskell
 (require 'haskell-init)
 
 ;; move-text
