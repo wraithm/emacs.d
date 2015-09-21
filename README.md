@@ -1,7 +1,7 @@
 # Matthew Wraith's Emacs Config
 
 ### Theme
-Terminus font with the base16-tomorrow-dark theme
+Terminus font with moe-theme and powerline
 
 ### Packages
 
