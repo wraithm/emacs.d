@@ -75,6 +75,10 @@
 (tool-bar-mode -1)
 (global-linum-mode t)
 
+;; Paren
+(show-paren-mode t)
+(setq show-paren-style 'expression)
+
 ;; Font
 (set-frame-font "Terminus")
 
@@ -105,7 +109,10 @@
 (require 'moe-theme)
 (require 'powerline-evil-moe) ; My hack powerline moe-theme
 
-(setq moe-theme-highlight-buffer-id t)
+(setq moe-theme-highlight-buffer-id t) ; moe-theme settings
+(setq moe-theme-resize-markdown-title '(1.5 1.4 1.3 1.2 1.0 1.0))
+(setq moe-theme-resize-org-title '(1.5 1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0))
+(setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
 
 (powerline-moe-theme)
 (moe-dark)
@@ -119,7 +126,8 @@
 (add-hook
  'org-mode-hook
  (lambda ()
-   (face-remap-add-relative 'default :family "Terminus")))
+   (face-remap-add-relative 'default :family "Terminus")
+   (turn-on-auto-fill)))
 (setq org-todo-keywords
       '((sequence "TODO" "WORK" "DONE")))
 
