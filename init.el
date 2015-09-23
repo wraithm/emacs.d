@@ -29,6 +29,7 @@
         markdown-mode+
         magit
         paredit
+        yasnippet
 
         ;; Themes
         solarized-theme
@@ -47,9 +48,9 @@
 
 ;; evil-mode
 (require 'evil)
-(evil-mode 1)
 (require 'evil-leader)
 (global-evil-leader-mode)
+(evil-mode t)
 (evil-leader/set-leader ",")
 (global-set-key (kbd "C-S-h") 'help)
 (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)

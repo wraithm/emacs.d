@@ -69,14 +69,21 @@
   '(haskell-indentation-layout-offset 4)
   '(haskell-indentation-left-offset 4)
 
+  '(haskell-stylish-on-save t)
+
   ;; '(shm-use-presentation-mode t)
   )
+
+;; hindent
+(setq hindent-style "johan-tibell")
+(add-hook 'haskell-mode-hook #'hindent-mode) 
 
 ;; Key bindings
 (define-key haskell-mode-map (kbd "M-,") 'haskell-who-calls)
 (define-key haskell-mode-map (kbd "C-c C-d") 'haskell-describe)
 (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-load-or-reload)
 (define-key haskell-mode-map (kbd "M-`") 'haskell-interactive-bring)
+(define-key haskell-mode-map (kbd "C-c C-r") 'hindent/reformat-decl)
 ;; (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
 ;; (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
 ;; (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
@@ -105,9 +112,11 @@
 ;;   (add-hook 'post-command-hook #'evil-maybe-remove-spaces))
 
 
+;; case-split stuff for shm
 ;; (define-key shm-map (kbd "C-c C-p") 'shm/expand-pattern)
 ;; (define-key shm-map (kbd "C-c C-s") 'shm/case-split)
 ;; (define-key shm-map (kbd "C-c C-p") 'shm/goto-last-point)
+
 ;; (define-key shm-map (kbd "C-S-J") 'shm/newline-indent-proxy)
 
 (define-key evil-normal-state-map (kbd "M-.") nil)
@@ -119,8 +128,11 @@
 ;; (define-key map (kbd "C-c C-t") 'stack-mode-type)
 ;; (define-key map (kbd "C-c C-i") 'stack-mode-info)
 ;; (define-key map (kbd "C-c C-l") 'stack-mode-load)
+
 (evil-leader/set-key-for-mode 'stack-mode-map "t" 'stack-mode-type)
 (evil-leader/set-key-for-mode 'stack-mode-map "i" 'stack-mode-info)
+(evil-leader/set-key-for-mode 'haskell-mode-map "y" 'haskell-mode-stylish-buffer)
+
 (evil-set-initial-state 'haskell-interactive-mode 'emacs)
 
 
