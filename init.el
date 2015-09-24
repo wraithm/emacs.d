@@ -164,11 +164,12 @@
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq-default
- company-idle-delay nil
- company-minimum-prefix-length 2
- company-selection-wrap-around t
  company-show-numbers t
- company-tooltip-align-annotations t)
+ )
+;;  company-idle-delay nil
+;;  company-minimum-prefix-length 2
+;;  company-selection-wrap-around t
+;;  company-tooltip-align-annotations t)
 
 ;; markdown-mode
 (add-hook 'markdown-mode-hook 'flyspell-mode)
