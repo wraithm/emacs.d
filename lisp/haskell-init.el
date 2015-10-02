@@ -22,11 +22,8 @@
 (require 'haskell-mode)
 (require 'haskell-snippets)
 (require 'haskell-interactive-mode)
-(require 'stack-mode)
-;; (require 'haskell-process)
-;; (require 'flycheck)
 ;; (require 'hi2)
-
+(require 'stack-mode)
 
 (defun haskell-who-calls (&optional prompt)
   "Grep the codebase to see who uses the symbol at point."
@@ -51,30 +48,39 @@
  (lambda ()
    (subword-mode)
    (turn-on-haskell-indentation)
-   (haskell-indentation-enable-show-indentations)
    ;; (turn-on-hi2)
    (stack-mode)
-   (electric-indent-mode nil)
-   (interactive-haskell-mode t))
+   (electric-indent-local-mode -1))
 
-  ;; Variables
-  (setq
-   haskell-process-auto-import-loaded-modules t
-   haskell-process-log t
-   haskell-process-show-debug-tips nil
-   haskell-process-suggest-remove-import-lines t
-   haskell-process-type 'stack-ghci
-   ;; haskell-process-type (quote cabal-repl)
-   ;; haskell-process-use-presentation-mode t
+ ;; Variables
+ (setq
+  haskell-process-auto-import-loaded-modules t
+  haskell-process-log t
+  haskell-process-show-debug-tips nil
+  haskell-process-suggest-remove-import-lines t
+  haskell-process-type 'stack-ghci
+  ;; haskell-process-type (quote cabal-repl)
+  ;; haskell-process-use-presentation-mode t
 
-   haskell-interactive-mode-eval-pretty t
-   haskell-interactive-mode-scroll-to-bottom t
-   haskell-interactive-mode-eval-mode 'haskell-mode
+  haskell-interactive-mode-eval-pretty t
+  haskell-interactive-mode-scroll-to-bottom t
+  haskell-interactive-mode-eval-mode 'haskell-mode
 
-   haskell-indentation-layout-offset 4
-   haskell-indentation-left-offset 4
+  haskell-indentation-layout-offset 4
+  haskell-indentation-left-offset 4
+  haskell-indentation-ifte-offset 4
+  haskell-indentation-show-indentations t
+  haskell-indentation-show-indentations-after-eol t
+  ;; haskell-indent-offset 4
+  ;; hi2-ifte-offset 4
+  ;; hi2-layout-offset 4
+  ;; hi2-left-offset 4
 
-   haskell-stylish-on-save t))
+  haskell-stylish-on-save t))
+
+(add-hook
+ 'haskell-cabal-mode-hook
+ (setq haskell-cabal-list-comma-position 'after))
 
 ;; hindent
 (setq hindent-style "johan-tibell")
@@ -104,6 +110,40 @@
 
 (evil-set-initial-state 'haskell-interactive-mode 'emacs)
 
+;; Alignment
+(eval-after-load "align"
+  '(add-to-list 'align-rules-list
+                '(haskell-types
+                   (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
+                   (modes quote (haskell-mode literate-haskell-mode)))))
+(eval-after-load "align"
+  '(add-to-list 'align-rules-list
+                '(haskell-assignment
+                  (regexp . "\\(\\s-+\\)=\\s-+")
+                  (modes quote (haskell-mode literate-haskell-mode)))))
+(eval-after-load "align"
+  '(add-to-list 'align-rules-list
+                '(haskell-arrows
+                  (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
+                  (modes quote (haskell-mode literate-haskell-mode)))))
+(eval-after-load "align"
+  '(add-to-list 'align-rules-list
+                '(haskell-left-arrows
+                  (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
+                  (modes quote (haskell-mode literate-haskell-mode)))))
+
+(global-set-key (kbd "C-x a r") 'align-regexp)
+
+;; (defun evil-open-below (count)
+;;   "Insert a new line below point and switch to Insert state.
+;; The insertion will be repeated COUNT times."
+;;   (interactive "p")
+;;   (evil-insert-newline-below)
+;;   (setq evil-insert-count count
+;;         evil-insert-lines t
+;;         evil-insert-vcount nil)
+;;   (evil-insert-state 1)
+;;   (add-hook 'post-command-hook #'evil-maybe-remove-spaces))
 
 (message "Loading haskell-init... Done.")
 (provide 'haskell-init)

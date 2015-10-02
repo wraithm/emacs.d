@@ -61,6 +61,7 @@
 (global-set-key (kbd "C-c l") 'evilnc-quick-comment-or-uncomment-to-the-line)
 (global-set-key (kbd "C-c c") 'evilnc-copy-and-comment-lines)
 (global-set-key (kbd "C-c p") 'evilnc-comment-or-uncomment-paragraphs)
+(setq evil-shift-width 4)
 
 ;; smex / ido
 (global-set-key (kbd "M-x") 'smex)
@@ -93,10 +94,11 @@
 (setq make-backup-files nil)
 (setq-default
  inhibit-splash-screen t
+ tab-width 4
  indent-tabs-mode nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)
-(define-key global-map (kbd "RET") 'newline-and-indent)
+;; (define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;; Mode toggles
 (menu-bar-mode -1)
@@ -110,6 +112,7 @@
 
 ;; Font
 (set-frame-font "Terminus")
+;; (set-frame-font "Inconsolata-12")
 
 ;; Theme
 (setq
