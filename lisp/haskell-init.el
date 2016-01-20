@@ -11,7 +11,6 @@
 
         company-ghc
 
-        ;; hi2
         hindent))
 (mapc #'package-install my-haskell-packages)
 
@@ -20,9 +19,7 @@
 (require 'haskell-snippets)
 (require 'haskell-interactive-mode)
 (require 'flycheck)
-;; (require 'flycheck-ghcmod)
 (require 'flycheck-haskell)
-;; (require 'hi2)
 (require 'company-ghc)
 
 (add-hook
@@ -57,7 +54,6 @@
    (turn-on-haskell-indentation)
    (ghc-init)
    (flycheck-mode)
-   ;; (turn-on-hi2)
    (electric-indent-local-mode -1))
 
  ;; Variables
@@ -79,10 +75,6 @@
   haskell-indentation-ifte-offset 4
   haskell-indentation-show-indentations t
   haskell-indentation-show-indentations-after-eol t
-  ;; haskell-indent-offset 4
-  ;; hi2-ifte-offset 4
-  ;; hi2-layout-offset 4
-  ;; hi2-left-offset 4
 
   haskell-stylish-on-save t))
 
@@ -115,8 +107,6 @@
 (define-key evil-motion-state-map (kbd "M-.") nil)
 (define-key evil-insert-state-map (kbd "M-.") nil)
 (define-key evil-emacs-state-map (kbd "M-.") nil)
-
-;; (evil-leader/set-key-for-mode 'haskell-mode-map "y" 'haskell-mode-stylish-buffer)
 
 (evil-set-initial-state 'haskell-interactive-mode 'emacs)
 
