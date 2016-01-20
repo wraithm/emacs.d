@@ -5,25 +5,43 @@
 (setq my-haskell-packages
       '(haskell-mode
         haskell-snippets
+
+        flycheck
+        ;; flycheck-ghcmod ;; Which one to use?
+        flycheck-haskell ;; Maybe bad?
+
+        company-ghc
+
         ;; hi2
         hindent))
 (mapc #'package-install my-haskell-packages)
 
 ;; stack-mode
-(add-to-list 'load-path "~/.emacs.d/stack-ide/stack-mode")
+;; (add-to-list 'load-path "~/.emacs.d/stack-ide/stack-mode")
 
 ;; company-stack-ide
-(add-to-list 'load-path "~/.emacs.d/stack-ide/company-stack-ide")
-(require 'company-stack-ide)
-(add-to-list 'company-backends 'company-stack-ide)
-(add-hook 'stack-mode 'company-mode)
+;; (add-to-list 'load-path "~/.emacs.d/stack-ide/company-stack-ide")
+;; (require 'company-stack-ide)
+;; (add-to-list 'company-backends 'company-stack-ide)
+;; (add-hook 'stack-mode 'company-mode)
 
 (require 'haskell)
 (require 'haskell-mode)
 (require 'haskell-snippets)
 (require 'haskell-interactive-mode)
+(require 'flycheck)
+;; (require 'flycheck-ghcmod)
+(require 'flycheck-haskell)
 ;; (require 'hi2)
-(require 'stack-mode)
+;; (require 'stack-mode)
+(require 'company-ghc)
+
+(add-hook
+ 'flycheck-mode-hook
+ #'flycheck-haskell-setup)
+
+(autoload 'ghc-init "ghc" nil t)
+(autoload 'ghc-debug "ghc" nil t)
 
 (defun haskell-who-calls (&optional prompt)
   "Grep the codebase to see who uses the symbol at point."
@@ -46,10 +64,12 @@
 (add-hook
  'haskell-mode-hook
  (lambda ()
-   (subword-mode)
+   ;; (subword-mode)
    (turn-on-haskell-indentation)
+   (ghc-init)
+   (flycheck-mode)
    ;; (turn-on-hi2)
-   (stack-mode)
+   ;; (stack-mode)
    (electric-indent-local-mode -1))
 
  ;; Variables
@@ -59,7 +79,7 @@
   haskell-process-show-debug-tips nil
   haskell-process-suggest-remove-import-lines t
   haskell-process-type 'stack-ghci
-  ;; haskell-process-type (quote cabal-repl)
+  ;; haskell-process-type 'cabal-repl
   ;; haskell-process-use-presentation-mode t
 
   haskell-interactive-mode-eval-pretty t
@@ -78,6 +98,9 @@
 
   haskell-stylish-on-save t))
 
+(add-to-list 'company-backends 'company-ghc)
+(custom-set-variables '(company-ghc-show-info t))
+
 (add-hook
  'haskell-cabal-mode-hook
  (setq haskell-cabal-list-comma-position 'after))
@@ -87,6 +110,8 @@
 (add-hook 'haskell-mode-hook #'hindent-mode) 
 
 ;; Key bindings
+(global-set-key (kbd "M-g M-f") 'first-error)
+
 (define-key haskell-mode-map (kbd "M-,") 'haskell-who-calls)
 (define-key haskell-mode-map (kbd "C-c C-d") 'haskell-describe)
 (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-load-or-reload)
@@ -102,11 +127,12 @@
 (define-key evil-motion-state-map (kbd "M-.") nil)
 (define-key evil-insert-state-map (kbd "M-.") nil)
 (define-key evil-emacs-state-map (kbd "M-.") nil)
-(define-key stack-mode-map (kbd "M-.") 'stack-mode-goto)
+;; (define-key stack-mode-map (kbd "M-.") 'stack-mode-goto)
 
-(evil-leader/set-key-for-mode 'stack-mode-map "t" 'stack-mode-type)
-(evil-leader/set-key-for-mode 'stack-mode-map "i" 'stack-mode-info)
-(evil-leader/set-key-for-mode 'haskell-mode-map "y" 'haskell-mode-stylish-buffer)
+;; (evil-leader/set-key-for-mode 'stack-mode-map "t" 'stack-mode-type)
+;; (evil-leader/set-key-for-mode 'stack-mode-map "i" 'stack-mode-info)
+
+;; (evil-leader/set-key-for-mode 'haskell-mode-map "y" 'haskell-mode-stylish-buffer)
 
 (evil-set-initial-state 'haskell-interactive-mode 'emacs)
 

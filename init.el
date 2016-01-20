@@ -14,7 +14,7 @@
 (setq my-packages
       '(exec-path-from-shell
         evil
-        evil-leader
+        ;; evil-leader
         evil-org
         evil-nerd-commenter
         flx-ido
@@ -48,10 +48,10 @@
 
 ;; evil-mode
 (require 'evil)
-(require 'evil-leader)
-(global-evil-leader-mode)
+;; (require 'evil-leader)
+;; (global-evil-leader-mode)
 (evil-mode t)
-(evil-leader/set-leader ",")
+;; (evil-leader/set-leader ",")
 (global-set-key (kbd "C-S-h") 'help)
 (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
 (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
