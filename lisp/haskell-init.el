@@ -7,23 +7,13 @@
         haskell-snippets
 
         flycheck
-        ;; flycheck-ghcmod ;; Which one to use?
-        flycheck-haskell ;; Maybe bad?
+        flycheck-haskell
 
         company-ghc
 
         ;; hi2
         hindent))
 (mapc #'package-install my-haskell-packages)
-
-;; stack-mode
-;; (add-to-list 'load-path "~/.emacs.d/stack-ide/stack-mode")
-
-;; company-stack-ide
-;; (add-to-list 'load-path "~/.emacs.d/stack-ide/company-stack-ide")
-;; (require 'company-stack-ide)
-;; (add-to-list 'company-backends 'company-stack-ide)
-;; (add-hook 'stack-mode 'company-mode)
 
 (require 'haskell)
 (require 'haskell-mode)
@@ -33,7 +23,6 @@
 ;; (require 'flycheck-ghcmod)
 (require 'flycheck-haskell)
 ;; (require 'hi2)
-;; (require 'stack-mode)
 (require 'company-ghc)
 
 (add-hook
@@ -69,7 +58,6 @@
    (ghc-init)
    (flycheck-mode)
    ;; (turn-on-hi2)
-   ;; (stack-mode)
    (electric-indent-local-mode -1))
 
  ;; Variables
@@ -127,10 +115,6 @@
 (define-key evil-motion-state-map (kbd "M-.") nil)
 (define-key evil-insert-state-map (kbd "M-.") nil)
 (define-key evil-emacs-state-map (kbd "M-.") nil)
-;; (define-key stack-mode-map (kbd "M-.") 'stack-mode-goto)
-
-;; (evil-leader/set-key-for-mode 'stack-mode-map "t" 'stack-mode-type)
-;; (evil-leader/set-key-for-mode 'stack-mode-map "i" 'stack-mode-info)
 
 ;; (evil-leader/set-key-for-mode 'haskell-mode-map "y" 'haskell-mode-stylish-buffer)
 
