@@ -21,8 +21,8 @@
         flycheck
         auctex
         ag
-        powerline
-        powerline-evil
+        ;; powerline
+        ;; powerline-evil
         company
         smex
         projectile
@@ -111,8 +111,8 @@
 (setq show-paren-style 'expression)
 
 ;; Font
-(set-frame-font "Terminus")
-;; (set-frame-font "Inconsolata-12")
+;; (set-frame-font "Terminus")
+(set-frame-font "Inconsolata-14")
 
 ;; Theme
 (setq
@@ -137,16 +137,16 @@
 ;; (if window-system
 ;;     (load-theme 'base16-tomorrow-dark))
 
-(require 'powerline)
+;; (require 'powerline)
 (require 'moe-theme)
-(require 'powerline-evil-moe) ; My hack powerline moe-theme
+;; (require 'powerline-evil-moe) ; My hack powerline moe-theme
 
 (setq moe-theme-highlight-buffer-id t) ; moe-theme settings
 (setq moe-theme-resize-markdown-title '(1.5 1.4 1.3 1.2 1.0 1.0))
 (setq moe-theme-resize-org-title '(1.5 1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0))
 (setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
 
-(powerline-moe-theme)
+;; (powerline-moe-theme)
 (moe-dark)
 
 ;; Fundamental
@@ -189,3 +189,9 @@
 
 ;; Haskell
 (require 'haskell-init)
+
+;; OCaml
+(require 'ocaml-init)
+
+;; Erlang
+(require 'erlang-start)
