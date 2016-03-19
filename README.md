@@ -6,7 +6,6 @@ Terminus font with moe-theme and powerline
 ### Packages
 
 - evil
-- evil-leader
 - smex
 - ido
 - ibuffer
@@ -16,10 +15,14 @@ Terminus font with moe-theme and powerline
 - markdown-mode / markdown-mode+
 - projectile
 - yasnippets
+- flycheck
 
 #### Haskell packages
 
 - haskell-mode
 - haskell-snippets
 - haskell-interactive-mode
-- stack-mode
+- ghc
+- flycheck-haskell
+- company-ghc
+- hindent

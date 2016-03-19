@@ -14,15 +14,15 @@
 (setq my-packages
       '(exec-path-from-shell
         evil
-        evil-leader
+        ;; evil-leader
         evil-org
         evil-nerd-commenter
         flx-ido
         flycheck
         auctex
         ag
-        powerline
-        powerline-evil
+        ;; powerline
+        ;; powerline-evil
         company
         smex
         projectile
@@ -48,10 +48,10 @@
 
 ;; evil-mode
 (require 'evil)
-(evil-mode 1)
-(require 'evil-leader)
-(global-evil-leader-mode)
-(evil-leader/set-leader ",")
+;; (require 'evil-leader)
+;; (global-evil-leader-mode)
+(evil-mode t)
+;; (evil-leader/set-leader ",")
 (global-set-key (kbd "C-S-h") 'help)
 (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
 (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
@@ -61,6 +61,7 @@
 (global-set-key (kbd "C-c l") 'evilnc-quick-comment-or-uncomment-to-the-line)
 (global-set-key (kbd "C-c c") 'evilnc-copy-and-comment-lines)
 (global-set-key (kbd "C-c p") 'evilnc-comment-or-uncomment-paragraphs)
+(setq evil-shift-width 4)
 
 ;; smex / ido
 (global-set-key (kbd "M-x") 'smex)
@@ -93,10 +94,11 @@
 (setq make-backup-files nil)
 (setq-default
  inhibit-splash-screen t
+ tab-width 4
  indent-tabs-mode nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)
-(define-key global-map (kbd "RET") 'newline-and-indent)
+;; (define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;; Mode toggles
 (menu-bar-mode -1)
@@ -110,8 +112,8 @@
 
 ;; Font
 ;; (set-frame-font "Terminus (TTF)-12")
-(set-face-attribute 'default nil :family "Terminus (TTF)" :height 140)
-
+;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 140)
+(set-frame-font "Inconsolata-14")
 
 ;; Theme
 (setq
@@ -136,16 +138,16 @@
 ;; (if window-system
 ;;     (load-theme 'base16-tomorrow-dark))
 
-(require 'powerline)
+;; (require 'powerline)
 (require 'moe-theme)
-(require 'powerline-evil-moe) ; My hack powerline moe-theme
+;; (require 'powerline-evil-moe) ; My hack powerline moe-theme
 
 (setq moe-theme-highlight-buffer-id t) ; moe-theme settings
 (setq moe-theme-resize-markdown-title '(1.5 1.4 1.3 1.2 1.0 1.0))
 (setq moe-theme-resize-org-title '(1.5 1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0))
 (setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
 
-(powerline-moe-theme)
+;; (powerline-moe-theme)
 (moe-dark)
 
 ;; Fundamental
@@ -166,11 +168,12 @@
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq-default
- company-idle-delay nil
- company-minimum-prefix-length 2
- company-selection-wrap-around t
  company-show-numbers t
- company-tooltip-align-annotations t)
+ )
+;;  company-idle-delay nil
+;;  company-minimum-prefix-length 2
+;;  company-selection-wrap-around t
+;;  company-tooltip-align-annotations t)
 
 ;; markdown-mode
 (add-hook 'markdown-mode-hook 'flyspell-mode)
@@ -187,3 +190,9 @@
 
 ;; Haskell
 (require 'haskell-init)
+
+;; OCaml
+(require 'ocaml-init)
+
+;; Erlang
+(require 'erlang-start)
