@@ -29,6 +29,7 @@
         markdown-mode+
         magit
         paredit
+        yasnippet
 
         ;; Themes
         solarized-theme
@@ -108,7 +109,9 @@
 (setq show-paren-style 'expression)
 
 ;; Font
-(set-frame-font "Terminus")
+;; (set-frame-font "Terminus (TTF)-12")
+(set-face-attribute 'default nil :family "Terminus (TTF)" :height 140)
+
 
 ;; Theme
 (setq
@@ -154,7 +157,7 @@
 (add-hook
  'org-mode-hook
  (lambda ()
-   (face-remap-add-relative 'default :family "Terminus")
+   (face-remap-add-relative 'default :family "Terminus (TTF)-12")
    (turn-on-auto-fill)))
 (setq org-todo-keywords
       '((sequence "TODO" "WORK" "DONE")))
