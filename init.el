@@ -3,9 +3,9 @@
 (add-to-list 'package-archives
   '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
-   '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
-    '("gnu" . "http://elpa.gnu.org/packages/") t)
+  '("gnu" . "http://elpa.gnu.org/packages/") t)
 ;; (add-to-list 'package-archives
 ;;   '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (package-initialize)
@@ -21,8 +21,8 @@
         flycheck
         auctex
         ag
-        ;; powerline
-        ;; powerline-evil
+        powerline
+        powerline-evil
         company
         smex
         projectile
@@ -30,6 +30,8 @@
         magit
         paredit
         yasnippet
+        erlang
+        yaml-mode
 
         ;; Themes
         solarized-theme
@@ -137,17 +139,18 @@
 ;; (if window-system
 ;;     (load-theme 'base16-tomorrow-dark))
 
-;; (require 'powerline)
+(require 'powerline)
 (require 'moe-theme)
-;; (require 'powerline-evil-moe) ; My hack powerline moe-theme
+(require 'powerline-evil-moe) ; My hack powerline moe-theme
 
 (setq moe-theme-highlight-buffer-id t) ; moe-theme settings
 (setq moe-theme-resize-markdown-title '(1.5 1.4 1.3 1.2 1.0 1.0))
 (setq moe-theme-resize-org-title '(1.5 1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0))
 (setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
 
-;; (powerline-moe-theme)
+(powerline-moe-theme)
 (moe-dark)
+;; (load-theme 'solarized-light)
 
 ;; Fundamental
 (add-hook 'fundamental-mode-hook 'flyspell-mode)
