@@ -1,7 +1,7 @@
 # Matthew Wraith's Emacs Config
 
 ### Theme
-Terminus font with moe-theme and powerline
+Inconsolata font with moe-theme and powerline
 
 ### Packages
 
@@ -22,7 +22,4 @@ Terminus font with moe-theme and powerline
 - haskell-mode
 - haskell-snippets
 - haskell-interactive-mode
-- ghc
-- flycheck-haskell
-- company-ghc
 - hindent
