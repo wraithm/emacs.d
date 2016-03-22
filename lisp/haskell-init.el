@@ -22,9 +22,9 @@
 ;; (require 'flycheck-haskell)
 ;; (require 'company-ghc)
 
-(add-hook
- 'flycheck-mode-hook
- #'flycheck-haskell-setup)
+;; (add-hook
+;;  'flycheck-mode-hook
+;;  #'flycheck-haskell-setup)
 
 ;; (autoload 'ghc-init "ghc" nil t)
 ;; (autoload 'ghc-debug "ghc" nil t)

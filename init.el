@@ -32,6 +32,7 @@
         yasnippet
         erlang
         yaml-mode
+        dash-at-point
 
         ;; Themes
         solarized-theme
@@ -47,6 +48,11 @@
 ;; PATH
 (require 'exec-path-from-shell)
 (exec-path-from-shell-initialize)
+
+;; Mac specific stuff
+;; (setq mac-command-modifier 'meta)
+(toggle-frame-fullscreen)
+(global-set-key (kbd "M-C-f") 'toggle-frame-fullscreen)
 
 ;; evil-mode
 (require 'evil)
@@ -74,7 +80,7 @@
 (flx-ido-mode t)
 (setq-default
  ido-enable-flex-matching t
- ido-use-faces nil
+ ;; ido-use-faces nil
  ido-max-window-height 1)
 
 ;; ibuffer
@@ -107,14 +113,18 @@
 (toggle-scroll-bar -1)
 (tool-bar-mode -1)
 (global-linum-mode t)
+(column-number-mode t)
+(global-font-lock-mode t)
+(global-hl-line-mode t)
 
 ;; Paren
 (show-paren-mode t)
 (setq show-paren-style 'expression)
 
 ;; Font
-;; (set-frame-font "Terminus (TTF)-12")
-;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 140)
+;; (setq mac-allow-anti-aliasing nil)
+;; (set-frame-font "Terminus (TTF)-14")
+;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 160)
 (set-frame-font "Inconsolata-14")
 
 ;; Theme
@@ -122,9 +132,14 @@
  solarized-use-variable-pitch nil
  solarized-scale-org-headlines nil)
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879"
+    ("99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2"
+     "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879"
      "113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2"
      "d76af04d97252fafacedc7860f862f60d61fdcfbd026aeba90f8d07d8da51375"
      "01d8c9140c20e459dcc18addb6faebd7803f7d6c46d626c7966d3f18284c4502"
@@ -162,7 +177,8 @@
 (add-hook
  'org-mode-hook
  (lambda ()
-   (face-remap-add-relative 'default :family "Terminus (TTF)-12")
+   ;; (face-remap-add-relative 'default :family "Terminus (TTF)-12")
+   (face-remap-add-relative 'default :family "Inconsolata-14")
    (turn-on-auto-fill)))
 (setq org-todo-keywords
       '((sequence "TODO" "WORK" "DONE")))
@@ -187,9 +203,14 @@
 (projectile-global-mode)
 (setq projectile-enable-caching t)
 
-;;; yasnippets
+;; yasnippets
 (setq-default yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt)) ; use ido for multiple snippets
 (yas-global-mode t)
+
+;; dash-at-point
+(autoload 'dash-at-point "dash-at-point" "Search the word at point with Dash." t nil)
+(global-set-key "\C-cd" 'dash-at-point)
+(global-set-key "\C-ce" 'dash-at-point-with-docset)
 
 ;; Haskell
 (require 'haskell-init)
