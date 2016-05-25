@@ -14,15 +14,16 @@
 (setq my-packages
       '(exec-path-from-shell
         evil
-        ;; evil-leader
         evil-org
-        evil-nerd-commenter
+        evil-surround
+        ;; evil-leader
+        ;; evil-nerd-commenter
         flx-ido
         flycheck
         auctex
         ag
-        powerline
-        powerline-evil
+        ;; powerline
+        ;; powerline-evil
         company
         smex
         projectile
@@ -33,6 +34,9 @@
         erlang
         yaml-mode
         dash-at-point
+        multi-term
+        terraform-mode
+        nlinum-relative
 
         ;; Themes
         solarized-theme
@@ -56,6 +60,7 @@
 
 ;; evil-mode
 (require 'evil)
+(require 'evil-surround)
 ;; (require 'evil-leader)
 ;; (global-evil-leader-mode)
 (evil-mode t)
@@ -69,7 +74,25 @@
 (global-set-key (kbd "C-c l") 'evilnc-quick-comment-or-uncomment-to-the-line)
 (global-set-key (kbd "C-c c") 'evilnc-copy-and-comment-lines)
 (global-set-key (kbd "C-c p") 'evilnc-comment-or-uncomment-paragraphs)
+(evil-ex-define-cmd "W" 'save-buffer)
+(evil-ex-define-cmd "Q" 'save-buffers-kill-terminal)
 (setq evil-shift-width 4)
+(global-evil-surround-mode 1)
+
+;; shell
+(require 'multi-term)
+(evil-set-initial-state 'eshell-mode 'emacs)
+(evil-set-initial-state 'term-mode 'emacs)
+(setq multi-term-program "/bin/zsh")
+(global-set-key (kbd "C-c s") 'multi-term)
+(add-hook
+ 'term-mode-hook
+ (lambda ()
+   (setq term-buffer-maximum-size 10000)
+   (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
+   (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))
+   (setq yas-dont-activate t)))
+;; (multi-term)
 
 ;; smex / ido
 (global-set-key (kbd "M-x") 'smex)
@@ -112,10 +135,19 @@
 (menu-bar-mode -1)
 (toggle-scroll-bar -1)
 (tool-bar-mode -1)
-(global-linum-mode t)
 (column-number-mode t)
 (global-font-lock-mode t)
 (global-hl-line-mode t)
+
+;; line numbers
+;; (global-linum-mode t)
+(require 'nlinum-relative)
+(nlinum-relative-setup-evil)
+(global-nlinum-relative-mode)
+;; (add-hook 'prog-mode-hook 'nlinum-relative-mode)
+(setq nlinum-relative-redisplay-delay 0)
+(setq nlinum-relative-current-symbol "")
+(setq nlinum-relative-offset 0) 
 
 ;; Paren
 (show-paren-mode t)
@@ -155,18 +187,18 @@
 ;; (if window-system
 ;;     (load-theme 'base16-tomorrow-dark))
 
-(require 'powerline)
+;; (require 'powerline)
 (require 'moe-theme)
-(require 'powerline-evil-moe) ; My hack powerline moe-theme
+;; (require 'powerline-evil-moe) ; My hack powerline moe-theme
 
 (setq moe-theme-highlight-buffer-id t) ; moe-theme settings
 (setq moe-theme-resize-markdown-title '(1.5 1.4 1.3 1.2 1.0 1.0))
 (setq moe-theme-resize-org-title '(1.5 1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0))
 (setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
 
-(powerline-moe-theme)
+;; (powerline-moe-theme)
 (moe-dark)
-;; (load-theme 'solarized-light)
+;; (load-theme 'solarized-dark)
 
 ;; Fundamental
 (add-hook 'fundamental-mode-hook 'flyspell-mode)
@@ -220,3 +252,6 @@
 
 ;; Erlang
 (require 'erlang-start)
+
+;; Elm
+(require 'elm-init)
