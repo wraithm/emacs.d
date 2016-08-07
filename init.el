@@ -37,6 +37,7 @@
         terraform-mode
         nlinum-relative
         json-mode
+        rainbow-delimiters
 
         ;; Themes
         solarized-theme
@@ -102,6 +103,24 @@
 (global-set-key (kbd "C-c g") 'ag)
 (global-set-key (kbd "C-c a") 'align-regexp)
 
+;; Variables
+(setq make-backup-files nil)
+(setq-default
+ inhibit-splash-screen t
+ tab-width 4
+ indent-tabs-mode nil)
+(fset 'yes-or-no-p 'y-or-n-p)
+(windmove-default-keybindings)
+;; (define-key global-map (kbd "RET") 'newline-and-indent)
+
+;; Mode toggles
+(menu-bar-mode -1)
+(toggle-scroll-bar -1)
+(tool-bar-mode -1)
+(column-number-mode t)
+(global-font-lock-mode t)
+;; (global-hl-line-mode t)
+
 
 ;; shell
 (require 'multi-term)
@@ -161,24 +180,6 @@
 (add-hook 'ibuffer-hook (lambda () (ibuffer-major-mode-group-hook)))
 
 
-;; Variables
-(setq make-backup-files nil)
-(setq-default
- inhibit-splash-screen t
- tab-width 4
- indent-tabs-mode nil)
-(fset 'yes-or-no-p 'y-or-n-p)
-(windmove-default-keybindings)
-;; (define-key global-map (kbd "RET") 'newline-and-indent)
-
-;; Mode toggles
-(menu-bar-mode -1)
-(toggle-scroll-bar -1)
-(tool-bar-mode -1)
-(column-number-mode t)
-(global-font-lock-mode t)
-;; (global-hl-line-mode t)
-
 ;; line numbers
 ;; (global-linum-mode t)
 (require 'nlinum-relative)
@@ -188,6 +189,7 @@
 (setq nlinum-relative-redisplay-delay 0)
 (setq nlinum-relative-current-symbol "")
 (setq nlinum-relative-offset 0) 
+
 
 ;; Paren
 (show-paren-mode t)
@@ -214,7 +216,7 @@
     ("99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2" "d76af04d97252fafacedc7860f862f60d61fdcfbd026aeba90f8d07d8da51375" "01d8c9140c20e459dcc18addb6faebd7803f7d6c46d626c7966d3f18284c4502" "3328e7238e0f6d0a5e1793539dfe55c2685f24b6cdff099c9a0c185b71fbfff9" "75c0b1d2528f1bce72f53344939da57e290aa34bea79f3a1ee19d6808cb55149" "51e228ffd6c4fff9b5168b31d5927c27734e82ec61f414970fc6bcce23bc140d" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "26614652a4b3515b4bbbb9828d71e206cc249b67c9142c06239ed3418eff95e2" "133222702a3c75d16ea9c50743f66b987a7209fb8b964f2c0938a816a83379a0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-    (json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode haskell-mode yasnippet company flycheck evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile powerline-evil paredit nlinum-relative multi-term moe-theme markdown-mode+ magit intero hindent haskell-snippets flycheck-elm flx-ido exec-path-from-shell evil-surround evil-org erlang elm-mode dash-at-point base16-theme auctex ag))))
+    (rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode haskell-mode yasnippet company flycheck evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term moe-theme markdown-mode+ magit intero hindent haskell-snippets flycheck-elm flx-ido exec-path-from-shell evil-surround evil-org erlang elm-mode dash-at-point base16-theme auctex ag))))
 
 ;; (if window-system
 ;;     (load-theme 'base16-tomorrow-dark))
@@ -232,58 +234,16 @@
 (add-hook 'fundamental-mode-hook 'flyspell-mode)
 (add-hook 'fundamental-mode-hook 'turn-on-auto-fill)
 
-;; Org
-(require 'evil-org)
-(setq org-directory "~/Dropbox/org")
-(defun org-file-path (filename)
-  "Return the absolute address of an org file, given its relative name."
-  (concat (file-name-as-directory org-directory) filename))
-(setq org-index-file (org-file-path "index.org"))
-(setq org-archive-location (concat (org-file-path "archive.org") "::* From %s"))
-(setq org-agenda-files (list org-index-file))
-(setq org-log-done 'time)
-(add-hook 'org-capture-mode-hook 'evil-insert-state)
-(add-hook
- 'org-mode-hook
- (lambda ()
-   ;; (face-remap-add-relative 'default :family "Terminus (TTF)-12")
-   (face-remap-add-relative 'default :family "Inconsolata-14")
-   (turn-on-auto-fill)))
-(setq org-todo-keywords
-      '((sequence "TODO" "WORK" "DONE")))
-
-(defun mark-done-and-archive ()
-  "Mark the state of an org-mode item as DONE and archive it."
-  (interactive)
-  (org-todo 'done)
-  (org-archive-subtree))
-
-(setq org-capture-templates
-      '(("t" "Todo"
-         entry
-         (file org-index-file)
-         "* TODO %?\n")
-
-        ("b" "Blog idea"
-         entry
-         (file (org-file-path "blog-ideas.org"))
-         "* TODO %?\n")))
-
-(define-key global-map (kbd "C-c C-x C-s") 'mark-done-and-archive)
-(define-key global-map (kbd "C-c c") 'org-capture)
-(define-key global-map (kbd "C-c f") 'org-agenda)
-(define-key global-map (kbd "C-c l") 'org-store-link)
-
 ;; Company
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq-default
  company-show-numbers t
- )
 ;;  company-idle-delay nil
 ;;  company-minimum-prefix-length 2
 ;;  company-selection-wrap-around t
 ;;  company-tooltip-align-annotations t)
+ )
 
 ;; markdown-mode - What about markdown-mode+?
 (add-hook 'markdown-mode-hook 'flyspell-mode)
@@ -314,6 +274,9 @@
 (require 'tramp)
 (setq tramp-default-method "sshx")
 
+;; rainbow delimiters
+(rainbow-delimiters-mode t)
+
 ;; Haskell
 ;; (require 'haskell-init)
 (require 'intero-init)
@@ -329,6 +292,9 @@
 
 ;; Ansible
 (require 'ansible-init)
+
+;; org-mode
+(require 'org-init)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
