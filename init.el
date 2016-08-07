@@ -16,14 +16,13 @@
         evil
         evil-org
         evil-surround
+        evil-nerd-commenter
         ;; evil-leader
-        ;; evil-nerd-commenter
         flx-ido
         flycheck
         auctex
+        latex-preview-pane
         ag
-        ;; powerline
-        ;; powerline-evil
         company
         smex
         projectile
@@ -37,6 +36,7 @@
         multi-term
         terraform-mode
         nlinum-relative
+        json-mode
 
         ;; Themes
         solarized-theme
@@ -63,21 +63,45 @@
 (require 'evil-surround)
 ;; (require 'evil-leader)
 ;; (global-evil-leader-mode)
-(evil-mode t)
 ;; (evil-leader/set-leader ",")
+(setq evil-shift-width 4
+      evil-search-module 'evil-search)
+(evil-mode t)
 (global-set-key (kbd "C-S-h") 'help)
+(define-key evil-emacs-state-map (kbd "C-w") 'evil-window-map)
 (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
 (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
 (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
 (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
+(define-key evil-motion-state-map (kbd "C-h") 'evil-window-left)
+(define-key evil-motion-state-map (kbd "C-j") 'evil-window-down)
+(define-key evil-motion-state-map (kbd "C-k") 'evil-window-up)
+(define-key evil-motion-state-map (kbd "C-l") 'evil-window-right)
 (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
-(global-set-key (kbd "C-c l") 'evilnc-quick-comment-or-uncomment-to-the-line)
-(global-set-key (kbd "C-c c") 'evilnc-copy-and-comment-lines)
-(global-set-key (kbd "C-c p") 'evilnc-comment-or-uncomment-paragraphs)
+;; (global-set-key (kbd "C-c l") 'evilnc-quick-comment-or-uncomment-to-the-line)
+;; (global-set-key (kbd "C-c c") 'evilnc-copy-and-comment-lines)
+;; (global-set-key (kbd "C-c p") 'evilnc-comment-or-uncomment-paragraphs)
 (evil-ex-define-cmd "W" 'save-buffer)
 (evil-ex-define-cmd "Q" 'save-buffers-kill-terminal)
-(setq evil-shift-width 4)
 (global-evil-surround-mode 1)
+
+(evil-define-operator evil-delete-without-register (beg end type yank-handler)
+  "Delete from beg to end and send to \"_ register"
+  (interactive "<R><y>")
+  (evil-delete beg end type ?_ yank-handler))
+
+(evil-define-operator evil-stamp (beg end)
+  "Replace text-object with 0th register contents"
+  (evil-delete-without-register beg end)
+  (evil-paste-from-register ?0))
+
+(define-key evil-normal-state-map (kbd "S") 'evil-stamp)
+
+
+;; key-bindings
+(global-set-key (kbd "C-c g") 'ag)
+(global-set-key (kbd "C-c a") 'align-regexp)
+
 
 ;; shell
 (require 'multi-term)
@@ -85,6 +109,7 @@
 (evil-set-initial-state 'term-mode 'emacs)
 (setq multi-term-program "/bin/zsh")
 (global-set-key (kbd "C-c s") 'multi-term)
+(global-set-key (kbd "C-c $") 'eshell)
 (add-hook
  'term-mode-hook
  (lambda ()
@@ -93,6 +118,7 @@
    (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))
    (setq yas-dont-activate t)))
 ;; (multi-term)
+
 
 ;; smex / ido
 (global-set-key (kbd "M-x") 'smex)
@@ -106,21 +132,34 @@
  ;; ido-use-faces nil
  ido-max-window-height 1)
 
+
 ;; ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (evil-set-initial-state 'ibuffer-mode 'normal)
-(setq-default
- ibuffer-show-empty-filter-groups nil
- ibuffer-save-filter-groups
- '(("default"
-    ("Emacs Lisp" (mode . emacs-lisp-mode))
-    ("Haskell" (mode . haskell-mode))
-    ("Cabal" (mode . haskell-cabal-mode)))))
-(add-hook
- 'ibuffer-mode-hook
- (lambda ()
-   (ido-mode t)
-   (ibuffer-switch-to-saved-filter-groups "default")))
+(evil-ex-define-cmd "ls" 'ibuffer)
+
+(defun ibuffer-generate-filter-groups-by-major-mode ()
+  (flet
+      ((mode-group
+        (mode)
+        (let ((mode-title
+               (capitalize (car (split-string (symbol-name mode) "-" t)))))
+          (cons mode-title `((mode . ,mode)))))
+       (buffer-modes
+        ()
+        (flet ((buffer-mode (buffer) (buffer-local-value 'major-mode buffer)))
+          (ibuffer-remove-duplicates (remq nil (mapcar 'buffer-mode (buffer-list)))))))
+    (mapcar 'mode-group (buffer-modes))))
+
+(defun ibuffer-major-mode-group-hook ()
+  (interactive)
+  (setq ibuffer-filter-groups (ibuffer-generate-filter-groups-by-major-mode))
+  (ibuffer-update nil t)
+  (message "ibuffer-major-mode: groups set"))
+
+(setq-default ibuffer-show-empty-filter-groups nil)
+(add-hook 'ibuffer-hook (lambda () (ibuffer-major-mode-group-hook)))
+
 
 ;; Variables
 (setq make-backup-files nil)
@@ -175,22 +214,19 @@
     ("99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2" "d76af04d97252fafacedc7860f862f60d61fdcfbd026aeba90f8d07d8da51375" "01d8c9140c20e459dcc18addb6faebd7803f7d6c46d626c7966d3f18284c4502" "3328e7238e0f6d0a5e1793539dfe55c2685f24b6cdff099c9a0c185b71fbfff9" "75c0b1d2528f1bce72f53344939da57e290aa34bea79f3a1ee19d6808cb55149" "51e228ffd6c4fff9b5168b31d5927c27734e82ec61f414970fc6bcce23bc140d" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "26614652a4b3515b4bbbb9828d71e206cc249b67c9142c06239ed3418eff95e2" "133222702a3c75d16ea9c50743f66b987a7209fb8b964f2c0938a816a83379a0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-    (ansible-doc company-ansible jinja2-mode haskell-mode yasnippet company flycheck evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile powerline-evil paredit nlinum-relative multi-term moe-theme markdown-mode+ magit intero hindent haskell-snippets flycheck-elm flx-ido exec-path-from-shell evil-surround evil-org evil-nerd-commenter erlang elm-mode dash-at-point base16-theme auctex ag))))
+    (json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode haskell-mode yasnippet company flycheck evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile powerline-evil paredit nlinum-relative multi-term moe-theme markdown-mode+ magit intero hindent haskell-snippets flycheck-elm flx-ido exec-path-from-shell evil-surround evil-org erlang elm-mode dash-at-point base16-theme auctex ag))))
 
 ;; (if window-system
 ;;     (load-theme 'base16-tomorrow-dark))
 
-;; (require 'powerline)
-(require 'moe-theme)
-;; (require 'powerline-evil-moe) ; My hack powerline moe-theme
-(setq moe-theme-highlight-buffer-id t) ; moe-theme settings
-(setq moe-theme-resize-markdown-title '(1.5 1.4 1.3 1.2 1.0 1.0))
-(setq moe-theme-resize-org-title '(1.5 1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0))
-(setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
-;; (powerline-moe-theme)
-(moe-dark)
+;; (require 'moe-theme)
+;; (setq moe-theme-highlight-buffer-id t) ; moe-theme settings
+;; (setq moe-theme-resize-markdown-title '(1.5 1.4 1.3 1.2 1.0 1.0))
+;; (setq moe-theme-resize-org-title '(1.5 1.4 1.3 1.2 1.1 1.0 1.0 1.0 1.0))
+;; (setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
+;; (moe-dark)
 
-;; (load-theme 'solarized-light)
+(load-theme 'solarized-light)
 
 ;; Fundamental
 (add-hook 'fundamental-mode-hook 'flyspell-mode)
@@ -198,6 +234,15 @@
 
 ;; Org
 (require 'evil-org)
+(setq org-directory "~/Dropbox/org")
+(defun org-file-path (filename)
+  "Return the absolute address of an org file, given its relative name."
+  (concat (file-name-as-directory org-directory) filename))
+(setq org-index-file (org-file-path "index.org"))
+(setq org-archive-location (concat (org-file-path "archive.org") "::* From %s"))
+(setq org-agenda-files (list org-index-file))
+(setq org-log-done 'time)
+(add-hook 'org-capture-mode-hook 'evil-insert-state)
 (add-hook
  'org-mode-hook
  (lambda ()
@@ -206,6 +251,28 @@
    (turn-on-auto-fill)))
 (setq org-todo-keywords
       '((sequence "TODO" "WORK" "DONE")))
+
+(defun mark-done-and-archive ()
+  "Mark the state of an org-mode item as DONE and archive it."
+  (interactive)
+  (org-todo 'done)
+  (org-archive-subtree))
+
+(setq org-capture-templates
+      '(("t" "Todo"
+         entry
+         (file org-index-file)
+         "* TODO %?\n")
+
+        ("b" "Blog idea"
+         entry
+         (file (org-file-path "blog-ideas.org"))
+         "* TODO %?\n")))
+
+(define-key global-map (kbd "C-c C-x C-s") 'mark-done-and-archive)
+(define-key global-map (kbd "C-c c") 'org-capture)
+(define-key global-map (kbd "C-c f") 'org-agenda)
+(define-key global-map (kbd "C-c l") 'org-store-link)
 
 ;; Company
 (require 'company)
@@ -218,8 +285,9 @@
 ;;  company-selection-wrap-around t
 ;;  company-tooltip-align-annotations t)
 
-;; markdown-mode
+;; markdown-mode - What about markdown-mode+?
 (add-hook 'markdown-mode-hook 'flyspell-mode)
+(add-hook 'markdown-mode-hook 'auto-fill-mode)
 (setq-default
  markdown-command "pandoc -f markdown_github")
 
@@ -236,9 +304,18 @@
 (global-set-key "\C-cd" 'dash-at-point)
 (global-set-key "\C-ce" 'dash-at-point-with-docset)
 
+;; postgresql sqli
+(evil-set-initial-state 'sql-interactive-mode 'emacs)
+
+;; js indent level
+(setq js-indent-level 2)
+
+;; tramp
+(require 'tramp)
+(setq tramp-default-method "sshx")
+
 ;; Haskell
 ;; (require 'haskell-init)
-;; TESTING
 (require 'intero-init)
 
 ;; OCaml

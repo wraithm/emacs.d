@@ -144,7 +144,6 @@
                   (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
                   (modes quote (haskell-mode literate-haskell-mode)))))
 
-(global-set-key (kbd "C-x a r") 'align-regexp)
 
 ;; (add-hook 'haskell-mode-hook 'haskell-indent-mode)
 ;; (defun evil-open-below (count)
