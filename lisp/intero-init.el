@@ -36,7 +36,11 @@
 (add-hook
  'haskell-mode-hook
  (setq
+  compile-command "stack build"
+
   haskell-stylish-on-save t
+  haskell-tags-on-save t
+
   haskell-indentation-layout-offset 4
   haskell-indentation-left-offset 4
   haskell-indentation-ifte-offset 4
