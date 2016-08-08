@@ -107,7 +107,7 @@
 ;; (add-hook 'prog-mode-hook 'nlinum-relative-mode)
 (setq nlinum-relative-redisplay-delay 0)
 (setq nlinum-relative-current-symbol "")
-(setq nlinum-relative-offset 0) 
+(setq nlinum-relative-offset 0)
 
 ;; key-bindings
 (global-set-key (kbd "C-c g") 'ag)
