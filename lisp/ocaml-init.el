@@ -19,5 +19,12 @@
 ;; Use opam switch to lookup ocamlmerlin binary
 (setq merlin-command 'opam)
 
+;; Load utop
+(autoload 'utop "utop" "Toplevel for OCaml" t)
+(setq utop-command "opam config exec -- utop -emacs")
+(evil-set-initial-state 'utop-mode 'emacs)
+(autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
+(add-hook 'tuareg-mode 'utop-minor-mode)
+
 (message "Loading ocaml-init... Done.")
 (provide 'ocaml-init)
