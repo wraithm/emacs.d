@@ -1,8 +1,10 @@
 ;; Font
+(set-frame-font "Inconsolata-14")
+
 ;; (setq mac-allow-anti-aliasing nil)
 ;; (set-frame-font "Terminus (TTF)-14")
 ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 160)
-(set-frame-font "Inconsolata-14")
+
 
 ;; Theme
 (setq
