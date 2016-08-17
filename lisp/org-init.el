@@ -1,6 +1,10 @@
 ;; Org
 (require 'evil-org)
 
+(setq my-org-mode-packages
+      '(ox-pandoc))
+(mapc #'package-install my-org-mode-packages)
+
 ;; variables
 (setq org-directory "~/Dropbox/org")
 (defun org-file-path (filename)
@@ -21,6 +25,9 @@
    (turn-on-auto-fill)))
 (setq org-todo-keywords
       '((sequence "TODO" "WORK" "DONE")))
+
+(with-eval-after-load 'ox
+  (require 'ox-pandoc))
 
 (defun mark-done-and-archive ()
   "Mark the state of an org-mode item as DONE and archive it."

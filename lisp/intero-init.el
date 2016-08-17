@@ -2,44 +2,37 @@
       '(haskell-mode
         haskell-snippets
 
+        hindent
         flycheck
+
         intero))
 (mapc #'package-install my-haskell-packages)
 
 (require 'haskell)
 (require 'haskell-mode)
 (require 'haskell-snippets)
+(require 'flycheck)
+(require 'intero)
+(require 'hindent)
 
-(defun haskell-who-calls (&optional prompt)
-  "Grep the codebase to see who uses the symbol at point."
-  (interactive "P")
-  (let ((sym (if prompt
-                 (read-from-minibuffer "Look for: ")
-               (haskell-ident-at-point))))
-    (let ((existing (get-buffer "*who-calls*")))
-      (when existing
-        (kill-buffer existing)))
-    (let ((buffer
-           (grep-find (format "cd %s && find . -name '*.hs' -exec ag -i --numbers %s {} +"
-                              (haskell-session-current-dir (haskell-session))
-                              sym))))
-      (with-current-buffer buffer
-        (rename-buffer "*who-calls*")
-        (switch-to-buffer-other-window buffer)))))
 
 ;; Sub-mode Hooks
 (add-hook 'haskell-mode-hook 'intero-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 ;; (add-hook 'haskell-mode-hook 'subword-mode)
+(add-hook 'haskell-mode-hook #'hindent-mode)
+
+(flycheck-add-next-checker 'intero '(warning . haskell-hlint))
 
 ;; Variables
 (add-hook
  'haskell-mode-hook
  (setq
   compile-command "stack build"
+  hindent-style "johan-tibell"
 
   haskell-stylish-on-save t
-  haskell-tags-on-save t
+  ;; haskell-tags-on-save t
 
   haskell-indentation-layout-offset 4
   haskell-indentation-left-offset 4
