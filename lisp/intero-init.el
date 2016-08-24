@@ -28,7 +28,7 @@
 (add-hook
  'haskell-mode-hook
  (setq
-  compile-command "stack build"
+  compile-command "stack build --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror"
   hindent-style "johan-tibell"
 
   haskell-stylish-on-save t
