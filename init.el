@@ -1,11 +1,11 @@
 ;; Packages
 (require 'package)
 (add-to-list 'package-archives
-  '("marmalade" . "https://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives
   '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives
-  '("gnu" . "https://elpa.gnu.org/packages/") t)
+;; (add-to-list 'package-archives
+;;   '("marmalade" . "https://marmalade-repo.org/packages/") t)
+;; (add-to-list 'package-archives
+;;   '("gnu" . "https://elpa.gnu.org/packages/") t)
 ;; (add-to-list 'package-archives
 ;;   '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (package-initialize)
@@ -17,6 +17,7 @@
         evil-org
         evil-surround
         evil-nerd-commenter
+        evil-ediff
         ;; evil-leader
         flx-ido
         flycheck
@@ -123,6 +124,7 @@
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-c C-c") 'compile)
 (global-set-key (kbd "C-c r") 'recompile)
+(global-set-key (kbd "M-g M-f") 'first-error)
 
 ;; Variables
 (setq make-backup-files nil)
@@ -156,10 +158,11 @@
 (add-hook
  'term-mode-hook
  (lambda ()
-   (setq term-buffer-maximum-size 10000)
    (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
    (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))
    (setq yas-dont-activate t)))
+(setq term-buffer-maximum-size 10000)
+
 ;; (multi-term)
 
 ;; smex / ido
@@ -201,14 +204,6 @@
 (setq-default ibuffer-show-empty-filter-groups nil)
 (add-hook 'ibuffer-hook (lambda () (ibuffer-major-mode-group-hook)))
 
-;; Compilation
-(defun compilation-exit-autoclose (status code msg)
-  (when (and (eq status 'exit) (zerop code))
-    (bury-buffer)
-    (delete-window (get-buffer-window (get-buffer "*compilation*"))))
-  (cons msg code))
-(setq compilation-exit-message-function 'compilation-exit-autoclose)
-
 ;; Paren
 (show-paren-mode t)
 (setq show-paren-style 'expression)
@@ -223,6 +218,10 @@
 ;;  company-selection-wrap-around t
 ;;  company-tooltip-align-annotations t)
  )
+(define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
+(define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
+(setq evil-complete-next-func '(lambda (arg) (company-complete))
+      evil-complete-previous-func '(lambda (arg) (company-complete)))
 
 ;; markdown-mode - What about markdown-mode+?
 (add-hook 'markdown-mode-hook 'flyspell-mode)
@@ -287,7 +286,7 @@
     ("cdbd0a803de328a4986659d799659939d13ec01da1f482d838b68038c1bb35e8" "b6db49cec08652adf1ff2341ce32c7303be313b0de38c621676122f255ee46db" "99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2" "d76af04d97252fafacedc7860f862f60d61fdcfbd026aeba90f8d07d8da51375" "01d8c9140c20e459dcc18addb6faebd7803f7d6c46d626c7966d3f18284c4502" "3328e7238e0f6d0a5e1793539dfe55c2685f24b6cdff099c9a0c185b71fbfff9" "75c0b1d2528f1bce72f53344939da57e290aa34bea79f3a1ee19d6808cb55149" "51e228ffd6c4fff9b5168b31d5927c27734e82ec61f414970fc6bcce23bc140d" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "26614652a4b3515b4bbbb9828d71e206cc249b67c9142c06239ed3418eff95e2" "133222702a3c75d16ea9c50743f66b987a7209fb8b964f2c0938a816a83379a0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-    (monky gnuplot-mode zenburn-theme ox-pandoc vagrant-tramp rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode haskell-mode yasnippet company flycheck evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term moe-theme markdown-mode+ magit intero hindent haskell-snippets flycheck-elm flx-ido exec-path-from-shell evil-surround evil-org erlang elm-mode dash-at-point base16-theme auctex ag))))
+    (evil-ediff monky gnuplot-mode zenburn-theme ox-pandoc vagrant-tramp rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode haskell-mode yasnippet company flycheck evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term moe-theme markdown-mode+ magit intero hindent haskell-snippets flycheck-elm flx-ido exec-path-from-shell evil-surround evil-org erlang elm-mode dash-at-point base16-theme auctex ag))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

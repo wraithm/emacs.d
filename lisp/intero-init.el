@@ -8,6 +8,7 @@
         intero))
 (mapc #'package-install my-haskell-packages)
 
+
 (require 'haskell)
 (require 'haskell-mode)
 (require 'haskell-snippets)
@@ -15,6 +16,8 @@
 (require 'intero)
 (require 'hindent)
 
+(load-file "~/.emacs.d/lisp/ghcid.el")
+(require 'ghcid)
 
 ;; Sub-mode Hooks
 (add-hook 'haskell-mode-hook 'intero-mode)
@@ -28,7 +31,7 @@
 (add-hook
  'haskell-mode-hook
  (setq
-  compile-command "stack build --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror"
+  compile-command "stack build --fast --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror"
   hindent-style "johan-tibell"
 
   haskell-stylish-on-save t
@@ -41,8 +44,8 @@
   haskell-indentation-show-indentations-after-eol t))
 
 ;; Key bindings
-(global-set-key (kbd "M-g M-f") 'first-error)
 (define-key haskell-mode-map (kbd "M-,") 'haskell-who-calls)
+(define-key haskell-mode-map (kbd "M-]") 'intero-goto-definition)
 
 (evil-set-initial-state 'intero-repl-mode 'emacs)
 
@@ -68,6 +71,23 @@
                   (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
                   (modes quote (haskell-mode literate-haskell-mode)))))
 
+;; Fun functions
+(defun haskell-who-calls (&optional prompt)
+  "Grep the codebase to see who uses the symbol at point."
+  (interactive "P")
+  (let ((sym (if prompt
+                 (read-from-minibuffer "Look for: ")
+               (haskell-ident-at-point))))
+    (let ((existing (get-buffer "*who-calls*")))
+      (when existing
+        (kill-buffer existing)))
+    (let ((buffer
+           (grep-find (format "cd %s && find . -name '*.hs' -exec ag -i --numbers %s {} +"
+                              (haskell-session-current-dir (haskell-session))
+                              sym))))
+      (with-current-buffer buffer
+        (rename-buffer "*who-calls*")
+        (switch-to-buffer-other-window buffer)))))
 
 ;; Evil indentation helper
 (defun haskell-indentation-indent-line ()
