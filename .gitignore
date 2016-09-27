@@ -7,3 +7,5 @@ elpa
 /projectile.cache
 /snippets
 /stack-ide/
+
+lisp/ix-init.el

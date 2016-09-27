@@ -16,8 +16,8 @@
 (require 'intero)
 (require 'hindent)
 
-(load-file "~/.emacs.d/lisp/ghcid.el")
-(require 'ghcid)
+;; (load-file "~/.emacs.d/lisp/ghcid.el")
+;; (require 'ghcid)
 
 ;; Sub-mode Hooks
 (add-hook 'haskell-mode-hook 'intero-mode)
@@ -46,6 +46,20 @@
 ;; Key bindings
 (define-key haskell-mode-map (kbd "M-,") 'haskell-who-calls)
 (define-key haskell-mode-map (kbd "M-]") 'intero-goto-definition)
+
+(evil-define-motion my-haskell-navigate-imports ()
+  "Navigate imports with evil motion"
+  :jump t
+  :type line
+  (haskell-navigate-imports))
+(evil-leader/set-key-for-mode 'haskell-mode "i" 'my-haskell-navigate-imports)
+
+(defun my-intero-insert-type ()
+  "Insert type at point"
+  (interactive)
+  (intero-type-at t))
+(evil-leader/set-key-for-mode 'haskell-mode "t" 'my-intero-insert-type)
+(evil-define-key 'normal haskell-mode-map (kbd "C-c C-t") 'my-intero-insert-type)
 
 (evil-set-initial-state 'intero-repl-mode 'emacs)
 

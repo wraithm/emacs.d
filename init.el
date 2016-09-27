@@ -1,3 +1,5 @@
+(setq evil-want-C-u-scroll t)
+
 ;; Packages
 (require 'package)
 (add-to-list 'package-archives
@@ -18,7 +20,7 @@
         evil-surround
         evil-nerd-commenter
         evil-ediff
-        ;; evil-leader
+        evil-leader
         flx-ido
         flycheck
         auctex
@@ -42,6 +44,7 @@
         nlinum-relative
         json-mode
         rainbow-delimiters
+        ix
 
         ;; Themes
         solarized-theme
@@ -49,7 +52,9 @@
         twilight-theme
         ujelly-theme
         base16-theme))
-(mapc #'package-install my-packages)
+(dolist (p my-packages)
+  (when (not (package-installed-p p))
+    (package-install p)))
 
 ;; My custom code
 (add-to-list 'load-path "~/.emacs.d/lisp")
@@ -69,9 +74,6 @@
 ;; evil-mode
 (require 'evil)
 (require 'evil-surround)
-;; (require 'evil-leader)
-;; (global-evil-leader-mode)
-;; (evil-leader/set-leader ",")
 (setq evil-shift-width 4
       evil-search-module 'evil-search)
 (evil-mode t)
@@ -85,29 +87,43 @@
 (define-key evil-motion-state-map (kbd "C-j") 'evil-window-down)
 (define-key evil-motion-state-map (kbd "C-k") 'evil-window-up)
 (define-key evil-motion-state-map (kbd "C-l") 'evil-window-right)
-(global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
+(define-key evil-normal-state-map (kbd "gs") 'ff-find-other-file)
+(define-key evil-normal-state-map "U" 'universal-argument)
+(define-key evil-motion-state-map "U" 'universal-argument)
 (require 'evil-nerd-commenter)
 (require 'evil-nerd-commenter-operator)
+(global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 (define-key evil-normal-state-map (kbd "gc") 'evilnc-comment-operator)
 ;; (global-set-key (kbd "C-c l") 'evilnc-quick-comment-or-uncomment-to-the-line)
 ;; (global-set-key (kbd "C-c c") 'evilnc-copy-and-comment-lines)
 ;; (global-set-key (kbd "C-c p") 'evilnc-comment-or-uncomment-paragraphs)
 (evil-ex-define-cmd "W" 'save-buffer)
 (evil-ex-define-cmd "Q" 'save-buffers-kill-terminal)
+(evil-ex-define-cmd "BD" 'kill-this-buffer)
 (global-evil-surround-mode 1)
+(require 'evil-leader)
+(global-evil-leader-mode)
+(evil-leader/set-leader "<SPC>")
+(evil-leader/set-key
+  "g" 'ag
+  "b" 'switch-to-buffer
+  "f" 'first-error
+  "c" 'compile
+  "r" 'recompile
+  "a" 'align-regexp)
 
 ;; Stamp operator
-;; (evil-define-operator evil-delete-without-register (beg end type yank-handler)
-;;   "Delete from beg to end and send to \"_ register"
-;;   (interactive "<R><y>")
-;;   (evil-delete beg end type ?_ yank-handler))
+(evil-define-operator evil-delete-without-register (beg end type yank-handler)
+  "Delete from beg to end and send to \"_ register"
+  (interactive "<R><y>")
+  (evil-delete beg end type ?_ yank-handler))
 
-;; (evil-define-operator evil-stamp (beg end)
-;;   "Replace text-object with 0th register contents"
-;;   (evil-delete-without-register beg end)
-;;   (evil-paste-from-register ?0))
+(evil-define-operator evil-stamp (beg end)
+  "Replace text-object with 0th register contents"
+  (evil-delete-without-register beg end)
+  (evil-paste-from-register ?0))
 
-;; (define-key evil-normal-state-map (kbd "S") 'evil-stamp)
+(define-key evil-normal-state-map (kbd "S") 'evil-stamp)
 
 ;; line numbers
 ;; (global-linum-mode t)
@@ -162,7 +178,6 @@
    (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))
    (setq yas-dont-activate t)))
 (setq term-buffer-maximum-size 10000)
-
 ;; (multi-term)
 
 ;; smex / ido
@@ -179,7 +194,6 @@
 
 ;; ibuffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-(evil-set-initial-state 'ibuffer-mode 'normal)
 (evil-ex-define-cmd "ls" 'ibuffer)
 
 (defun ibuffer-generate-filter-groups-by-major-mode ()
@@ -204,6 +218,37 @@
 (setq-default ibuffer-show-empty-filter-groups nil)
 (add-hook 'ibuffer-hook (lambda () (ibuffer-major-mode-group-hook)))
 
+;; ediff
+(defun my-kill-ediff-buffers ()
+  (kill-buffer ediff-buffer-A)
+  (kill-buffer ediff-buffer-B)
+  (kill-buffer ediff-buffer-C))
+(add-hook 'ediff-quit-hook 'my-kill-ediff-buffers)
+
+;; Compilation
+(setq compilation-scroll-output t)
+(add-to-list 'display-buffer-alist
+             '("\\*compilation\\*"
+               display-buffer-at-bottom
+               display-buffer-pop-up-window
+               display-buffer-reuse-window
+               (window-height . 18)))
+(defun bury-compile-buffer-if-successful (buffer string)
+  "Bury a compilation buffer if succeeded without warnings "
+  (if (and
+       (string-match "compilation" (buffer-name buffer))
+       (string-match "finished" string)
+       (not
+        (with-current-buffer buffer
+          (goto-char (point-min))
+          (search-forward "warning" nil t))))
+      (run-with-timer 1 nil
+                      (lambda (buf)
+                        (bury-buffer buf)
+                        (delete-window (get-buffer-window buf)))
+                      buffer)))
+(add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
+
 ;; Paren
 (show-paren-mode t)
 (setq show-paren-style 'expression)
@@ -220,14 +265,22 @@
  )
 (define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
 (define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
-(setq evil-complete-next-func '(lambda (arg) (company-complete))
-      evil-complete-previous-func '(lambda (arg) (company-complete)))
+(defun abort-company-on-insert-state-exit () (company-abort))
+(add-hook 'evil-insert-state-exit-hook 'abort-company-on-insert-state-exit)
+;; (setq evil-complete-next-func '(lambda (arg) (company-complete))
+;;       evil-complete-previous-func '(lambda (arg) (company-complete)))
 
 ;; markdown-mode - What about markdown-mode+?
 (add-hook 'markdown-mode-hook 'flyspell-mode)
 (add-hook 'markdown-mode-hook 'auto-fill-mode)
 (setq-default
  markdown-command "pandoc -f markdown_github")
+(defun md-table-align ()
+  (interactive)
+  (org-table-align)
+  (save-excursion
+    (goto-char (point-min))
+    (while (search-forward "-+-" nil t) (replace-match "-|-"))))
 
 ;; projectile
 (projectile-global-mode)
@@ -241,6 +294,11 @@
 (autoload 'dash-at-point "dash-at-point" "Search the word at point with Dash." t nil)
 (global-set-key "\C-cd" 'dash-at-point)
 (global-set-key "\C-ce" 'dash-at-point-with-docset)
+
+;; rcirc
+(setq rcirc-server-alist
+      '(("irc.freenode.net" :port 6697 :encryption tls
+	 :channels ("#rcirc" "#emacs" "#chicagohaskell"))))
 
 ;; postgresql sqli
 (evil-set-initial-state 'sql-interactive-mode 'emacs)
@@ -274,6 +332,9 @@
 ;; org-mode
 (require 'org-init)
 
+;; ix
+(require 'ix-init)
+
 
 ;; Don't touch this stuff below
 (custom-set-variables
@@ -283,10 +344,10 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("cdbd0a803de328a4986659d799659939d13ec01da1f482d838b68038c1bb35e8" "b6db49cec08652adf1ff2341ce32c7303be313b0de38c621676122f255ee46db" "99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2" "d76af04d97252fafacedc7860f862f60d61fdcfbd026aeba90f8d07d8da51375" "01d8c9140c20e459dcc18addb6faebd7803f7d6c46d626c7966d3f18284c4502" "3328e7238e0f6d0a5e1793539dfe55c2685f24b6cdff099c9a0c185b71fbfff9" "75c0b1d2528f1bce72f53344939da57e290aa34bea79f3a1ee19d6808cb55149" "51e228ffd6c4fff9b5168b31d5927c27734e82ec61f414970fc6bcce23bc140d" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "26614652a4b3515b4bbbb9828d71e206cc249b67c9142c06239ed3418eff95e2" "133222702a3c75d16ea9c50743f66b987a7209fb8b964f2c0938a816a83379a0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+    ("3380a2766cf0590d50d6366c5a91e976bdc3c413df963a0ab9952314b4577299" "cea3ec09c821b7eaf235882e6555c3ffa2fd23de92459751e18f26ad035d2142" "be4025b1954e4ac2a6d584ccfa7141334ddd78423399447b96b6fa582f206194" "0e219d63550634bc5b0c214aced55eb9528640377daf486e13fb18a32bf39856" "b9e9ba5aeedcc5ba8be99f1cc9301f6679912910ff92fdf7980929c2fc83ab4d" "cdbd0a803de328a4986659d799659939d13ec01da1f482d838b68038c1bb35e8" "b6db49cec08652adf1ff2341ce32c7303be313b0de38c621676122f255ee46db" "99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2" "d76af04d97252fafacedc7860f862f60d61fdcfbd026aeba90f8d07d8da51375" "01d8c9140c20e459dcc18addb6faebd7803f7d6c46d626c7966d3f18284c4502" "3328e7238e0f6d0a5e1793539dfe55c2685f24b6cdff099c9a0c185b71fbfff9" "75c0b1d2528f1bce72f53344939da57e290aa34bea79f3a1ee19d6808cb55149" "51e228ffd6c4fff9b5168b31d5927c27734e82ec61f414970fc6bcce23bc140d" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "26614652a4b3515b4bbbb9828d71e206cc249b67c9142c06239ed3418eff95e2" "133222702a3c75d16ea9c50743f66b987a7209fb8b964f2c0938a816a83379a0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-    (evil-ediff monky gnuplot-mode zenburn-theme ox-pandoc vagrant-tramp rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode haskell-mode yasnippet company flycheck evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term moe-theme markdown-mode+ magit intero hindent haskell-snippets flycheck-elm flx-ido exec-path-from-shell evil-surround evil-org erlang elm-mode dash-at-point base16-theme auctex ag))))
+    (ix evil-ediff monky gnuplot-mode zenburn-theme ox-pandoc vagrant-tramp rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode haskell-mode yasnippet company flycheck evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term moe-theme markdown-mode+ magit intero hindent haskell-snippets flycheck-elm flx-ido exec-path-from-shell evil-surround evil-org erlang elm-mode dash-at-point base16-theme auctex ag))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

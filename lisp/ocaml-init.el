@@ -10,11 +10,17 @@
 (require 'tuareg)
 (require 'ocp-indent)
 
-;; Start merlin on ocaml files
-(add-hook 'tuareg-mode-hook 'merlin-mode t)
+;; ocp-indent
+(setq ocp-indent-config "strict_with=always,with=0,strict_comments=false")
 
-;; Enable auto-complete
-(setq merlin-use-auto-complete-mode 'easy)
+;; Start merlin on ocaml files
+(remove-hook 'tuareg-mode-hook "ocamlbuild")
+(add-hook 'tuareg-mode-hook 'merlin-mode t)
+(add-to-list 'auto-mode-alist '("\\.ml[ily]?$" . tuareg-mode))
+
+;; Enable company auto-complete
+(with-eval-after-load 'company
+ (add-to-list 'company-backends 'merlin-company-backend))
 
 ;; Use opam switch to lookup ocamlmerlin binary
 (setq merlin-command 'opam)

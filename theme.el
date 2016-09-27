@@ -11,7 +11,11 @@
 (setq
  solarized-use-variable-pitch nil
  solarized-scale-org-headlines nil)
-(load-theme 'solarized-light)
+;; (load-theme 'solarized-light)
+
+(load-theme 'zenburn)
+
+;; (load-theme 'wombat t)
 
 ;; (if window-system
 ;;     (load-theme 'base16-tomorrow-dark))
