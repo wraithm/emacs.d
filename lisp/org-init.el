@@ -44,7 +44,23 @@
         ("b" "Blog idea"
          entry
          (file (org-file-path "blog-ideas.org"))
-         "* TODO %?\n")))
+         "* TODO %?\n")
+
+        ("w" "Work tasks"
+         entry
+         (file (org-file-path "work.org"))
+         "* TODO %?\n")
+
+        ("j" "Work journal"
+         entry
+         (file+datetree (org-file-path "work-journal.org"))
+         "* %?\nEntered on %U\n  %i\n  %a")
+
+        ("f" "Fun facts and tips and tricks"
+         entry
+         (file (org-file-path "fun-facts.org"))
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ))
 
 ;; Key bindings
 (define-key global-map (kbd "C-c C-x C-s") 'mark-done-and-archive)

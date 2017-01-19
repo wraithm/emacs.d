@@ -45,16 +45,19 @@
         json-mode
         rainbow-delimiters
         ix
+        logstash-conf
+        wolfram
 
         ;; Themes
         solarized-theme
+        zenburn-theme
         moe-theme
         twilight-theme
         ujelly-theme
         base16-theme))
 (dolist (p my-packages)
-  (when (not (package-installed-p p))
-    (package-install p)))
+ (when (not (package-installed-p p))
+   (package-install p)))
 
 ;; My custom code
 (add-to-list 'load-path "~/.emacs.d/lisp")
@@ -107,7 +110,10 @@
 (evil-leader/set-key
   "g" 'ag
   "b" 'switch-to-buffer
-  "f" 'first-error
+  "f" 'find-file
+  "p" 'projectile-find-file
+  "e" 'first-error
+  "n" 'next-error
   "c" 'compile
   "r" 'recompile
   "a" 'align-regexp)
@@ -151,6 +157,9 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (windmove-default-keybindings)
 ;; (define-key global-map (kbd "RET") 'newline-and-indent)
+(remove-hook 'find-file-hooks 'vc-find-file-hook)
+(setq vc-handled-backends nil) ; to disable vc-mode entirely
+;; (setq vc-handled-backends '(Hg)) ; Git))
 
 ;; Mode toggles
 (menu-bar-mode -1)
@@ -285,6 +294,9 @@
 ;; projectile
 (projectile-global-mode)
 (setq projectile-enable-caching t)
+(global-set-key (kbd "C-c C-b") 'projectile-ibuffer)
+(global-set-key (kbd "C-c b") 'projectile-switch-to-buffer)
+(define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
 
 ;; yasnippets
 (setq-default yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt)) ; use ido for multiple snippets
@@ -296,9 +308,10 @@
 (global-set-key "\C-ce" 'dash-at-point-with-docset)
 
 ;; rcirc
-(setq rcirc-server-alist
-      '(("irc.freenode.net" :port 6697 :encryption tls
-	 :channels ("#rcirc" "#emacs" "#chicagohaskell"))))
+(load "~/.emacs.d/irc.el")
+
+;; wolfram alpha
+(load "~/.emacs/wolframalpha.el")
 
 ;; postgresql sqli
 (evil-set-initial-state 'sql-interactive-mode 'emacs)
@@ -344,10 +357,10 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("3380a2766cf0590d50d6366c5a91e976bdc3c413df963a0ab9952314b4577299" "cea3ec09c821b7eaf235882e6555c3ffa2fd23de92459751e18f26ad035d2142" "be4025b1954e4ac2a6d584ccfa7141334ddd78423399447b96b6fa582f206194" "0e219d63550634bc5b0c214aced55eb9528640377daf486e13fb18a32bf39856" "b9e9ba5aeedcc5ba8be99f1cc9301f6679912910ff92fdf7980929c2fc83ab4d" "cdbd0a803de328a4986659d799659939d13ec01da1f482d838b68038c1bb35e8" "b6db49cec08652adf1ff2341ce32c7303be313b0de38c621676122f255ee46db" "99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2" "d76af04d97252fafacedc7860f862f60d61fdcfbd026aeba90f8d07d8da51375" "01d8c9140c20e459dcc18addb6faebd7803f7d6c46d626c7966d3f18284c4502" "3328e7238e0f6d0a5e1793539dfe55c2685f24b6cdff099c9a0c185b71fbfff9" "75c0b1d2528f1bce72f53344939da57e290aa34bea79f3a1ee19d6808cb55149" "51e228ffd6c4fff9b5168b31d5927c27734e82ec61f414970fc6bcce23bc140d" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "26614652a4b3515b4bbbb9828d71e206cc249b67c9142c06239ed3418eff95e2" "133222702a3c75d16ea9c50743f66b987a7209fb8b964f2c0938a816a83379a0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+    ("9d91458c4ad7c74cf946bd97ad085c0f6a40c370ac0a1cbeb2e3879f15b40553" "14f0fbf6f7851bfa60bf1f30347003e2348bf7a1005570fd758133c87dafe08f" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "4e753673a37c71b07e3026be75dc6af3efbac5ce335f3707b7d6a110ecb636a3" "3380a2766cf0590d50d6366c5a91e976bdc3c413df963a0ab9952314b4577299" "cea3ec09c821b7eaf235882e6555c3ffa2fd23de92459751e18f26ad035d2142" "be4025b1954e4ac2a6d584ccfa7141334ddd78423399447b96b6fa582f206194" "0e219d63550634bc5b0c214aced55eb9528640377daf486e13fb18a32bf39856" "b9e9ba5aeedcc5ba8be99f1cc9301f6679912910ff92fdf7980929c2fc83ab4d" "cdbd0a803de328a4986659d799659939d13ec01da1f482d838b68038c1bb35e8" "b6db49cec08652adf1ff2341ce32c7303be313b0de38c621676122f255ee46db" "99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2" "d76af04d97252fafacedc7860f862f60d61fdcfbd026aeba90f8d07d8da51375" "01d8c9140c20e459dcc18addb6faebd7803f7d6c46d626c7966d3f18284c4502" "3328e7238e0f6d0a5e1793539dfe55c2685f24b6cdff099c9a0c185b71fbfff9" "75c0b1d2528f1bce72f53344939da57e290aa34bea79f3a1ee19d6808cb55149" "51e228ffd6c4fff9b5168b31d5927c27734e82ec61f414970fc6bcce23bc140d" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "26614652a4b3515b4bbbb9828d71e206cc249b67c9142c06239ed3418eff95e2" "133222702a3c75d16ea9c50743f66b987a7209fb8b964f2c0938a816a83379a0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-    (ix evil-ediff monky gnuplot-mode zenburn-theme ox-pandoc vagrant-tramp rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode haskell-mode yasnippet company flycheck evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term moe-theme markdown-mode+ magit intero hindent haskell-snippets flycheck-elm flx-ido exec-path-from-shell evil-surround evil-org erlang elm-mode dash-at-point base16-theme auctex ag))))
+    (wolfram flycheck elm-mode flycheck-elm haskell-mode haskell-snippets intero sql-indent logstash-conf ix evil-ediff monky gnuplot-mode zenburn-theme ox-pandoc vagrant-tramp rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode yasnippet company evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term moe-theme markdown-mode+ magit hindent flx-ido exec-path-from-shell evil-surround evil-org erlang dash-at-point base16-theme auctex ag))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
