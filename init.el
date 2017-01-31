@@ -178,8 +178,8 @@
 (evil-set-initial-state 'eshell-mode 'emacs)
 (evil-set-initial-state 'term-mode 'emacs)
 (setq multi-term-program "/bin/zsh")
-(global-set-key (kbd "C-c s") 'multi-term)
-(global-set-key (kbd "C-c $") 'eshell)
+(global-set-key (kbd "C-c $") 'multi-term)
+(global-set-key (kbd "C-c s") 'eshell)
 (add-hook
  'term-mode-hook
  (lambda ()
@@ -311,7 +311,7 @@
 (load "~/.emacs.d/irc.el")
 
 ;; wolfram alpha
-(load "~/.emacs/wolframalpha.el")
+(load "~/.emacs.d/wolframalpha.el")
 
 ;; postgresql sqli
 (evil-set-initial-state 'sql-interactive-mode 'emacs)
