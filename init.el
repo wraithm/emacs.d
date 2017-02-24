@@ -118,6 +118,11 @@
   "r" 'recompile
   "a" 'align-regexp)
 
+(setq scroll-step 1
+      hscroll-step 1
+      scroll-margin 1
+      scroll-conservatively 9999)
+
 ;; Stamp operator
 (evil-define-operator evil-delete-without-register (beg end type yank-handler)
   "Delete from beg to end and send to \"_ register"

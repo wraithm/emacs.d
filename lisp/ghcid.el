@@ -1,8 +1,9 @@
 (setq ghcid-height 15)
 ;; (setq ghcid-target "bitnomial-core")
-(setq ghcid-target "bitnomial-exchange")
+;; (setq ghcid-target "bitnomial-exchange")
+(setq ghcid-target "bitnomial-exchange-cli-utils")
 (defun ghcid-stack-cmd (target)
-      (format "stack ghci %s --fast" target))
+      (format "stack ghci %s --test --bench --ghci-options=-fno-code" target))
 
 (setq ghcid-buf-name "*ghcid*")
 
