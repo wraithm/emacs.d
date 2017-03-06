@@ -43,7 +43,7 @@
         vagrant-tramp
         nlinum-relative
         json-mode
-        rainbow-delimiters
+        ;; rainbow-delimiters
         ix
         logstash-conf
         wolfram
@@ -329,20 +329,20 @@
 (setq tramp-default-method "sshx")
 
 ;; rainbow delimiters
-(rainbow-delimiters-mode t)
+;; (rainbow-delimiters-mode t)
 
 ;; Haskell
 ;; (require 'haskell-init)
 (require 'intero-init)
 
 ;; OCaml
-(require 'ocaml-init)
+;; (require 'ocaml-init)
 
 ;; Erlang
-(require 'erlang-start)
+;; (require 'erlang-start)
 
 ;; Elm
-(require 'elm-init)
+;; (require 'elm-init)
 
 ;; Ansible
 (require 'ansible-init)
