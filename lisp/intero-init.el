@@ -189,6 +189,12 @@ import Data.Vector (Vector)
         ("System.IO.Streams" . "import System.IO.Streams (InputStream, OutputStream)
 import qualified System.IO.Streams as Streams
 ")
+        ("Control.Monad" . "import Control.Monad ()
+")
+        ("Control.Monad.Trans.Class" . "import Control.Monad.Trans.Class (lift)
+")
+        ("Control.Monad.IO.Class" . "import Control.Monad.IO.Class (MonadIO, liftIO)
+")
         ))
 
 (defvar haskell-fast-module-list
