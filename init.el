@@ -197,6 +197,13 @@
    (setq yas-dont-activate t)))
 (setq term-buffer-maximum-size 10000)
 ;; (multi-term)
+(setenv "HGEDITOR" "emacsclient")
+(add-hook 'eshell-mode-hook
+          (lambda ()
+            (add-to-list 'eshell-visual-commands "htop")
+            (setenv "TERM" "emacs")))
+(setq eshell-visual-subcommands
+      '(("hg" "di" "log" "glog")))
 
 ;; smex / ido
 (global-set-key (kbd "M-x") 'smex)
