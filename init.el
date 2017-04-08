@@ -168,6 +168,7 @@
 (remove-hook 'find-file-hooks 'vc-find-file-hook)
 (setq vc-handled-backends nil) ; to disable vc-mode entirely
 ;; (setq vc-handled-backends '(Hg)) ; Git))
+(setq-default fill-column 120)
 
 ;; Mode toggles
 (menu-bar-mode -1)
