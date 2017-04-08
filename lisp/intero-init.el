@@ -195,6 +195,8 @@ import qualified System.IO.Streams as Streams
 ")
         ("Control.Monad.IO.Class" . "import Control.Monad.IO.Class (MonadIO, liftIO)
 ")
+        ("Data.Monoid" . "import Data.Monoid ((<>))
+")
         ))
 
 (defvar haskell-fast-module-list
@@ -261,6 +263,14 @@ to stylish-haskell."
 
 (haskell-fast-modules-load)
 ;; Haskell fast modules
+
+
+;; TESTING
+(defadvice
+    intero-start-process-in-buffer
+    (after intero-force-recomp)
+  (process-send-string (intero-process 'backend) ":set -fforce-recomp\n"))
+;; TESTING
 
 (message "Loading haskell-init... Done.")
 (provide 'intero-init)
