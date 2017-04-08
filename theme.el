@@ -36,3 +36,6 @@
 ;; (setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
 ;; ;; (moe-dark)
 ;; (moe-light)
+
+(add-to-list 'default-frame-alist '(width . 400))
+(add-to-list 'default-frame-alist '(height . 150))
