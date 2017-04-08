@@ -1,0 +1,6 @@
+alias grep ag $*
+alias open find-file $1
+alias ll ls -l $*
+alias vim for i in ${eshell-flatten-list $*} {find-file-other-window $i}
+alias ec for i in ${eshell-flatten-list $*} {find-file-other-window $i}
+alias emacs for i in ${eshell-flatten-list $*} {find-file-other-window $i}
