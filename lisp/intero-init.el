@@ -34,6 +34,8 @@
   compile-command "stack build --fast --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror"
   hindent-style "johan-tibell"
 
+  haskell-hoogle-url "http://127.0.0.1:8123/?hoogle=%s"
+
   haskell-stylish-on-save t
   ;; haskell-tags-on-save t
 
@@ -44,8 +46,9 @@
   haskell-indentation-show-indentations-after-eol t))
 
 ;; Key bindings
-(define-key haskell-mode-map (kbd "M-,") 'haskell-who-calls)
 (define-key haskell-mode-map (kbd "M-]") 'intero-goto-definition)
+(define-key haskell-mode-map (kbd "C-c h") 'hoogle)
+(evil-leader/set-key-for-mode 'haskell-mode "h" 'hoogle)
 
 (evil-define-motion my-haskell-navigate-imports ()
   "Navigate imports with evil motion"
@@ -84,30 +87,6 @@
                 '(haskell-left-arrows
                   (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
                   (modes quote (haskell-mode literate-haskell-mode)))))
-
-;; Fun functions
-(defun haskell-who-calls (&optional prompt)
-  "Grep the codebase to see who uses the symbol at point."
-  (interactive "P")
-  (let ((sym (if prompt
-                 (read-from-minibuffer "Look for: ")
-               (haskell-ident-at-point))))
-    (let ((existing (get-buffer "*who-calls*")))
-      (when existing
-        (kill-buffer existing)))
-    (cond
-     ;; Use grep
-     (nil (let ((buffer
-                 (grep-find (format "cd %s && find . -name '*.hs' -exec grep -inH -e %s {} +"
-                                    (haskell-session-current-dir (haskell-session))
-                                    sym))))
-            (with-current-buffer buffer
-              (rename-buffer "*who-calls*")
-              (switch-to-buffer-other-window buffer))))
-     ;; Use ag
-     (t (ag-files sym
-                  "\\.hs$"
-                  (haskell-session-current-dir (haskell-session)))))))
 
 ;; Evil indentation helper
 (defun haskell-indentation-indent-line ()
@@ -197,6 +176,8 @@ import qualified System.IO.Streams as Streams
 ")
         ("Data.Monoid" . "import Data.Monoid ((<>))
 ")
+        ("Data.Bool" . "import Data.Bool (bool)
+")
         ))
 
 (defvar haskell-fast-module-list
@@ -266,10 +247,10 @@ to stylish-haskell."
 
 
 ;; TESTING
-(defadvice
-    intero-start-process-in-buffer
-    (after intero-force-recomp)
-  (process-send-string (intero-process 'backend) ":set -fforce-recomp\n"))
+;; (defadvice
+;;     intero-start-process-in-buffer
+;;     (after intero-force-recomp)
+;;   (process-send-string (intero-process 'backend) ":set -fforce-recomp\n"))
 ;; TESTING
 
 (message "Loading haskell-init... Done.")
