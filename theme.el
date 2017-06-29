@@ -1,6 +1,6 @@
 ;; Font
-(set-frame-font "Inconsolata-14")
-(add-to-list 'default-frame-alist '(font . "Inconsolata-14"))
+(set-frame-font "Inconsolata-12")
+(add-to-list 'default-frame-alist '(font . "Inconsolata-12"))
 
 ;; (set-frame-font "Source Code Pro-14")
 ;; (add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
