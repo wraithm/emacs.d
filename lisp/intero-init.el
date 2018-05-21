@@ -22,8 +22,9 @@
 ;; Sub-mode Hooks
 (add-hook 'haskell-mode-hook 'intero-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-;; (add-hook 'haskell-mode-hook 'subword-mode)
 (add-hook 'haskell-mode-hook #'hindent-mode)
+(add-hook 'haskell-mode-hook 'yas-minor-mode)
+;; (add-hook 'haskell-mode-hook 'subword-mode)
 
 (flycheck-add-next-checker 'intero '(warning . haskell-hlint))
 
@@ -31,7 +32,7 @@
 (add-hook
  'haskell-mode-hook
  (setq
-  compile-command "stack build --fast --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror"
+  compile-command "stack build --fast --test --bench --no-run-tests --no-run-benchmarks --ghc-options=\"-Werror -fobject-code\""
   hindent-style "johan-tibell"
 
   haskell-hoogle-url "http://127.0.0.1:8123/?hoogle=%s"
@@ -178,6 +179,8 @@ import qualified System.IO.Streams as Streams
 ")
         ("Data.Bool" . "import Data.Bool (bool)
 ")
+        ("Data.Proxy" . "import Data.Proxy (Proxy (..))
+")
         ))
 
 (defvar haskell-fast-module-list
@@ -253,5 +256,5 @@ to stylish-haskell."
 ;;   (process-send-string (intero-process 'backend) ":set -fforce-recomp\n"))
 ;; TESTING
 
-(message "Loading haskell-init... Done.")
+(message "Loading haskell-init...")
 (provide 'intero-init)

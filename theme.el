@@ -37,5 +37,5 @@
 ;; ;; (moe-dark)
 ;; (moe-light)
 
-(add-to-list 'default-frame-alist '(width . 400))
+(add-to-list 'default-frame-alist '(width . 450))
 (add-to-list 'default-frame-alist '(height . 150))

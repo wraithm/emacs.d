@@ -2,6 +2,7 @@
 ;; (setq ghcid-target "bitnomial-core")
 (setq ghcid-target "bitnomial-exchange")
 ;; (setq ghcid-target "bitnomial-exchange-client")
+;; (setq ghcid-target "bitnomial-post-trade")
 (defun ghcid-stack-cmd (target)
       (format "stack ghci %s --test --bench --ghci-options=-fno-code" target))
 
@@ -11,6 +12,7 @@
   "A minor mode for ghcid terminals"
   :lighter " Ghcid"
   (nlinum-mode -1)
+  (linum-mode -1)
   (compilation-minor-mode))
 
 (defun new-ghcid-term ()
