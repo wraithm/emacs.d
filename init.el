@@ -183,6 +183,12 @@
 ;; (global-hl-line-mode t)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+(defun no-menubar-frame (&optional frame)
+  "Do not display the menubar in FRAME (default: selected frame)."
+  (interactive)
+  (set-frame-parameter frame 'menu-bar-lines 0))
+(add-hook 'after-make-frame-functions 'no-menubar-frame)
+
 ;; Fundamental
 (add-hook 'fundamental-mode-hook 'flyspell-mode)
 (add-hook 'fundamental-mode-hook 'turn-on-auto-fill)
