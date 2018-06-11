@@ -41,11 +41,6 @@
          (file org-index-file)
          "* TODO %?\n")
 
-        ("b" "Blog idea"
-         entry
-         (file (org-file-path "blog-ideas.org"))
-         "* TODO %?\n")
-
         ("w" "Work tasks"
          entry
          (file (org-file-path "work.org"))
