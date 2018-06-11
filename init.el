@@ -313,6 +313,7 @@
 (defun my-company-complete (arg) (company-complete))
 (setq evil-complete-next-func 'my-company-complete
       evil-complete-previous-func 'my-company-complete)
+(define-key evil-insert-state-map (kbd "C-x C-o") 'company-complete)
 
 ;; markdown-mode - What about markdown-mode+?
 (add-hook 'markdown-mode-hook 'flyspell-mode)
