@@ -1,6 +1,12 @@
 ;; Font
 (set-frame-font "Inconsolata-12")
 (add-to-list 'default-frame-alist '(font . "Inconsolata-12"))
+(add-to-list 'default-frame-alist '(width . 450))
+(add-to-list 'default-frame-alist '(height . 150))
+
+(when (eq system-type 'darwin)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark)))
 
 ;; (set-frame-font "Source Code Pro-14")
 ;; (add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
@@ -19,8 +25,8 @@
 (setq
  solarized-use-variable-pitch nil
  solarized-scale-org-headlines nil)
-(load-theme 'solarized-light)
-;; (load-theme 'solarized-dark)
+;; (load-theme 'solarized-light)
+(load-theme 'solarized-dark)
 
 ;; (load-theme 'zenburn)
 
