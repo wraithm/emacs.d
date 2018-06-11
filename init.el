@@ -75,8 +75,9 @@
 ;; (setq mac-command-modifier 'meta)
 (toggle-frame-fullscreen)
 (global-set-key (kbd "M-C-f") 'toggle-frame-fullscreen)
-(advice-add 'ns-new-frame :after '(scroll-bar-mode -1))
-(advice-add 'ns-new-frame :after #'toggle-frame-fullscreen)
+(when (eq system-type 'darwin)
+  (advice-add 'ns-new-frame :after '(scroll-bar-mode -1))
+  (advice-add 'ns-new-frame :after #'toggle-frame-fullscreen))
 
 
 ;; evil-mode
