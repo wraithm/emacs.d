@@ -13,6 +13,7 @@
  (append flycheck-disabled-checkers
    '(javascript-jshint)))
 
+(setq js-indent-level 2)
 (setq js2-include-node-externs t)
 
 (flycheck-add-mode 'javascript-eslint 'js2-mode)

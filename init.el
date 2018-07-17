@@ -353,9 +353,6 @@
 ;; postgresql sqli
 (evil-set-initial-state 'sql-interactive-mode 'emacs)
 
-;; js indent level
-(setq js-indent-level 2)
-
 (require 'web-mode)
 (setq web-mode-markup-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
