@@ -1,9 +1,8 @@
-(setq my-haskell-packages
+(defvar my-haskell-packages
       '(haskell-mode
         haskell-snippets
 
         hindent
-        flycheck
 
         intero))
 (mapc #'package-install my-haskell-packages)
@@ -12,7 +11,6 @@
 (require 'haskell)
 (require 'haskell-mode)
 (require 'haskell-snippets)
-(require 'flycheck)
 (require 'intero)
 (require 'hindent)
 
@@ -59,7 +57,7 @@
 (evil-leader/set-key-for-mode 'haskell-mode "i" 'my-haskell-navigate-imports)
 
 (defun my-intero-insert-type ()
-  "Insert type at point"
+  "Insert type at point."
   (interactive)
   (intero-type-at t))
 (evil-leader/set-key-for-mode 'haskell-mode "t" 'my-intero-insert-type)
