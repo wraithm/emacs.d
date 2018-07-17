@@ -19,6 +19,7 @@
 (defvar my-packages
       '(exec-path-from-shell
         evil
+        evil-escape
         evil-org
         evil-surround
         evil-nerd-commenter
@@ -130,6 +131,15 @@
   "w" 'save-buffer
   "k" 'ido-kill-buffer
   "a" 'align-regexp)
+(setq-default evil-escape-key-sequence "jk")
+(setq-default evil-escape-delay 0.2)
+(evil-escape-mode)
+
+;; Patch for evil-escape
+(defun ibuffer-quit ()
+  "Quit ibuffer window."
+  (interactive)
+  (quit-window))
 
 (setq scroll-step 1
       hscroll-step 1
