@@ -1,12 +1,9 @@
-(setq my-js-packages
+(defvar my-js-packages
       '(js2-mode
-        company-tern
-        flycheck))
+        company-tern))
 (mapc #'package-install my-js-packages)
 
-
 (require 'js2-mode)
-(require 'flycheck)
 (require 'company)
 (require 'company-tern)
 

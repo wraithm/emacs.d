@@ -16,7 +16,7 @@
 ;;   (package-install 'use-package))
 
 ;; Download packages
-(setq my-packages
+(defvar my-packages
       '(exec-path-from-shell
         evil
         evil-org
@@ -60,9 +60,9 @@
         twilight-theme
         ujelly-theme
         base16-theme))
-(dolist (p my-packages)
- (when (not (package-installed-p p))
-   (package-install p)))
+(dolist (package my-packages)
+ (when (not (package-installed-p package))
+   (package-install package)))
 
 ;; My custom code
 (add-to-list 'load-path "~/.emacs.d/lisp")
@@ -276,7 +276,7 @@
                display-buffer-reuse-window
                (window-height . 18)))
 (defun bury-compile-buffer-if-successful (buffer string)
-  "Bury a compilation buffer if succeeded without warnings "
+  "Bury a compilation buffer if succeeded without warnings."
   (if (and
        (string-match "compilation" (buffer-name buffer))
        (string-match "finished" string)
@@ -329,7 +329,7 @@
     (while (search-forward "-+-" nil t) (replace-match "-|-"))))
 
 ;; projectile
-(projectile-global-mode)
+(projectile-mode)
 (setq projectile-enable-caching t)
 (global-set-key (kbd "C-c C-b") 'projectile-ibuffer)
 (global-set-key (kbd "C-c b") 'projectile-switch-to-buffer)
