@@ -60,7 +60,8 @@
   "Insert type at point."
   (interactive)
   (intero-type-at t))
-(evil-leader/set-key-for-mode 'haskell-mode "t" 'my-intero-insert-type)
+;; (evil-leader/set-key-for-mode 'haskell-mode "t" 'my-intero-insert-type)
+(evil-leader/set-key-for-mode 'haskell-mode "t" 'intero-type-at)
 (evil-define-key 'normal haskell-mode-map (kbd "C-c C-t") 'my-intero-insert-type)
 
 (evil-set-initial-state 'intero-repl-mode 'emacs)
