@@ -159,6 +159,16 @@
 (setq nlinum-relative-current-symbol "")
 (setq nlinum-relative-offset 0)
 
+;; Highlight mode-line instead of audible bell
+(defvar ring-bell-mode-line-color "#F2804F")
+(setq ring-bell-function
+      (lambda ()
+        (let ((orig-fg (face-foreground 'mode-line)))
+          (set-face-foreground 'mode-line ring-bell-mode-line-color)
+          (run-with-idle-timer 0.1 nil
+                               (lambda (fg) (set-face-foreground 'mode-line fg))
+                               orig-fg))))
+
 ;; key-bindings
 (global-set-key (kbd "C-c g") 'ag)
 (global-set-key (kbd "C-c a") 'align-regexp)
