@@ -1,7 +1,7 @@
 ;; Org
 (require 'evil-org)
 
-(setq my-org-mode-packages
+(defvar my-org-mode-packages
       '(ox-pandoc))
 (mapc #'package-install my-org-mode-packages)
 
@@ -10,7 +10,7 @@
 (defun org-file-path (filename)
   "Return the absolute address of an org file, given its relative name."
   (concat (file-name-as-directory org-directory) filename))
-(setq org-index-file (org-file-path "index.org"))
+(defvar org-index-file (org-file-path "index.org"))
 (setq org-archive-location (concat (org-file-path "archive.org") "::* From %s"))
 (setq org-agenda-files (list org-index-file))
 (setq org-log-done 'time)
@@ -22,7 +22,8 @@
  (lambda ()
    ;; (face-remap-add-relative 'default :family "Terminus (TTF)-12")
    (face-remap-add-relative 'default :family "Inconsolata-14")
-   (turn-on-auto-fill)))
+   (turn-on-auto-fill)
+   (evil-org-mode)))
 (setq org-todo-keywords
       '((sequence "TODO" "WORK" "DONE")))
 
@@ -35,25 +36,21 @@
   (org-todo 'done)
   (org-archive-subtree))
 
-(setq org-capture-templates
-      '(("t" "Todo"
-         entry
+(defvar org-capture-templates
+      `(("t" "Todo" entry
          (file org-index-file)
          "* TODO %?\n")
 
-        ("w" "Work tasks"
-         entry
-         (file (org-file-path "work.org"))
-         "* TODO %?\n")
+        ("w" "Work tasks" entry
+         (file ,(org-file-path "work.org"))
+         "** TODO %?\n")
 
-        ("j" "Work journal"
-         entry
-         (file+datetree (org-file-path "work-journal.org"))
+        ("j" "Work journal" entry
+         (file+datetree ,(org-file-path "work-journal.org"))
          "* %?\nEntered on %U\n  %i\n  %a")
 
-        ("f" "Fun facts and tips and tricks"
-         entry
-         (file (org-file-path "fun-facts.org"))
+        ("f" "Fun facts and tips and tricks" entry
+         (file ,(org-file-path "fun-facts.org"))
          "* %?\nEntered on %U\n  %i\n  %a")
         ))
 
