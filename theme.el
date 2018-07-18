@@ -1,6 +1,12 @@
 ;; Font
 (set-frame-font "Inconsolata-12")
 (add-to-list 'default-frame-alist '(font . "Inconsolata-12"))
+(add-to-list 'default-frame-alist '(width . 450))
+(add-to-list 'default-frame-alist '(height . 150))
+
+(when (eq system-type 'darwin)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark)))
 
 ;; (set-frame-font "Source Code Pro-14")
 ;; (add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
@@ -36,6 +42,3 @@
 ;; (setq moe-theme-resize-rst-title '(1.5 1.4 1.3 1.2 1.1 1.0))
 ;; ;; (moe-dark)
 ;; (moe-light)
-
-(add-to-list 'default-frame-alist '(width . 400))
-(add-to-list 'default-frame-alist '(height . 150))
