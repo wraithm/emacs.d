@@ -19,8 +19,8 @@
 (setq
  solarized-use-variable-pitch nil
  solarized-scale-org-headlines nil)
-(load-theme 'solarized-light)
-;; (load-theme 'solarized-dark)
+;; (load-theme 'solarized-light)
+(load-theme 'solarized-dark)
 
 ;; (load-theme 'zenburn)
 
