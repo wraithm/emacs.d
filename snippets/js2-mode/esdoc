@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: esdoc snippet
+# key: doc
+# --
+/**
+ * $1
+ */
