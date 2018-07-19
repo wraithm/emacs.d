@@ -130,6 +130,7 @@
   "r" 'recompile
   "w" 'save-buffer
   "k" 'ido-kill-buffer
+  "K" 'kill-buffer-and-window
   "a" 'align-regexp)
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-delay 0.2)
