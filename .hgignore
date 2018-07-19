@@ -1,0 +1,13 @@
+syntax: glob
+.haskell-modules.el
+bookmarks
+irc.el
+smex-items
+tramp
+wolframalpha.el
+elpa
+auto-save-list
+eshell
+ido.last
+lisp/ix-init.el
+projectile*
