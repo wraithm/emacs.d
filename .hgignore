@@ -9,5 +9,4 @@ elpa
 auto-save-list
 eshell
 ido.last
-lisp/ix-init.el
 projectile*
