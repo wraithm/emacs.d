@@ -4,10 +4,6 @@
 (add-to-list 'default-frame-alist '(width . 450))
 (add-to-list 'default-frame-alist '(height . 150))
 
-(when (eq system-type 'darwin)
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  (add-to-list 'default-frame-alist '(ns-appearance . dark)))
-
 ;; (set-frame-font "Source Code Pro-14")
 ;; (add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
 ;; (set-face-attribute 'default nil
@@ -20,13 +16,25 @@
 ;; (set-frame-font "Terminus (TTF)-14")
 ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 160)
 
+;; Transparent titlebar
+(when (eq system-type 'darwin)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark)))
 
 ;; Theme
-(setq
- solarized-use-variable-pitch nil
- solarized-scale-org-headlines nil)
-;; (load-theme 'solarized-light)
+(require 'solarized)
+(setq solarized-use-variable-pitch nil
+      solarized-scale-org-headlines nil)
+
+;; Experimental, trying these out
+(setq solarized-height-plus-1 1.0
+      solarized-height-plus-2 1.0
+      solarized-height-plus-3 1.0
+      solarized-height-plus-4 1.0
+      solarized-high-contrast-mode-line t)
+
 (load-theme 'solarized-dark)
+;; (load-theme 'solarized-light)
 
 ;; (load-theme 'zenburn)
 
