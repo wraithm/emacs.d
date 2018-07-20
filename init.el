@@ -353,6 +353,7 @@
     (while (search-forward "-+-" nil t) (replace-match "-|-"))))
 
 ;; projectile
+(require 'projectile)
 (projectile-mode)
 (setq projectile-enable-caching t)
 (global-set-key (kbd "C-c C-b") 'projectile-ibuffer)
@@ -365,8 +366,8 @@
 
 ;; dash-at-point
 (autoload 'dash-at-point "dash-at-point" "Search the word at point with Dash." t nil)
-(global-set-key "\C-cd" 'dash-at-point)
-(global-set-key "\C-ce" 'dash-at-point-with-docset)
+(global-set-key (kbd "C-c d") 'dash-at-point)
+(global-set-key (kbd "C-c e") 'dash-at-point-with-docset)
 
 ;; rcirc
 (load "~/.emacs.d/irc.el")
