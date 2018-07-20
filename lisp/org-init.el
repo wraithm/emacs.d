@@ -28,7 +28,7 @@
 (add-hook
  'org-mode-hook
  (lambda ()
-   (face-remap-add-relative 'default :height 1.1) ; increase font size by 10%
+   ;; (face-remap-add-relative 'default :height 1.1) ; increase font size by 10%
    (linum-mode -1)
    (text-scale-adjust 1)
    (turn-on-auto-fill)
@@ -53,7 +53,7 @@
 
         ("w" "Work tasks" entry
          (file ,(org-file-path "work.org"))
-         "** TODO %?\n")
+         "* TODO %?\n")
 
         ("j" "Work journal" entry
          (file+datetree ,(org-file-path "work-journal.org"))
@@ -69,6 +69,10 @@
 (define-key global-map (kbd "C-c c") 'org-capture)
 (define-key global-map (kbd "C-c f") 'org-agenda)
 (define-key global-map (kbd "C-c l") 'org-store-link)
+
+(evil-leader/set-key-for-mode 'org-mode
+  "s" 'org-narrow-to-subtree
+  "i" 'widen)
 
 (message "Loading org-init... Done.")
 (provide 'org-init)
