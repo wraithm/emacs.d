@@ -2,7 +2,7 @@
 ;; Matthew Wraith <wraithm@gmail.com>
 
 ;; Install packages
-(setq my-haskell-packages
+(defvar my-haskell-packages
       '(haskell-mode
         haskell-snippets
 
@@ -88,7 +88,7 @@
 
 ;; hindent
 (setq hindent-style "johan-tibell")
-(add-hook 'haskell-mode-hook #'hindent-mode) 
+(add-hook 'haskell-mode-hook #'hindent-mode)
 
 ;; Key bindings
 (global-set-key (kbd "M-g M-f") 'first-error)
