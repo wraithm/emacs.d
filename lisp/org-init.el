@@ -1,12 +1,15 @@
 ;; Org
-(require 'org)
-(require 'evil-org)
-
 (defvar my-org-mode-packages
-      '(ox-pandoc))
+  '(org-bullets
+    ox-pandoc))
 (mapc #'package-install my-org-mode-packages)
 
 ;; variables
+(require 'org)
+(require 'evil-org)
+(require 'org-bullets)
+
+;; Directories
 (setq org-directory "~/Dropbox/org")
 (defun org-file-path (filename)
   "Return the absolute address of an org file, given its relative name."
@@ -14,16 +17,22 @@
 (defvar org-index-file (org-file-path "index.org"))
 (setq org-archive-location (concat (org-file-path "archive.org") "::* From %s"))
 (setq org-agenda-files (list org-index-file))
+
+;; Settings
 (setq org-log-done 'time)
+(setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
 
 ;; hooks
 (add-hook 'org-capture-mode-hook 'evil-insert-state)
 (add-hook
  'org-mode-hook
  (lambda ()
-   ;; (face-remap-add-relative 'default :family "Terminus (TTF)-12")
-   (face-remap-add-relative 'default :family "Inconsolata-14")
+   (face-remap-add-relative 'default :height 1.1) ; increase font size by 10%
+   (linum-mode -1)
+   (text-scale-adjust 1)
    (turn-on-auto-fill)
+   (org-bullets-mode)
    (evil-org-mode)))
 (setq org-todo-keywords
       '((sequence "TODO" "WORK" "DONE")))
