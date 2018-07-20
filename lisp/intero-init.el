@@ -1,9 +1,6 @@
 (defvar my-haskell-packages
       '(haskell-mode
         haskell-snippets
-
-        hindent
-
         intero))
 (mapc #'package-install my-haskell-packages)
 
@@ -12,7 +9,6 @@
 (require 'haskell-mode)
 (require 'haskell-snippets)
 (require 'intero)
-(require 'hindent)
 
 ;; (load-file "~/.emacs.d/lisp/ghcid.el")
 ;; (require 'ghcid)
@@ -31,7 +27,6 @@
  'haskell-mode-hook
  (setq
   compile-command "stack build --fast --test --bench --no-run-tests --no-run-benchmarks --ghc-options=\"-Werror -fobject-code\""
-  hindent-style "johan-tibell"
 
   haskell-hoogle-url "http://127.0.0.1:8123/?hoogle=%s"
 
@@ -40,15 +35,19 @@
 
   haskell-indentation-layout-offset 4
   haskell-indentation-left-offset 4
-  haskell-indentation-ifte-offset 4
-  haskell-indentation-show-indentations t
-  haskell-indentation-show-indentations-after-eol t))
+
+  ;; haskell-indentation-ifte-offset 4
+  ;; haskell-indentation-show-indentations t
+  ;; haskell-indentation-show-indentations-after-eol t
+
+  ))
 
 ;; Key bindings
 (define-key haskell-mode-map (kbd "M-]") 'intero-goto-definition)
 (define-key haskell-mode-map (kbd "C-c h") 'hoogle)
 (evil-leader/set-key-for-mode 'haskell-mode "h" 'hoogle)
 
+(require 'evil)
 (evil-define-motion my-haskell-navigate-imports ()
   "Navigate imports with evil motion"
   :jump t
@@ -67,6 +66,7 @@
 (evil-set-initial-state 'intero-repl-mode 'emacs)
 
 ;; Alignment
+(require 'align)
 (eval-after-load "align"
   '(add-to-list 'align-rules-list
                 '(haskell-types
