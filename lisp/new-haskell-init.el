@@ -1,7 +1,6 @@
-(setq my-haskell-packages
+(defvar my-haskell-packages
       '(haskell-mode
         haskell-snippets
-
         flycheck
         flycheck-haskell))
 (mapc #'package-install my-haskell-packages)
