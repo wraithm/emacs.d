@@ -1,4 +1,5 @@
 ;; Org
+(require 'org)
 (require 'evil-org)
 
 (defvar my-org-mode-packages
