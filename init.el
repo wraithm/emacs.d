@@ -112,11 +112,11 @@
 (global-evil-leader-mode)
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
+  "b" 'switch-to-buffer
   "g" 'ag
   "G" 'projectile-ag
-  "b" 'switch-to-buffer
-  "l" 'projectile-ibuffer
-  "L" 'ibuffer
+  "l" 'ibuffer
+  "L" 'projectile-ibuffer
   "f" 'find-file
   "p" 'projectile-find-file
   "e" 'first-error
@@ -283,21 +283,20 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (evil-ex-define-cmd "ls" 'ibuffer)
 
+;; ibuffer group by major mode
+(defun ibuffer-buffer-mode (buffer) (buffer-local-value 'major-mode buffer))
+(defun ibuffer-buffer-modes ()
+    (ibuffer-remove-duplicates (remq nil (mapcar 'ibuffer-buffer-mode (buffer-list)))))
+(defun ibuffer-mode-group (mode)
+  (let ((mode-title (capitalize (car (split-string (symbol-name mode) "-" t)))))
+    (cons mode-title `((mode . ,mode)))))
 (defun ibuffer-generate-filter-groups-by-major-mode ()
-  (cl-flet
-      ((mode-group
-        (mode)
-        (let ((mode-title
-               (capitalize (car (split-string (symbol-name mode) "-" t)))))
-          (cons mode-title `((mode . ,mode)))))
-       (buffer-modes
-        ()
-        (cl-flet ((buffer-mode (buffer) (buffer-local-value 'major-mode buffer)))
-          (ibuffer-remove-duplicates (remq nil (mapcar 'buffer-mode (buffer-list)))))))
-    (mapcar 'mode-group (buffer-modes))))
+  (mapcar 'ibuffer-mode-group (ibuffer-buffer-modes)))
 
 (defun ibuffer-major-mode-group-hook ()
   (interactive)
+  (nlinum-mode -1)
+  (linum-mode -1)
   (setq ibuffer-filter-groups (ibuffer-generate-filter-groups-by-major-mode))
   (ibuffer-update nil t)
   (message "ibuffer-major-mode: groups set"))
