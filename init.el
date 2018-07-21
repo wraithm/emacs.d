@@ -18,6 +18,7 @@
 ;; Download packages
 (defvar my-packages
       '(exec-path-from-shell
+        unicode-fonts
         evil
         evil-leader
         evil-surround
@@ -25,35 +26,38 @@
         evil-org
         evil-nerd-commenter
         evil-ediff
+        ;; nlinum-relative
+        ;; rainbow-delimiters
+        smex
         flx-ido
-        flycheck
-        auctex
-        gnuplot-mode
-        latex-preview-pane
         ag
         company
-        smex
+        flycheck
         projectile
-        markdown-mode+
-        magit
-        monky
-        paredit
         yasnippet
-        ;; erlang
-        yaml-mode
+        paredit
+
         dash-at-point
         multi-term
-        terraform-mode
         vagrant-tramp
-        nlinum-relative
-        json-mode
-        ;; rainbow-delimiters
         ix
+
+        magit
+        monky
+
+        terraform-mode
+        yaml-mode
+        markdown-mode+
+        json-mode
         logstash-conf
         wolfram
         ansible
         web-mode
-        unicode-fonts
+        gnuplot-mode
+        auctex
+        latex-preview-pane
+
+        ;; erlang
 
         ;; Themes
         solarized-theme
