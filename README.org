@@ -30,10 +30,4 @@ These are my choices of major packages. For example, I use smex/ido over helm, c
 - magit/monky
 - dash-at-point
 - eshell and multi-term (usually eshell over multi-term)
-
-** Haskell packages
-
- - haskell-mode
- - intero
- - hindent
- - haskell-snippets
+- intero
