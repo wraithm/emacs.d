@@ -1,10 +1,11 @@
 ;; Org
 (defvar my-org-mode-packages
   '(org-bullets
-    ox-pandoc))
+    ox-pandoc
+    ox-twbs
+    ))
 (mapc #'package-install my-org-mode-packages)
 
-;; variables
 (require 'org)
 (require 'evil-org)
 (require 'org-bullets)
@@ -23,7 +24,7 @@
 (setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
 
-;; hooks
+;; Hooks
 (add-hook 'org-capture-mode-hook 'evil-insert-state)
 (add-hook
  'org-mode-hook
@@ -36,15 +37,6 @@
    (evil-org-mode)))
 (setq org-todo-keywords
       '((sequence "TODO" "WORK" "DONE")))
-
-(with-eval-after-load 'ox
-  (require 'ox-pandoc))
-
-(defun mark-done-and-archive ()
-  "Mark the state of an org-mode item as DONE and archive it."
-  (interactive)
-  (org-todo 'done)
-  (org-archive-subtree))
 
 (defvar org-capture-templates
       `(("t" "Todo" entry
@@ -65,6 +57,12 @@
         ))
 
 ;; Key bindings
+(defun mark-done-and-archive ()
+  "Mark the state of an org-mode item as DONE and archive it."
+  (interactive)
+  (org-todo 'done)
+  (org-archive-subtree))
+
 (define-key global-map (kbd "C-c C-x C-s") 'mark-done-and-archive)
 (define-key global-map (kbd "C-c c") 'org-capture)
 (define-key global-map (kbd "C-c f") 'org-agenda)
@@ -72,7 +70,20 @@
 
 (evil-leader/set-key-for-mode 'org-mode
   "s" 'org-narrow-to-subtree
-  "i" 'widen)
+  "i" 'widen
+  "o" 'org-open-at-point)
+
+;; ox
+(require 'ox)
+(require 'ox-pandoc)
+(require 'ox-twbs)
+(require 'ox-latex)
+
+(setq org-latex-listings 'minted
+      org-latex-packages-alist '(("" "minted"))
+      org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
 (message "Loading org-init... Done.")
 (provide 'org-init)
