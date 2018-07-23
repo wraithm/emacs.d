@@ -256,6 +256,8 @@
 (add-hook
  'term-mode-hook
  (lambda ()
+   (nlinum-mode -1)
+   (linum-mode -1)
    (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
    (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))
    (setq yas-dont-activate-functions t)))
