@@ -281,10 +281,12 @@
 (ido-mode t)
 (ido-everywhere t)
 (flx-ido-mode t)
+
 (setq-default
- ido-enable-flex-matching t
  ;; ido-use-faces nil
- ido-max-window-height 1)
+ ido-enable-flex-matching t
+ ;; ido-max-window-height 1
+ ido-create-new-buffer 'always)
 
 ;; ibuffer
 (require 'ibuffer)
