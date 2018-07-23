@@ -262,7 +262,6 @@
    (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))
    (setq yas-dont-activate-functions t)))
 (setq term-buffer-maximum-size 10000)
-;; (multi-term)
 (setenv "HGEDITOR" "emacsclient")
 (add-hook 'eshell-mode-hook
           (lambda ()
@@ -272,6 +271,7 @@
             (setenv "TERM" "emacs")))
 (setq eshell-visual-subcommands
       '(("hg" "di" "log" "glog")))
+;; (multi-term)
 
 ;; smex / ido
 (global-set-key (kbd "M-x") 'smex)
