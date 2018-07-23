@@ -263,12 +263,13 @@
    (setq yas-dont-activate-functions t)))
 (setq term-buffer-maximum-size 10000)
 (setenv "HGEDITOR" "emacsclient")
-(add-hook 'eshell-mode-hook
-          (lambda ()
-            (nlinum-mode -1)
-            (linum-mode -1)
-            (add-to-list 'eshell-visual-commands "htop")
-            (setenv "TERM" "emacs")))
+(add-hook
+ 'eshell-mode-hook
+ (lambda ()
+   (nlinum-mode -1)
+   (linum-mode -1)
+   (add-to-list 'eshell-visual-commands "htop")
+   (setenv "TERM" "emacs")))
 (setq eshell-visual-subcommands
       '(("hg" "di" "log" "glog")))
 ;; (multi-term)
