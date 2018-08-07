@@ -36,6 +36,7 @@
         projectile
         yasnippet
         paredit
+        w3m
 
         dash-at-point
         multi-term
