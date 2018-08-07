@@ -1,8 +1,6 @@
 ;; Font
 (set-frame-font "Inconsolata-12")
 (add-to-list 'default-frame-alist '(font . "Inconsolata-12"))
-(add-to-list 'default-frame-alist '(width . 450))
-(add-to-list 'default-frame-alist '(height . 150))
 
 ;; (set-frame-font "Source Code Pro-14")
 ;; (add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
@@ -15,6 +13,27 @@
 ;; (setq mac-allow-anti-aliasing nil)
 ;; (set-frame-font "Terminus (TTF)-14")
 ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 160)
+
+;; Window settings
+(add-to-list 'default-frame-alist '(width . 180))
+(add-to-list 'default-frame-alist '(height . 90))
+(add-to-list 'default-frame-alist '(left . 500))
+
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+
+(defun open-frame-maximized ()
+  (interactive)
+  (modify-frame-parameters (make-frame) '((fullscreen . maximized))))
+
+(defun open-frame-other-window ()
+  (interactive)
+  (modify-frame-parameters
+   (make-frame)
+   '((width . 250)
+     (height . 100)
+     (top . 250)
+     (left + -1000)
+     (fullscreen . maximized))))
 
 ;; Transparent titlebar
 (when (eq system-type 'darwin)
