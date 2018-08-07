@@ -36,7 +36,7 @@
    (org-bullets-mode)
    (evil-org-mode)))
 (setq org-todo-keywords
-      '((sequence "TODO" "WORK" "DONE")))
+      '((sequence "TODO" "WORK" "NEXT" "BLOCKED" "DONE")))
 
 (defvar org-capture-templates
       `(("t" "Todo" entry
