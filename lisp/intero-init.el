@@ -13,9 +13,10 @@
 ;; (load-file "~/.emacs.d/lisp/ghcid.el")
 ;; (require 'ghcid)
 
-;; Sub-mode Hooks
-(add-hook 'haskell-mode-hook 'intero-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+;; Minor-mode Hooks
+;; (add-hook 'haskell-mode-hook 'intero-mode)
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+(intero-global-mode 1)
 (add-hook 'haskell-mode-hook #'hindent-mode)
 (add-hook 'haskell-mode-hook 'yas-minor-mode)
 ;; (add-hook 'haskell-mode-hook 'subword-mode)
