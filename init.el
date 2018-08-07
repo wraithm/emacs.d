@@ -98,9 +98,11 @@
 (require 'evil)
 (require 'evil-surround)
 (setq evil-shift-width 4
-      evil-search-module 'evil-search)
+      evil-search-module 'evil-search
+      evil-want-C-w-in-emacs-state t)
 (evil-mode t)
 (global-evil-surround-mode 1)
+
 
 (require 'evil-escape)
 (setq-default evil-escape-key-sequence "jk")
@@ -129,8 +131,8 @@
   "c" 'compile
   "r" 'recompile
   "w" 'save-buffer
-  "k" 'ido-kill-buffer
-  "K" 'kill-buffer-and-window
+  "k" 'kill-buffer-and-window
+  "K" 'ido-kill-buffer
   "a" 'align-regexp
   "x" 'smex)
 
