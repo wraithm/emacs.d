@@ -159,6 +159,17 @@
 ;; (global-set-key (kbd "C-c c") 'evilnc-copy-and-comment-lines)
 ;; (global-set-key (kbd "C-c p") 'evilnc-comment-or-uncomment-paragraphs)
 
+(fset 'evil-visual-update-x-selection 'ignore)
+(defun evil-set-paste ()
+  (interactive)
+  (setq select-enable-clipboard t))
+(defun evil-unset-paste ()
+  (interactive)
+  (setq select-enable-clipboard nil))
+(evil-ex-define-cmd "paste" 'evil-set-paste)
+(evil-ex-define-cmd "unpaste" 'evil-unset-paste)
+;; (evil-unset-paste) ; If I want to have pasting disabled at startup
+
 (evil-ex-define-cmd "W" 'save-buffer)
 (evil-ex-define-cmd "Q" 'save-buffers-kill-terminal)
 (evil-ex-define-cmd "BD" 'kill-this-buffer)
