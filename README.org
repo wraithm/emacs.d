@@ -1,5 +1,11 @@
 #+TITLE: Matthew Wraith's Emacs Config
 
+You should disable AppNap on macOS to have the terminal version of emacs work well:
+
+#+BEGIN_SRC sh
+defaults write org.gnu.Emacs NSAppSleepDisabled -bool YES
+#+END_SRC
+
 * Theme
 
 Inconsolata font with solarized-dark
