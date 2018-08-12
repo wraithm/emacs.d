@@ -36,6 +36,7 @@
         projectile
         yasnippet
         paredit
+        w3m
 
         dash-at-point
         multi-term
@@ -97,9 +98,11 @@
 (require 'evil)
 (require 'evil-surround)
 (setq evil-shift-width 4
-      evil-search-module 'evil-search)
+      evil-search-module 'evil-search
+      evil-want-C-w-in-emacs-state t)
 (evil-mode t)
 (global-evil-surround-mode 1)
+
 
 (require 'evil-escape)
 (setq-default evil-escape-key-sequence "jk")
@@ -128,8 +131,8 @@
   "c" 'compile
   "r" 'recompile
   "w" 'save-buffer
-  "k" 'ido-kill-buffer
-  "K" 'kill-buffer-and-window
+  "k" 'kill-buffer-and-window
+  "K" 'ido-kill-buffer
   "a" 'align-regexp
   "x" 'smex)
 
@@ -155,6 +158,17 @@
 ;; (global-set-key (kbd "C-c l") 'evilnc-quick-comment-or-uncomment-to-the-line)
 ;; (global-set-key (kbd "C-c c") 'evilnc-copy-and-comment-lines)
 ;; (global-set-key (kbd "C-c p") 'evilnc-comment-or-uncomment-paragraphs)
+
+(fset 'evil-visual-update-x-selection 'ignore)
+(defun evil-set-paste ()
+  (interactive)
+  (setq select-enable-clipboard t))
+(defun evil-unset-paste ()
+  (interactive)
+  (setq select-enable-clipboard nil))
+(evil-ex-define-cmd "paste" 'evil-set-paste)
+(evil-ex-define-cmd "unpaste" 'evil-unset-paste)
+;; (evil-unset-paste) ; If I want to have pasting disabled at startup
 
 (evil-ex-define-cmd "W" 'save-buffer)
 (evil-ex-define-cmd "Q" 'save-buffers-kill-terminal)
@@ -470,7 +484,7 @@
  '(hindent-style "johan-tibell")
  '(package-selected-packages
    (quote
-    (ox-twbs unicode-fonts org-bullets nasm-mode cargo flycheck-rust racer rust-mode evil-escape ansible company-tern company-terraform js2-mode web-mode intero wolfram flycheck elm-mode flycheck-elm haskell-mode haskell-snippets sql-indent logstash-conf ix evil-ediff monky gnuplot-mode zenburn-theme ox-pandoc vagrant-tramp rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode yasnippet company evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term moe-theme markdown-mode+ magit hindent flx-ido exec-path-from-shell evil-surround evil-org erlang dash-at-point base16-theme auctex ag)))
+    (ox-twbs unicode-fonts org-bullets nasm-mode cargo flycheck-rust racer rust-mode evil-escape ansible company-tern company-terraform js2-mode web-mode intero wolfram flycheck elm-mode flycheck-elm haskell-mode haskell-snippets sql-indent logstash-conf ix evil-ediff monky gnuplot-mode zenburn-theme ox-pandoc vagrant-tramp rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode yasnippet company evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term markdown-mode+ magit hindent flx-ido exec-path-from-shell evil-surround evil-org erlang dash-at-point base16-theme auctex ag)))
  '(safe-local-variable-values
    (quote
     ((intero-targets "bitnomial-accounts:test:bitnomial-accounts-test")

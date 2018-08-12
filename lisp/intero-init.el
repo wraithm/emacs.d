@@ -13,9 +13,10 @@
 ;; (load-file "~/.emacs.d/lisp/ghcid.el")
 ;; (require 'ghcid)
 
-;; Sub-mode Hooks
-(add-hook 'haskell-mode-hook 'intero-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+;; Minor-mode Hooks
+;; (add-hook 'haskell-mode-hook 'intero-mode)
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+(intero-global-mode 1)
 (add-hook 'haskell-mode-hook #'hindent-mode)
 (add-hook 'haskell-mode-hook 'yas-minor-mode)
 ;; (add-hook 'haskell-mode-hook 'subword-mode)
@@ -249,10 +250,29 @@ to stylish-haskell."
 
 
 ;; TESTING
-;; (defadvice
-;;     intero-start-process-in-buffer
-;;     (after intero-force-recomp)
-;;   (process-send-string (intero-process 'backend) ":set -fforce-recomp\n"))
+(require 'w3m)
+(require 'w3m-haddock)
+(setq haskell-w3m-haddock-dirs
+      '("~/bitnomial/.stack-work/install/x86_64-osx/nightly-2017-09-06/8.2.1/doc"))
+
+(setq w3m-mode-map (make-sparse-keymap))
+
+(define-key w3m-mode-map (kbd "RET") 'w3m-view-this-url)
+(define-key w3m-mode-map (kbd "q") 'bury-buffer)
+(define-key w3m-mode-map (kbd "<mouse-1>") 'w3m-maybe-url)
+(define-key w3m-mode-map [f5] 'w3m-reload-this-page)
+(define-key w3m-mode-map (kbd "C-c C-d") 'haskell-w3m-open-haddock)
+(define-key w3m-mode-map (kbd "M-<left>") 'w3m-view-previous-page)
+(define-key w3m-mode-map (kbd "M-<right>") 'w3m-view-next-page)
+(define-key w3m-mode-map (kbd "M-.") 'w3m-haddock-find-tag)
+
+(defun w3m-maybe-url ()
+  (interactive)
+  (if (or (equal '(w3m-anchor) (get-text-property (point) 'face))
+          (equal '(w3m-arrived-anchor) (get-text-property (point) 'face)))
+      (w3m-view-this-url)))
+
+(add-hook 'w3m-display-hook 'w3m-haddock-display)
 ;; TESTING
 
 (message "Loading haskell-init...")
