@@ -54,37 +54,35 @@
    (turn-on-haskell-indentation)
    (interactive-haskell-mode)
    ;; (ghc-init)
-   (flycheck-mode))
+   (flycheck-mode)))
 
- ;; Variables
- (setq
-  haskell-process-auto-import-loaded-modules t
-  haskell-process-log t
-  haskell-process-show-debug-tips nil
-  haskell-process-suggest-remove-import-lines t
-  haskell-process-type 'stack-ghci
-  haskell-process-args-stack-ghci
-    '("--ghc-options=-ferror-spans" "--with-ghc=ghci-ng")
-  haskell-process-use-presentation-mode t
+;; Variables
+(setq
+ haskell-process-auto-import-loaded-modules t
+ haskell-process-log t
+ haskell-process-show-debug-tips nil
+ haskell-process-suggest-remove-import-lines t
+ haskell-process-type 'stack-ghci
+ haskell-process-args-stack-ghci
+   '("--ghc-options=-ferror-spans" "--with-ghc=ghci-ng")
+ haskell-process-use-presentation-mode t
 
-  haskell-interactive-mode-eval-pretty t
-  haskell-interactive-mode-scroll-to-bottom t
-  haskell-interactive-mode-eval-mode 'haskell-mode
+ haskell-interactive-mode-eval-pretty t
+ haskell-interactive-mode-scroll-to-bottom t
+ haskell-interactive-mode-eval-mode 'haskell-mode
 
-  haskell-indentation-layout-offset 4
-  haskell-indentation-left-offset 4
-  haskell-indentation-ifte-offset 4
-  haskell-indentation-show-indentations t
-  haskell-indentation-show-indentations-after-eol t
+ haskell-indentation-layout-offset 4
+ haskell-indentation-left-offset 4
+ haskell-indentation-ifte-offset 4
+ haskell-indentation-show-indentations t
+ haskell-indentation-show-indentations-after-eol t
 
-  haskell-stylish-on-save t))
+ haskell-stylish-on-save t)
 
 ;; (add-to-list 'company-backends 'company-ghc)
 ;; (custom-set-variables '(company-ghc-show-info t))
 
-(add-hook
- 'haskell-cabal-mode-hook
- (setq haskell-cabal-list-comma-position 'before))
+(setq haskell-cabal-list-comma-position 'before)
 
 ;; hindent
 (setq hindent-style "johan-tibell")
