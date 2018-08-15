@@ -78,6 +78,11 @@
 (require 'exec-path-from-shell)
 (exec-path-from-shell-initialize)
 
+;; Edit emacs config
+(defun open-init-file ()
+  (interactive)
+  (find-file user-init-file))
+
 ;; unicode-fonts
 (require 'unicode-fonts)
 (unicode-fonts-setup)
@@ -102,7 +107,6 @@
       evil-want-C-w-in-emacs-state t)
 (evil-mode t)
 (global-evil-surround-mode 1)
-
 
 (require 'evil-escape)
 (setq-default evil-escape-key-sequence "jk")
