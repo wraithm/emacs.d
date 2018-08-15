@@ -14,21 +14,20 @@
 ;; (require 'ghcid)
 
 ;; Minor-mode Hooks
-;; (add-hook 'haskell-mode-hook 'intero-mode)
-;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (intero-global-mode 1)
-(add-hook 'haskell-mode-hook #'hindent-mode)
+(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
 (add-hook 'haskell-mode-hook 'yas-minor-mode)
+;; (add-hook 'haskell-mode-hook #'hindent-mode)
 ;; (add-hook 'haskell-mode-hook 'subword-mode)
+(add-hook 'haskell-mode-hook
+          (lambda ()
+            (setq-local
+             compile-command "stack build --fast --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror")))
 
 (flycheck-add-next-checker 'intero '(warning . haskell-hlint))
 
 ;; Variables
-(add-hook
- 'haskell-mode-hook
- (setq
-  compile-command "stack build --fast --test --bench --no-run-tests --no-run-benchmarks --ghc-options=\"-Werror -fobject-code\""
-
+(setq
   haskell-hoogle-url "http://127.0.0.1:8123/?hoogle=%s"
 
   haskell-stylish-on-save t
@@ -41,7 +40,7 @@
   ;; haskell-indentation-show-indentations t
   ;; haskell-indentation-show-indentations-after-eol t
 
-  ))
+  )
 
 ;; Key bindings
 (define-key haskell-mode-map (kbd "M-]") 'intero-goto-definition)
@@ -249,7 +248,7 @@ to stylish-haskell."
 ;; Haskell fast modules
 
 
-;; TESTING
+;; w3m haddock
 (require 'w3m)
 (require 'w3m-haddock)
 (setq haskell-w3m-haddock-dirs
@@ -273,7 +272,8 @@ to stylish-haskell."
       (w3m-view-this-url)))
 
 (add-hook 'w3m-display-hook 'w3m-haddock-display)
-;; TESTING
+;; w3m haddock
+
 
 (message "Loading haskell-init...")
 (provide 'intero-init)
