@@ -235,5 +235,5 @@ to stylish-haskell."
 (haskell-fast-modules-load)
 ;; Haskell fast modules
 
-(message "Loading new-haskell-init... Done.")
-(provide 'new-haskell-init)
+(message "Loading haskell-init... Done.")
+(provide 'haskell-init)
