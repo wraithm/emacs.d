@@ -2,10 +2,9 @@
 ;; Matthew Wraith <wraithm@gmail.com>
 
 ;; Install packages
-(setq my-elm-packages
+(defvar my-elm-packages
       '(elm-mode
         flycheck-elm
-        ;; company-ghc
         ))
 (mapc #'package-install my-elm-packages)
 

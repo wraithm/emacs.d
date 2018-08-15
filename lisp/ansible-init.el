@@ -1,4 +1,4 @@
-(setq my-ansible-packages
+(defvar my-ansible-packages
       '(yaml-mode
         jinja2-mode
         company

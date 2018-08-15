@@ -1,12 +1,12 @@
-(setq ghcid-height 15)
+(defvar ghcid-height 15)
 ;; (setq ghcid-target "bitnomial-core")
-(setq ghcid-target "bitnomial-exchange")
+(defvar ghcid-target "bitnomial-exchange")
 ;; (setq ghcid-target "bitnomial-exchange-client")
 ;; (setq ghcid-target "bitnomial-post-trade")
 (defun ghcid-stack-cmd (target)
       (format "stack ghci %s --test --bench --ghci-options=-fno-code" target))
 
-(setq ghcid-buf-name "*ghcid*")
+(defvar ghcid-buf-name "*ghcid*")
 
 (define-minor-mode ghcid-mode
   "A minor mode for ghcid terminals"
@@ -14,6 +14,8 @@
   (nlinum-mode -1)
   (linum-mode -1)
   (compilation-minor-mode))
+
+(require 'term)
 
 (defun new-ghcid-term ()
   (interactive)
@@ -47,6 +49,8 @@
 ;; TODO Pass in compilation command like compilation-mode
 (defun ghcid-command (h)
     (format "ghcid -c \"%s\" -h %s\n" (ghcid-stack-cmd ghcid-target) h))
+
+(require 'comint)
 
 ;; TODO Close stuff if it fails
 (defun ghcid ()
