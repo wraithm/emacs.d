@@ -349,7 +349,7 @@
                display-buffer-at-bottom
                display-buffer-pop-up-window
                display-buffer-reuse-window
-               (window-height . 18)))
+               (window-height . 30)))
 (defun bury-compile-buffer-if-successful (buffer string)
   "Bury a compilation buffer if succeeded without warnings."
   (if (and

@@ -1,9 +1,9 @@
 (defvar my-rust-packages
-      '(rust-mode
-        racer
-        cargo
-        flycheck
-        flycheck-rust))
+  '(rust-mode
+    racer
+    cargo
+    flycheck
+    flycheck-rust))
 (mapc #'package-install my-rust-packages)
 
 (require 'racer)
