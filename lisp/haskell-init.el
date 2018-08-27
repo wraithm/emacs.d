@@ -16,6 +16,7 @@
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
 (add-hook 'haskell-mode-hook #'flycheck-haskell-setup)
+(add-hook 'haskell-mode-hook 'yas-minor-mode)
 
 (add-hook 'haskell-mode-hook
           (lambda ()
