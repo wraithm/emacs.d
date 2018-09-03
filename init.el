@@ -431,36 +431,36 @@
 ;; (rainbow-delimiters-mode t)
 
 ;; narrowing and fuzzy match
-(require 'ivy-init)
-;; (rquire 'idosmex-init)
+(require 'init-ivy)
+;; (rquire 'init-idosmex)
 
 ;; Haskell
-;; (require 'haskell-init)
-(require 'intero-init)
+;; (require 'init-haskell)
+(require 'init-intero)
 
 ;; Rust
-(require 'rust-init)
+(require 'init-rust)
 
 ;; OCaml
-;; (require 'ocaml-init)
+;; (require 'init-ocaml)
 
 ;; Erlang
 ;; (require 'erlang-start)
 
 ;; Elm
-;; (require 'elm-init)
+;; (require 'init-elm)
 
 ;; Ansible
-(require 'ansible-init)
+(require 'init-ansible)
 
 ;; org-mode
-(require 'org-init)
+(require 'init-org)
 
 ;; ix
-(require 'ix-init)
+(require 'init-ix)
 
 ;; Javascript
-(require 'javascript-init)
+(require 'init-javascript)
 
 ;; diminish
 (require 'diminish)
