@@ -37,8 +37,8 @@
         flycheck
         company
         projectile
-        multi-term
 
+        multi-term
         w3m
         dash-at-point
         vagrant-tramp
@@ -62,9 +62,9 @@
         ;; erlang
 
         ;; Themes
+        ;; moe-theme
         solarized-theme
         zenburn-theme
-        ;; moe-theme
         twilight-theme
         ujelly-theme
         base16-theme))
@@ -382,6 +382,7 @@
 (add-hook 'markdown-mode-hook 'auto-fill-mode)
 (setq-default
  markdown-command "pandoc -f markdown_github")
+(require 'org-table)
 (defun md-table-align ()
   (interactive)
   (org-table-align)
