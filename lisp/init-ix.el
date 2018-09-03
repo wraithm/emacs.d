@@ -14,4 +14,4 @@
 (setq ix-user (netrc-username "ix.io")
       ix-token (netrc-password "ix.io"))
 
-(provide 'ix-init)
+(provide 'init-ix)

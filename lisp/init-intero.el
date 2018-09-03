@@ -275,5 +275,5 @@ to stylish-haskell."
 ;; w3m haddock
 
 
-(message "Loading haskell-init...")
-(provide 'intero-init)
+(message "Loading init-haskell...")
+(provide 'init-intero)
