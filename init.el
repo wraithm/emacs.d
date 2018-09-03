@@ -19,6 +19,8 @@
 (defvar my-packages
       '(exec-path-from-shell
         unicode-fonts
+        diminish
+
         evil
         evil-leader
         evil-surround
@@ -474,6 +476,13 @@
 ;; Javascript
 (require 'javascript-init)
 
+;; diminish
+(require 'diminish)
+(diminish 'evil-escape-mode)
+(diminish 'yas-minor-mode)
+(diminish 'undo-tree-mode)
+(diminish 'company-mode)
+(diminish 'eldoc-mode)
 
 ;; Don't touch this stuff below
 (custom-set-variables
