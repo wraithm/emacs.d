@@ -31,8 +31,7 @@
 
         ;; nlinum-relative
         ;; rainbow-delimiters
-        smex
-        flx-ido
+
         ag
         yasnippet
         flycheck
@@ -138,9 +137,7 @@
   "r" 'recompile
   "w" 'save-buffer
   "k" 'kill-buffer-and-window
-  "K" 'ido-kill-buffer
-  "a" 'align-regexp
-  "x" 'smex)
+  "a" 'align-regexp)
 
 (global-set-key (kbd "C-S-h") 'help)
 (define-key evil-emacs-state-map (kbd "C-w") 'evil-window-map)
@@ -294,20 +291,6 @@
       '(("hg" "di" "log" "glog")))
 ;; (multi-term)
 
-;; smex / ido
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-(require 'flx-ido)
-(ido-mode t)
-(ido-everywhere t)
-(flx-ido-mode t)
-
-(setq-default
- ;; ido-use-faces nil
- ido-enable-flex-matching t
- ;; ido-max-window-height 1
- ido-create-new-buffer 'always)
-
 ;; ibuffer
 (require 'ibuffer)
 (require 'ibuf-ext)
@@ -415,7 +398,6 @@
 (define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
 
 ;; yasnippets
-(setq-default yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt)) ; use ido for multiple snippets
 (yas-global-mode t)
 
 ;; dash-at-point
@@ -447,6 +429,9 @@
 
 ;; rainbow delimiters
 ;; (rainbow-delimiters-mode t)
+
+;; narrowing and fuzzy match
+(rquire 'idosmex-init)
 
 ;; Haskell
 (require 'haskell-init)
