@@ -39,7 +39,6 @@
 
         terraform-mode
         yaml-mode
-        markdown-mode+
         json-mode
         logstash-conf
         wolfram
@@ -267,11 +266,10 @@
       evil-complete-previous-func 'my-company-complete)
 (define-key evil-insert-state-map (kbd "C-x C-o") 'company-complete)
 
-;; markdown-mode - What about markdown-mode+?
+;; markdown-mode
 (add-hook 'markdown-mode-hook 'flyspell-mode)
 (add-hook 'markdown-mode-hook 'auto-fill-mode)
-(setq-default
- markdown-command "pandoc -f markdown_github")
+(setq-default markdown-command "pandoc -f markdown_github")
 (require 'org-table)
 (defun md-table-align ()
   (interactive)
