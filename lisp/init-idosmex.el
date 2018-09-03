@@ -25,5 +25,5 @@
 
 (setq-default yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt)) ; use ido for multiple snippets
 
-(message "Loading smexido-init... Done.")
-(provide 'smexido-init)
+(message "Loading init-smexido... Done.")
+(provide 'init-smexido)

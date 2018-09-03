@@ -1,4 +1,4 @@
-;; elm-init
+;; init-elm
 ;; Matthew Wraith <wraithm@gmail.com>
 
 ;; Install packages
@@ -15,6 +15,7 @@
 (with-eval-after-load 'flycheck
       '(add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
 
+(require 'company)
 (with-eval-after-load 'company
   (add-to-list 'company-backends 'company-elm))
 
@@ -22,5 +23,5 @@
           (lambda ()
             (setq company-backends '(company-elm))))
 
-(message "Loading elm-init... Done.")
-(provide 'elm-init)
+(message "Loading init-elm... Done.")
+(provide 'init-elm)

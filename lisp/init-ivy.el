@@ -70,4 +70,4 @@
               :action (lambda (k) (goto-char k)))))
 
 
-(provide 'ivy-init)
+(provide 'init-ivy)

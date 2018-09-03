@@ -29,5 +29,5 @@
 (add-hook 'racer-mode-hook #'eldoc-mode)
 (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
 
-(message "Loading rust-init... Done.")
-(provide 'rust-init)
+(message "Loading init-rust... Done.")
+(provide 'init-rust)

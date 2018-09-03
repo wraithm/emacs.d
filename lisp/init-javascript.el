@@ -25,5 +25,5 @@
             (tern-mode)
             (company-mode)))
 
-(message "Loading javascript-init...")
-(provide 'javascript-init)
+(message "Loading init-javascript...")
+(provide 'init-javascript)
