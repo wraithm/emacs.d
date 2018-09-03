@@ -91,6 +91,7 @@
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+(setq-default flycheck-emacs-lisp-load-path 'inherit)
 
 ;; line numbers
 (global-linum-mode t)
