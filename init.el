@@ -431,7 +431,8 @@
 ;; (rainbow-delimiters-mode t)
 
 ;; narrowing and fuzzy match
-(rquire 'idosmex-init)
+(require 'ivy-init)
+;; (rquire 'idosmex-init)
 
 ;; Haskell
 (require 'haskell-init)
