@@ -28,20 +28,20 @@
         evil-org
         evil-nerd-commenter
         evil-ediff
+
         ;; nlinum-relative
         ;; rainbow-delimiters
         smex
         flx-ido
         ag
-        company
-        flycheck
-        projectile
         yasnippet
-        paredit
-        w3m
-
-        dash-at-point
+        flycheck
+        company
+        projectile
         multi-term
+
+        w3m
+        dash-at-point
         vagrant-tramp
         ix
 
@@ -108,7 +108,7 @@
       evil-search-module 'evil-search
       evil-want-C-w-in-emacs-state t)
 (evil-mode t)
-(global-evil-surround-mode 1)
+(global-evil-surround-mode t)
 
 (require 'evil-escape)
 (setq-default evil-escape-key-sequence "jk")
