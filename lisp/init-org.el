@@ -85,5 +85,5 @@
       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
-(message "Loading org-init... Done.")
-(provide 'org-init)
+(message "Loading init-org... Done.")
+(provide 'init-org)
