@@ -447,8 +447,8 @@
 ;; (rainbow-delimiters-mode t)
 
 ;; Haskell
-(require 'haskell-init)
-;; (require 'intero-init)
+;; (require 'haskell-init)
+(require 'intero-init)
 
 ;; Rust
 (require 'rust-init)
