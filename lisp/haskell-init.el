@@ -18,10 +18,12 @@
 (add-hook 'haskell-mode-hook #'flycheck-haskell-setup)
 (add-hook 'haskell-mode-hook 'yas-minor-mode)
 
-(add-hook 'haskell-mode-hook
-          (lambda ()
-            (setq-local
-             compile-command "stack build --fast --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror")))
+(defun stack-compile-command ()
+  (interactive)
+  (setq-local compile-command "stack build --fast --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror"))
+
+(add-hook 'haskell-mode-hook 'stack-compile-command)
+(add-hook 'haskell-cabal-mode-hook 'stack-compile-command)
 
 (push 'company-ghci company-backends)
 
