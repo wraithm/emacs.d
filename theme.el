@@ -41,12 +41,12 @@
   (add-to-list 'default-frame-alist '(ns-appearance . dark)))
 
 ;; Transparent background on terminal
-;; TODO linums
-(defun on-frame-open (frame)
-  (if (not (display-graphic-p frame))
-    (set-face-background 'default "unspecified-bg" frame)))
-(on-frame-open (selected-frame))
-(add-hook 'after-make-frame-functions 'on-frame-open)
+(defun unspecified-bg-frame (frame)
+  (unless (display-graphic-p frame)
+      (set-face-background 'default "unspecified-bg" frame)
+      (set-face-background 'linum "unspecified-bg" frame)))
+(unspecified-bg-frame (selected-frame))
+(add-hook 'after-make-frame-functions 'unspecified-bg-frame)
 
 ;; Theme
 (require 'solarized)
