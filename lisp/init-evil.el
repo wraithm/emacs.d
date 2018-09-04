@@ -1,3 +1,5 @@
+;; evil-mode
+
 (defvar my-evil-packages
   '(evil
     evil-leader
@@ -8,9 +10,9 @@
     evil-ediff))
 (mapc #'package-install my-evil-packages)
 
-;; evil-mode
 (require 'evil-vars)
 (setq evil-want-C-u-scroll t) ; must come before (require 'evil) call
+
 (require 'evil)
 (require 'evil-surround)
 (setq evil-shift-width 4
@@ -113,5 +115,7 @@
 
 (define-key evil-normal-state-map (kbd "S") 'evil-stamp)
 
+;; postgresql sqli
+(evil-set-initial-state 'sql-interactive-mode 'emacs)
 
 (provide 'init-evil)
