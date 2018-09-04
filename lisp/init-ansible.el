@@ -8,5 +8,5 @@
 
 (add-hook 'yaml-mode-hook #'ansible-doc-mode)
 
-(message "Loading ansible-init...done")
-(provide 'ansible-init)
+(message "Loading init-ansible...done")
+(provide 'init-ansible)

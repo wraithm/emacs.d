@@ -1,24 +1,22 @@
 (defvar my-haskell-packages
       '(haskell-mode
         haskell-snippets
-        intero))
+        company-ghci
+        flycheck
+        flycheck-haskell))
 (mapc #'package-install my-haskell-packages)
-
 
 (require 'haskell)
 (require 'haskell-mode)
 (require 'haskell-snippets)
-(require 'intero)
+(require 'flycheck)
+(require 'flycheck-haskell)
+(require 'company-ghci)
 
-;; (load-file "~/.emacs.d/lisp/ghcid.el")
-;; (require 'ghcid)
-
-;; Minor-mode Hooks
-(intero-global-mode 1)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+(add-hook 'haskell-mode-hook #'flycheck-haskell-setup)
 (add-hook 'haskell-mode-hook 'yas-minor-mode)
-;; (add-hook 'haskell-mode-hook #'hindent-mode)
-;; (add-hook 'haskell-mode-hook 'subword-mode)
 
 (defun stack-compile-command ()
   (interactive)
@@ -27,14 +25,14 @@
 (add-hook 'haskell-mode-hook 'stack-compile-command)
 (add-hook 'haskell-cabal-mode-hook 'stack-compile-command)
 
-(flycheck-add-next-checker 'intero '(warning . haskell-hlint))
+(push 'company-ghci company-backends)
 
 ;; Variables
 (setq
-  haskell-hoogle-url "http://127.0.0.1:8123/?hoogle=%s"
-
   haskell-stylish-on-save t
   ;; haskell-tags-on-save t
+
+  haskell-process-type 'stack-ghci
 
   haskell-indentation-layout-offset 4
   haskell-indentation-left-offset 4
@@ -46,11 +44,12 @@
   )
 
 ;; Key bindings
-(define-key haskell-mode-map (kbd "M-]") 'intero-goto-definition)
-(define-key haskell-mode-map (kbd "C-c h") 'hoogle)
-(evil-leader/set-key-for-mode 'haskell-mode "h" 'hoogle)
+(define-key haskell-mode-map (kbd "M-]") 'haskell-mode-goto-loc)
 
 (require 'evil)
+
+(evil-set-initial-state 'haskell-interactive-mode 'emacs)
+
 (evil-define-motion my-haskell-navigate-imports ()
   "Navigate imports with evil motion"
   :jump t
@@ -58,17 +57,6 @@
   (haskell-navigate-imports))
 (evil-leader/set-key-for-mode 'haskell-mode "i" 'my-haskell-navigate-imports)
 
-(defun my-intero-insert-type ()
-  "Insert type at point."
-  (interactive)
-  (intero-type-at t))
-;; (evil-leader/set-key-for-mode 'haskell-mode "t" 'my-intero-insert-type)
-(evil-leader/set-key-for-mode 'haskell-mode "t" 'intero-type-at)
-(evil-define-key 'normal haskell-mode-map (kbd "C-c C-t") 'my-intero-insert-type)
-
-(evil-set-initial-state 'intero-repl-mode 'emacs)
-
-;; Alignment
 (require 'align)
 (eval-after-load "align"
   '(add-to-list 'align-rules-list
@@ -250,33 +238,5 @@ to stylish-haskell."
 (haskell-fast-modules-load)
 ;; Haskell fast modules
 
-
-;; w3m haddock
-(require 'w3m)
-(require 'w3m-haddock)
-(setq haskell-w3m-haddock-dirs
-      '("~/bitnomial/.stack-work/install/x86_64-osx/nightly-2017-09-06/8.2.1/doc"))
-
-(setq w3m-mode-map (make-sparse-keymap))
-
-(define-key w3m-mode-map (kbd "RET") 'w3m-view-this-url)
-(define-key w3m-mode-map (kbd "q") 'bury-buffer)
-(define-key w3m-mode-map (kbd "<mouse-1>") 'w3m-maybe-url)
-(define-key w3m-mode-map [f5] 'w3m-reload-this-page)
-(define-key w3m-mode-map (kbd "C-c C-d") 'haskell-w3m-open-haddock)
-(define-key w3m-mode-map (kbd "M-<left>") 'w3m-view-previous-page)
-(define-key w3m-mode-map (kbd "M-<right>") 'w3m-view-next-page)
-(define-key w3m-mode-map (kbd "M-.") 'w3m-haddock-find-tag)
-
-(defun w3m-maybe-url ()
-  (interactive)
-  (if (or (equal '(w3m-anchor) (get-text-property (point) 'face))
-          (equal '(w3m-arrived-anchor) (get-text-property (point) 'face)))
-      (w3m-view-this-url)))
-
-(add-hook 'w3m-display-hook 'w3m-haddock-display)
-;; w3m haddock
-
-
-(message "Loading haskell-init...")
-(provide 'intero-init)
+(message "Loading init-haskell... Done.")
+(provide 'init-haskell)
