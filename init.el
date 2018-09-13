@@ -302,6 +302,7 @@
 (global-set-key (kbd "C-c C-b") 'projectile-ibuffer)
 (global-set-key (kbd "C-c b") 'projectile-switch-to-buffer)
 (define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; dash-at-point
 (autoload 'dash-at-point "dash-at-point" "Search the word at point with Dash." t nil)
