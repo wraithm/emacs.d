@@ -1,6 +1,8 @@
 (defvar my-ivy-packages
   '(ivy
     counsel
+    counsel-projectile
+    counsel-tramp
     flx
     smex
     ivy-xref))
@@ -9,7 +11,9 @@
 ;; Maybe add ivy-yasnippet?
 
 (require 'ivy)
+(require 'counsel)
 (require 'smex)
+(smex-initialize)
 (ivy-mode t)
 
 (require 'diminish)
@@ -19,6 +23,7 @@
  ivy-use-virtual-buffers t
  enable-recursive-minibuffers t
  ivy-virtual-abbreviate 'fullpath
+ ;; ivy-extra-directories '("./") ; ../ is redundant with backspace
  ivy-extra-directories nil ; no dired on double-tab or enter
  ivy-count-format "(%d/%d) ")
 
@@ -28,13 +33,11 @@
 (require 'counsel)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 
-(evil-leader/set-key
-  "g" 'counsel-ag
-  "G" 'ag
-  "x" 'counsel-M-x)
-
 (require 'projectile)
 (setq projectile-completion-system 'ivy)
+
+(require 'counsel-projectile)
+(counsel-projectile-mode)
 
 ;; Emulate ido
 (require 'flx)
@@ -67,7 +70,18 @@
     (setq items (imenu--make-index-alist t))
     (ivy-read "imenu items:"
               (ivy-imenu-get-candidates-from (delete (assoc "*Rescan*" items) items))
-              :action (lambda (k) (goto-char k)))))
+              :action (lambda (k) (goto-char (cdr k))))))
+
+
+(require 'counsel-tramp)
+
+(evil-leader/set-key
+  ;; "g" 'counsel-ag
+  "g" 'counsel-projectile-ag
+  "s" 'counsel-tramp
+  "G" 'ag
+  "x" 'counsel-M-x
+  "u" 'ivy-imenu-goto)
 
 
 (provide 'init-ivy)
