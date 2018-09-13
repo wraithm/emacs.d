@@ -310,6 +310,24 @@
 (global-set-key (kbd "C-c e") 'dash-at-point-with-docset)
 
 ;; rcirc
+(require 'rcirc)
+(setq rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY"))
+(defun rcirc-detach-buffer ()
+  (interactive)
+  (let ((buffer (current-buffer)))
+    (when (and (rcirc-buffer-process)
+           (eq (process-status (rcirc-buffer-process)) 'open))
+      (with-rcirc-server-buffer
+    (setq rcirc-buffer-alist
+          (rassq-delete-all buffer rcirc-buffer-alist)))
+      (rcirc-update-short-buffer-names)
+      (if (rcirc-channel-p rcirc-target)
+      (rcirc-send-string (rcirc-buffer-process)
+                 (concat "DETACH " rcirc-target))))
+    (setq rcirc-target nil)
+    (kill-buffer buffer)))
+(define-key rcirc-mode-map (kbd "C-c C-d") 'rcirc-detach-buffer)
+
 (load "~/.emacs.d/irc.el")
 
 ;; wolfram alpha
