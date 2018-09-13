@@ -232,25 +232,29 @@
 (setq compilation-scroll-output t)
 (add-to-list 'display-buffer-alist
              '("\\*compilation\\*"
-               display-buffer-at-bottom
-               display-buffer-pop-up-window
+               ;; (window-height . 25)
+               ;; display-buffer-pop-up-window
+               ;; display-buffer-at-bottom
+
                display-buffer-reuse-window
-               (window-height . 30)))
-(defun bury-compile-buffer-if-successful (buffer string)
-  "Bury a compilation buffer if succeeded without warnings."
-  (if (and
-       (string-match "compilation" (buffer-name buffer))
-       (string-match "finished" string)
-       (not
-        (with-current-buffer buffer
-          (goto-char (point-min))
-          (search-forward "warning" nil t))))
-      (run-with-timer 1 nil
-                      (lambda (buf)
-                        (bury-buffer buf)
-                        (delete-window (get-buffer-window buf)))
-                      buffer)))
-(add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
+               (reusable-frames . t)
+               (inhibit-switch-frame . t)
+               ))
+;; (defun bury-compile-buffer-if-successful (buffer string)
+;;   "Bury a compilation buffer if succeeded without warnings."
+;;   (if (and
+;;        (string-match "compilation" (buffer-name buffer))
+;;        (string-match "finished" string)
+;;        (not
+;;         (with-current-buffer buffer
+;;           (goto-char (point-min))
+;;           (search-forward "warning" nil t))))
+;;       (run-with-timer 1 nil
+;;                       (lambda (buf)
+;;                         (bury-buffer buf)
+;;                         (delete-window (get-buffer-window buf)))
+;;                       buffer)))
+;; (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
 
 ;; Paren
 (require 'paren)
