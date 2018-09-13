@@ -1,4 +1,5 @@
 ;; evil-mode
+(defvar evil-want-C-u-scroll t) ; must come before (require 'evil) call
 
 (defvar my-evil-packages
   '(evil
@@ -9,9 +10,6 @@
     evil-nerd-commenter
     evil-ediff))
 (mapc #'package-install my-evil-packages)
-
-(require 'evil-vars)
-(setq evil-want-C-u-scroll t) ; must come before (require 'evil) call
 
 (require 'evil)
 (require 'evil-surround)
