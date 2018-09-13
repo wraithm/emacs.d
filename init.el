@@ -68,11 +68,6 @@
 
 (require 'init-evil)
 
-;; Edit emacs config
-(defun open-init-file ()
-  (interactive)
-  (find-file user-init-file))
-
 ;; line numbers
 (global-linum-mode t)
 ;; (require 'nlinum-relative)
