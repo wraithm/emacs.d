@@ -68,11 +68,6 @@
 
 (require 'init-evil)
 
-;; Edit emacs config
-(defun open-init-file ()
-  (interactive)
-  (find-file user-init-file))
-
 ;; line numbers
 (global-linum-mode t)
 ;; (require 'nlinum-relative)
@@ -99,6 +94,7 @@
  inhibit-splash-screen t
  tab-width 4
  c-basic-offset 4
+ cperl-indent-level 4
  indent-tabs-mode nil
  fill-column 120)
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -236,25 +232,29 @@
 (setq compilation-scroll-output t)
 (add-to-list 'display-buffer-alist
              '("\\*compilation\\*"
-               display-buffer-at-bottom
-               display-buffer-pop-up-window
+               ;; (window-height . 25)
+               ;; display-buffer-pop-up-window
+               ;; display-buffer-at-bottom
+
                display-buffer-reuse-window
-               (window-height . 30)))
-(defun bury-compile-buffer-if-successful (buffer string)
-  "Bury a compilation buffer if succeeded without warnings."
-  (if (and
-       (string-match "compilation" (buffer-name buffer))
-       (string-match "finished" string)
-       (not
-        (with-current-buffer buffer
-          (goto-char (point-min))
-          (search-forward "warning" nil t))))
-      (run-with-timer 1 nil
-                      (lambda (buf)
-                        (bury-buffer buf)
-                        (delete-window (get-buffer-window buf)))
-                      buffer)))
-(add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
+               (reusable-frames . t)
+               (inhibit-switch-frame . t)
+               ))
+;; (defun bury-compile-buffer-if-successful (buffer string)
+;;   "Bury a compilation buffer if succeeded without warnings."
+;;   (if (and
+;;        (string-match "compilation" (buffer-name buffer))
+;;        (string-match "finished" string)
+;;        (not
+;;         (with-current-buffer buffer
+;;           (goto-char (point-min))
+;;           (search-forward "warning" nil t))))
+;;       (run-with-timer 1 nil
+;;                       (lambda (buf)
+;;                         (bury-buffer buf)
+;;                         (delete-window (get-buffer-window buf)))
+;;                       buffer)))
+;; (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
 
 ;; Paren
 (require 'paren)
@@ -302,6 +302,7 @@
 (global-set-key (kbd "C-c C-b") 'projectile-ibuffer)
 (global-set-key (kbd "C-c b") 'projectile-switch-to-buffer)
 (define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; dash-at-point
 (autoload 'dash-at-point "dash-at-point" "Search the word at point with Dash." t nil)
@@ -309,6 +310,24 @@
 (global-set-key (kbd "C-c e") 'dash-at-point-with-docset)
 
 ;; rcirc
+(require 'rcirc)
+(setq rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY"))
+(defun rcirc-detach-buffer ()
+  (interactive)
+  (let ((buffer (current-buffer)))
+    (when (and (rcirc-buffer-process)
+           (eq (process-status (rcirc-buffer-process)) 'open))
+      (with-rcirc-server-buffer
+    (setq rcirc-buffer-alist
+          (rassq-delete-all buffer rcirc-buffer-alist)))
+      (rcirc-update-short-buffer-names)
+      (if (rcirc-channel-p rcirc-target)
+      (rcirc-send-string (rcirc-buffer-process)
+                 (concat "DETACH " rcirc-target))))
+    (setq rcirc-target nil)
+    (kill-buffer buffer)))
+(define-key rcirc-mode-map (kbd "C-c C-d") 'rcirc-detach-buffer)
+
 (load "~/.emacs.d/irc.el")
 
 ;; wolfram alpha
@@ -381,7 +400,7 @@
     ("ce3e6c12b48979ce89754884d913c7ecc8a7956543d8b09ef13abfab6af9aa35" "9d9fda57c476672acd8c6efeb9dc801abea906634575ad2c7688d055878e69d6" "9d91458c4ad7c74cf946bd97ad085c0f6a40c370ac0a1cbeb2e3879f15b40553" "14f0fbf6f7851bfa60bf1f30347003e2348bf7a1005570fd758133c87dafe08f" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "4e753673a37c71b07e3026be75dc6af3efbac5ce335f3707b7d6a110ecb636a3" "3380a2766cf0590d50d6366c5a91e976bdc3c413df963a0ab9952314b4577299" "cea3ec09c821b7eaf235882e6555c3ffa2fd23de92459751e18f26ad035d2142" "be4025b1954e4ac2a6d584ccfa7141334ddd78423399447b96b6fa582f206194" "0e219d63550634bc5b0c214aced55eb9528640377daf486e13fb18a32bf39856" "b9e9ba5aeedcc5ba8be99f1cc9301f6679912910ff92fdf7980929c2fc83ab4d" "cdbd0a803de328a4986659d799659939d13ec01da1f482d838b68038c1bb35e8" "b6db49cec08652adf1ff2341ce32c7303be313b0de38c621676122f255ee46db" "99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2" "d76af04d97252fafacedc7860f862f60d61fdcfbd026aeba90f8d07d8da51375" "01d8c9140c20e459dcc18addb6faebd7803f7d6c46d626c7966d3f18284c4502" "3328e7238e0f6d0a5e1793539dfe55c2685f24b6cdff099c9a0c185b71fbfff9" "75c0b1d2528f1bce72f53344939da57e290aa34bea79f3a1ee19d6808cb55149" "51e228ffd6c4fff9b5168b31d5927c27734e82ec61f414970fc6bcce23bc140d" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "26614652a4b3515b4bbbb9828d71e206cc249b67c9142c06239ed3418eff95e2" "133222702a3c75d16ea9c50743f66b987a7209fb8b964f2c0938a816a83379a0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-    (counsel ivy ivy-xref company-ghci flycheck-haskell ox-twbs unicode-fonts org-bullets nasm-mode cargo flycheck-rust racer rust-mode evil-escape ansible company-tern company-terraform js2-mode web-mode intero wolfram flycheck elm-mode flycheck-elm haskell-mode haskell-snippets sql-indent logstash-conf ix evil-ediff monky gnuplot-mode zenburn-theme ox-pandoc vagrant-tramp rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode yasnippet company evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term markdown-mode+ magit flx-ido evil-surround evil-org erlang dash-at-point base16-theme auctex ag))))
+    (counsel-tramp counsel-projectile flx counsel ivy ivy-xref company-ghci flycheck-haskell ox-twbs unicode-fonts org-bullets nasm-mode cargo flycheck-rust racer rust-mode evil-escape ansible company-tern company-terraform js2-mode web-mode intero wolfram flycheck elm-mode flycheck-elm haskell-mode haskell-snippets sql-indent logstash-conf ix evil-ediff monky gnuplot-mode zenburn-theme ox-pandoc vagrant-tramp rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode yasnippet company evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term markdown-mode+ magit flx-ido evil-surround evil-org erlang dash-at-point base16-theme auctex ag))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
