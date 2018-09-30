@@ -45,18 +45,20 @@
 
   )
 
-;; Key bindings
-(define-key haskell-mode-map (kbd "M-]") 'intero-goto-definition)
-(define-key haskell-mode-map (kbd "C-c h") 'hoogle)
-(evil-leader/set-key-for-mode 'haskell-mode "h" 'hoogle)
-
 (require 'evil)
+(require 'evil-leader)
 (evil-define-motion my-haskell-navigate-imports ()
   "Navigate imports with evil motion"
   :jump t
   :type line
   (haskell-navigate-imports))
+
+;; Key bindings
+(define-key haskell-mode-map (kbd "M-]") 'intero-goto-definition)
+(define-key haskell-mode-map (kbd "C-c h") 'hoogle)
+(evil-leader/set-key-for-mode 'haskell-mode "h" 'hoogle)
 (evil-leader/set-key-for-mode 'haskell-mode "i" 'my-haskell-navigate-imports)
+
 
 (defun my-intero-insert-type ()
   "Insert type at point."
