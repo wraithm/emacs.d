@@ -98,6 +98,7 @@
 (setq-default
  inhibit-splash-screen t
  tab-width 4
+ c-basic-offset 4
  indent-tabs-mode nil
  fill-column 120)
 (fset 'yes-or-no-p 'y-or-n-p)
