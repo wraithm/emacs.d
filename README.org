@@ -6,6 +6,13 @@ You should disable AppNap on macOS to have the terminal version of emacs work we
 defaults write org.gnu.Emacs NSAppSleepDisabled -bool YES
 #+END_SRC
 
+On macOS Mojave, font smoothing is a weird thing, and you want to reenable it:
+
+#+BEGIN_SRC sh
+defaults write -g CGFontRenderingFontSmoothingDisabled -bool NO
+defaults -currentHost write -globalDomain AppleFontSmoothing -int 2
+#+END_SRC
+
 * Theme
 
 Inconsolata font with solarized-dark
