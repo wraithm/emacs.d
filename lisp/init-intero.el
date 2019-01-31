@@ -56,8 +56,10 @@
 ;; Key bindings
 (define-key haskell-mode-map (kbd "M-]") 'intero-goto-definition)
 (define-key haskell-mode-map (kbd "C-c h") 'hoogle)
+(define-key haskell-mode-map (kbd "C-c C-o") 'intero-restart)
 (evil-leader/set-key-for-mode 'haskell-mode "h" 'hoogle)
 (evil-leader/set-key-for-mode 'haskell-mode "i" 'my-haskell-navigate-imports)
+(evil-leader/set-key-for-mode 'haskell-mode "o" 'intero-restart)
 
 
 (defun my-intero-insert-type ()
