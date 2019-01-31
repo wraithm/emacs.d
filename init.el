@@ -10,7 +10,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(use-package diminish :ensure t) ; for use with use-package
+(setq use-package-always-ensure t)
+(use-package diminish) ; for use with use-package
 
 ;; Download packages
 (defvar my-packages
@@ -60,7 +61,6 @@
 ;; PATH
 (use-package exec-path-from-shell
   :if (eq system-type 'darwin)
-  :ensure t
   :init
   (setq exec-path-from-shell-check-startup-files nil)
   :config
@@ -135,16 +135,14 @@
 
 ;; unicode-fonts
 (use-package unicode-fonts
-  :ensure t
   :config
   (unicode-fonts-setup))
 
 ;; ag
-(use-package ag :ensure t)
+(use-package ag)
 
 ;; flycheck
 (use-package flycheck
-  :ensure t
   :init
   (setq-default
    flycheck-disabled-checkers '(emacs-lisp-checkdoc)
@@ -154,7 +152,6 @@
 
 ;; Browser
 (use-package browse-url
-  :ensure t
   :init
   (setq browse-url-new-window-flag t))
 
