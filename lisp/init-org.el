@@ -7,7 +7,6 @@
 (mapc #'package-install my-org-mode-packages)
 
 (require 'org)
-(require 'evil-org)
 (require 'org-bullets)
 
 ;; Directories
@@ -23,6 +22,12 @@
 (setq org-log-done 'time)
 (setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
+
+;; Evil-org mode
+(use-package evil-org
+  :config
+  (evil-org-set-key-theme
+   '(textobjects insert navigation additional shift todo heading)))
 
 ;; Hooks
 (add-hook 'org-capture-mode-hook 'evil-insert-state)

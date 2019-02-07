@@ -23,6 +23,7 @@
 (setq-default evil-escape-key-sequence "jk")
 (setq-default evil-escape-delay 0.2)
 (evil-escape-mode)
+(diminish 'evil-escape-mode) ; use-package.
 
 ;; Patch for evil-escape
 (defun ibuffer-quit ()
@@ -115,5 +116,7 @@
 
 ;; postgresql sqli
 (evil-set-initial-state 'sql-interactive-mode 'emacs)
+
+(use-package evil-indent-textobject)
 
 (provide 'init-evil)
