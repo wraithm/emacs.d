@@ -286,7 +286,7 @@
 ;; markdown-mode
 (add-hook 'markdown-mode-hook 'flyspell-mode)
 (add-hook 'markdown-mode-hook 'auto-fill-mode)
-(setq-default markdown-command "pandoc -f markdown_github")
+(setq-default markdown-command "pandoc -f gfm")
 
 (require 'org-table)
 (defun md-table-align ()
