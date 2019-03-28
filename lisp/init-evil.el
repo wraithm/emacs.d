@@ -43,6 +43,7 @@
   "f" 'find-file
   "p" 'projectile-find-file
   "e" 'first-error
+  "j" 'flycheck-first-error
   "n" 'next-error
   "c" 'compile
   "r" 'recompile
@@ -55,7 +56,6 @@
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-c C-c") 'compile)
 (global-set-key (kbd "C-c r") 'recompile)
-(global-set-key (kbd "M-g M-f") 'first-error)
 
 (global-set-key (kbd "C-S-h") 'help)
 (define-key evil-emacs-state-map (kbd "C-w") 'evil-window-map)
