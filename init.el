@@ -191,6 +191,10 @@
    (setenv "TERM" "emacs")))
 (setq eshell-visual-subcommands
       '(("hg" "di" "log" "glog")))
+(require 'em-cmpl)
+(require 'em-glob)
+(setq eshell-cmpl-ignore-case t)
+(setq eshell-glob-case-insensitive t)
 ;; (multi-term)
 
 ;; ibuffer
