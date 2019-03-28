@@ -276,16 +276,17 @@
 ;;  company-selection-wrap-around t
 ;;  company-tooltip-align-annotations t)
  )
-(define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
-(define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
-(defun abort-company-on-insert-state-exit () (company-abort))
-(add-hook 'evil-insert-state-exit-hook 'abort-company-on-insert-state-exit)
-(define-key company-mode-map [remap hippie-expand] 'company-complete)
-(define-key company-active-map [remap hippie-expand] 'company-complete)
-(defun my-company-complete (arg) (company-complete))
-(setq evil-complete-next-func 'my-company-complete
-      evil-complete-previous-func 'my-company-complete)
-(define-key evil-insert-state-map (kbd "C-x C-o") 'company-complete)
+
+;; (define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
+;; (define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
+;; (defun abort-company-on-insert-state-exit () (company-abort))
+;; (add-hook 'evil-insert-state-exit-hook 'abort-company-on-insert-state-exit)
+;; (define-key company-mode-map [remap hippie-expand] 'company-complete)
+;; (define-key company-active-map [remap hippie-expand] 'company-complete)
+;; (defun my-company-complete (arg) (company-complete))
+;; (setq evil-complete-next-func 'my-company-complete
+;;       evil-complete-previous-func 'my-company-complete)
+;; (define-key evil-insert-state-map (kbd "C-x C-o") 'company-complete)
 
 ;; markdown-mode
 (add-hook 'markdown-mode-hook 'flyspell-mode)
