@@ -22,7 +22,7 @@
 
 (defun stack-compile-command ()
   (interactive)
-  (setq-local compile-command "stack build --fast --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror"))
+  (setq-local compile-command "stack build -j4 --fast --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror --no-interleaved-output"))
 
 (add-hook 'haskell-mode-hook 'stack-compile-command)
 (add-hook 'haskell-cabal-mode-hook 'stack-compile-command)

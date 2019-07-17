@@ -76,8 +76,8 @@
 (require 'counsel-tramp)
 
 (evil-leader/set-key
-  ;; "g" 'counsel-ag
-  "g" 'counsel-projectile-ag
+  "g" 'counsel-ag
+  ;; "g" 'counsel-projectile-ag
   "s" 'counsel-tramp
   "G" 'ag
   "x" 'counsel-M-x
