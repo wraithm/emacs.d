@@ -16,7 +16,7 @@
 
 (defun cabal-compile-command ()
   (interactive)
-  (setq-local compile-command "cabal new-build --ghc-options=\"-ferror-spans -Wall\" all"))
+  (setq-local compile-command "cabal build --ghc-options=\"-ferror-spans -Wall\" all"))
 
 
 (use-package haskell-mode
@@ -50,8 +50,8 @@
   (setq haskell-stylish-on-save t
         haskell-indentation-layout-offset 4
         haskell-indentation-left-offset 4
-        haskell-compile-cabal-build-command "cabal new-build --ghc-options=\"-ferror-spans -Wall\" all"
-        haskell-compile-cabal-build-alt-command "cabal new-clean -s && cabal new-build --ghc-options=\"-ferror-spans -Wall\" all"
+        haskell-compile-cabal-build-command "cabal build --ghc-options=\"-ferror-spans -Wall\" all"
+        haskell-compile-cabal-build-alt-command "cabal clean -s && cabal build --ghc-options=\"-ferror-spans -Wall\" all"
         haskell-process-type 'cabal-new-repl
         haskell-process-suggest-remove-import-lines t
         haskell-process-auto-import-loaded-modules t
@@ -138,4 +138,4 @@ indentation points to the right, we switch going to the left."
 
 
 (message "Loading init-haskell...")
-(provide 'init-haskell-new)
+(provide 'init-haskell-cabal)
