@@ -1,5 +1,7 @@
 ;; Packages
 (require 'package)
+(require 'tls) ; temporary hack while waiting for emacs 26.3
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3") ; temporary hack while waiting for emacs 26.3
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
 ;; (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
@@ -99,9 +101,11 @@
  c-basic-offset 4
  cperl-indent-level 4
  indent-tabs-mode nil
- fill-column 120)
+ fill-column 120
+ sentence-end-double-space nil
+ colon-double-space nil)
 (fset 'yes-or-no-p 'y-or-n-p)
-(global-auto-revert-mode t)
+;; (global-auto-revert-mode t)
 (windmove-default-keybindings)
 ;; (define-key global-map (kbd "RET") 'newline-and-indent)
 
@@ -175,7 +179,7 @@
 (add-hook
  'term-mode-hook
  (lambda ()
-   (nlinum-mode -1)
+   ;; (nlinum-mode -1)
    (linum-mode -1)
    (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
    (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))
@@ -185,7 +189,7 @@
 (add-hook
  'eshell-mode-hook
  (lambda ()
-   (nlinum-mode -1)
+   ;; (nlinum-mode -1)
    (linum-mode -1)
    (add-to-list 'eshell-visual-commands "htop")
    (setenv "TERM" "emacs")))
@@ -215,7 +219,7 @@
 
 (defun ibuffer-major-mode-group-hook ()
   (interactive)
-  (nlinum-mode -1)
+  ;; (nlinum-mode -1)
   (linum-mode -1)
   (setq ibuffer-filter-groups (ibuffer-generate-filter-groups-by-major-mode))
   (ibuffer-update nil t)
@@ -361,10 +365,10 @@
 
 ;; Haskell
 ;; (require 'init-haskell)
-(require 'init-intero)
+;; (require 'init-intero)
 
 ;; Rust
-(require 'init-rust)
+;; (require 'init-rust)
 
 ;; OCaml
 ;; (require 'init-ocaml)
@@ -376,7 +380,7 @@
 ;; (require 'init-elm)
 
 ;; Ansible
-(require 'init-ansible)
+;; (require 'init-ansible)
 
 ;; org-mode
 (require 'init-org)
@@ -385,7 +389,7 @@
 (require 'init-ix)
 
 ;; Javascript
-(require 'init-javascript)
+;; (require 'init-javascript)
 
 ;; diminish
 (diminish 'yas-minor-mode) ; use-package.
@@ -401,10 +405,14 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("0a10217f00dc004207e45ee4d6f09d8cdb15ca3aa49ad9ccaa6321a5466182fb" "0598c6a29e13e7112cfbc2f523e31927ab7dce56ebb2016b567e1eff6dc1fd4f" "ce3e6c12b48979ce89754884d913c7ecc8a7956543d8b09ef13abfab6af9aa35" "9d9fda57c476672acd8c6efeb9dc801abea906634575ad2c7688d055878e69d6" "9d91458c4ad7c74cf946bd97ad085c0f6a40c370ac0a1cbeb2e3879f15b40553" "14f0fbf6f7851bfa60bf1f30347003e2348bf7a1005570fd758133c87dafe08f" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "4e753673a37c71b07e3026be75dc6af3efbac5ce335f3707b7d6a110ecb636a3" "3380a2766cf0590d50d6366c5a91e976bdc3c413df963a0ab9952314b4577299" "cea3ec09c821b7eaf235882e6555c3ffa2fd23de92459751e18f26ad035d2142" "be4025b1954e4ac2a6d584ccfa7141334ddd78423399447b96b6fa582f206194" "0e219d63550634bc5b0c214aced55eb9528640377daf486e13fb18a32bf39856" "b9e9ba5aeedcc5ba8be99f1cc9301f6679912910ff92fdf7980929c2fc83ab4d" "cdbd0a803de328a4986659d799659939d13ec01da1f482d838b68038c1bb35e8" "b6db49cec08652adf1ff2341ce32c7303be313b0de38c621676122f255ee46db" "99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2" "d76af04d97252fafacedc7860f862f60d61fdcfbd026aeba90f8d07d8da51375" "01d8c9140c20e459dcc18addb6faebd7803f7d6c46d626c7966d3f18284c4502" "3328e7238e0f6d0a5e1793539dfe55c2685f24b6cdff099c9a0c185b71fbfff9" "75c0b1d2528f1bce72f53344939da57e290aa34bea79f3a1ee19d6808cb55149" "51e228ffd6c4fff9b5168b31d5927c27734e82ec61f414970fc6bcce23bc140d" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "26614652a4b3515b4bbbb9828d71e206cc249b67c9142c06239ed3418eff95e2" "133222702a3c75d16ea9c50743f66b987a7209fb8b964f2c0938a816a83379a0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+    ("2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "d91ef4e714f05fff2070da7ca452980999f5361209e679ee988e3c432df24347" "0a10217f00dc004207e45ee4d6f09d8cdb15ca3aa49ad9ccaa6321a5466182fb" "0598c6a29e13e7112cfbc2f523e31927ab7dce56ebb2016b567e1eff6dc1fd4f" "ce3e6c12b48979ce89754884d913c7ecc8a7956543d8b09ef13abfab6af9aa35" "9d9fda57c476672acd8c6efeb9dc801abea906634575ad2c7688d055878e69d6" "9d91458c4ad7c74cf946bd97ad085c0f6a40c370ac0a1cbeb2e3879f15b40553" "14f0fbf6f7851bfa60bf1f30347003e2348bf7a1005570fd758133c87dafe08f" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "4e753673a37c71b07e3026be75dc6af3efbac5ce335f3707b7d6a110ecb636a3" "3380a2766cf0590d50d6366c5a91e976bdc3c413df963a0ab9952314b4577299" "cea3ec09c821b7eaf235882e6555c3ffa2fd23de92459751e18f26ad035d2142" "be4025b1954e4ac2a6d584ccfa7141334ddd78423399447b96b6fa582f206194" "0e219d63550634bc5b0c214aced55eb9528640377daf486e13fb18a32bf39856" "b9e9ba5aeedcc5ba8be99f1cc9301f6679912910ff92fdf7980929c2fc83ab4d" "cdbd0a803de328a4986659d799659939d13ec01da1f482d838b68038c1bb35e8" "b6db49cec08652adf1ff2341ce32c7303be313b0de38c621676122f255ee46db" "99953b61ecd4c3e414a177934e888ce9ee12782bbaf2125ec2385d5fd732cbc2" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "113ae6902d98261317b5507e55ac6e7758af81fc4660c34130490252640224a2" "d76af04d97252fafacedc7860f862f60d61fdcfbd026aeba90f8d07d8da51375" "01d8c9140c20e459dcc18addb6faebd7803f7d6c46d626c7966d3f18284c4502" "3328e7238e0f6d0a5e1793539dfe55c2685f24b6cdff099c9a0c185b71fbfff9" "75c0b1d2528f1bce72f53344939da57e290aa34bea79f3a1ee19d6808cb55149" "51e228ffd6c4fff9b5168b31d5927c27734e82ec61f414970fc6bcce23bc140d" "3f78849e36a0a457ad71c1bda01001e3e197fe1837cb6eaa829eb37f0a4bdad5" "26614652a4b3515b4bbbb9828d71e206cc249b67c9142c06239ed3418eff95e2" "133222702a3c75d16ea9c50743f66b987a7209fb8b964f2c0938a816a83379a0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-    (srcery-theme csv-mode evil-indent-textobject go-mode counsel-tramp counsel-projectile flx counsel ivy ivy-xref company-ghci flycheck-haskell ox-twbs unicode-fonts org-bullets nasm-mode cargo flycheck-rust racer rust-mode evil-escape ansible company-tern company-terraform js2-mode web-mode intero wolfram flycheck elm-mode flycheck-elm haskell-mode haskell-snippets sql-indent logstash-conf ix evil-ediff monky gnuplot-mode zenburn-theme ox-pandoc vagrant-tramp rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode yasnippet company evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term markdown-mode+ magit flx-ido evil-surround evil-org erlang dash-at-point base16-theme auctex ag))))
+    (srcery-theme csv-mode evil-indent-textobject go-mode counsel-tramp counsel-projectile flx counsel ivy ivy-xref company-ghci flycheck-haskell ox-twbs unicode-fonts org-bullets nasm-mode cargo flycheck-rust racer rust-mode evil-escape ansible company-tern company-terraform js2-mode web-mode intero wolfram flycheck elm-mode flycheck-elm haskell-mode haskell-snippets sql-indent logstash-conf ix evil-ediff monky gnuplot-mode zenburn-theme ox-pandoc vagrant-tramp rainbow-delimiters json-mode evil-nerd-commenter sr-speedbar latex-preview-pane ansible-doc company-ansible jinja2-mode yasnippet company evil yaml-mode w3m ujelly-theme twilight-theme terraform-mode solarized-theme smex projectile paredit nlinum-relative multi-term markdown-mode+ magit flx-ido evil-surround evil-org erlang dash-at-point base16-theme auctex ag)))
+ '(safe-local-variable-values
+   (quote
+    ((intero-targets "bitnomial-exchange:test:bitnomial-exchange-test")
+     (intero-targets "bitnomial-core:test:bitnomial-core-test")))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
