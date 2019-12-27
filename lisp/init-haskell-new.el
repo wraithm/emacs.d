@@ -1,0 +1,141 @@
+(require 'company)
+(require 'evil)
+(require 'evil-leader)
+(require 'align)
+(require 'haskell)
+(require 'haskell-mode)
+(require 'haskell-compile)
+(require 'haskell-process)
+(require 'haskell-interactive-mode)
+(require 'flycheck)
+
+(defun haskell-company-backends ()
+  (set (make-local-variable 'company-backends)
+                   (append '((company-capf company-dabbrev-code))
+                           company-backends)))
+
+(defun cabal-compile-command ()
+  (interactive)
+  (setq-local compile-command "cabal new-build --ghc-options=\"-ferror-spans -Wall\" all"))
+
+
+(use-package haskell-mode
+  :hook (;; (haskell-mode . flycheck-mode)
+         (haskell-mode . interactive-haskell-mode)
+         (haskell-mode . haskell-indentation-mode)
+         (haskell-mode . haskell-decl-scan-mode)
+         (haskell-mode . haskell-company-backends)
+         (haskell-mode . cabal-compile-command)
+         (haskell-mode . yas-minor-mode))
+
+  :bind (("C-c C-t" . haskell-mode-show-type-at)
+         ("C-]" . haskell-mode-jump-to-def-or-tag)
+         ("C-c C-l" . haskell-process-load-file)
+         ("C-`" . haskell-interactive-bring)
+         ;; ("C-c C-t" . haskell-process-do-type)
+         ("C-c C-i" . haskell-process-do-info)
+         ("C-c C-k" . haskell-interactive-mode-clear)
+         ("C-c C-r" . haskell-process-restart)
+         ("C-c C" . haskell-process-cabal-build)
+         :map haskell-cabal-mode-map
+         ("C-c C-c" . haskell-compile)
+         ("C-`" . haskell-interactive-bring)
+         ("C-c C-k" . haskell-interactive-mode-clear)
+         ("C-c C" . haskell-process-cabal-build))
+
+  :init
+  (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
+
+  :config
+  (setq haskell-stylish-on-save t
+        haskell-indentation-layout-offset 4
+        haskell-indentation-left-offset 4
+        haskell-compile-cabal-build-command "cabal new-build --ghc-options=\"-ferror-spans -Wall\" all"
+        haskell-compile-cabal-build-alt-command "cabal new-clean -s && cabal new-build --ghc-options=\"-ferror-spans -Wall\" all"
+        haskell-process-type 'cabal-new-repl
+        haskell-process-suggest-remove-import-lines t
+        haskell-process-auto-import-loaded-modules t
+        haskell-process-log t)
+
+  (evil-define-motion my-haskell-navigate-imports ()
+    "Navigate imports with evil motion"
+    :jump t
+    :type line
+    (haskell-navigate-imports))
+
+  (evil-leader/set-key-for-mode 'haskell-mode "h" 'hoogle)
+  (evil-leader/set-key-for-mode 'haskell-mode "i" 'my-haskell-navigate-imports)
+  (evil-leader/set-key-for-mode 'haskell-mode "t" 'haskell-mode-show-type-at)
+
+  (eval-after-load "align"
+    '(add-to-list 'align-rules-list
+                  '(haskell-types
+                    (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
+                    (modes quote (haskell-mode literate-haskell-mode)))))
+  (eval-after-load "align"
+    '(add-to-list 'align-rules-list
+                  '(haskell-assignment
+                    (regexp . "\\(\\s-+\\)=\\s-+")
+                    (modes quote (haskell-mode literate-haskell-mode)))))
+  (eval-after-load "align"
+    '(add-to-list 'align-rules-list
+                  '(haskell-arrows
+                    (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
+                    (modes quote (haskell-mode literate-haskell-mode)))))
+  (eval-after-load "align"
+    '(add-to-list 'align-rules-list
+                  '(haskell-left-arrows
+                    (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
+                    (modes quote (haskell-mode literate-haskell-mode)))))
+
+  (defun haskell-indentation-indent-line ()
+    "Indent current line, cycle though indentation positions.
+Do nothing inside multiline comments and multiline strings.
+Start enumerating the indentation points to the right.  The user
+can continue by repeatedly pressing TAB.  When there is no more
+indentation points to the right, we switch going to the left."
+    (interactive)
+    ;; try to repeat
+    (when (not (haskell-indentation-indent-line-repeat))
+      (setq haskell-indentation-dyn-last-direction nil)
+      ;; parse error is intentionally not caught here, it may come from
+      ;; `haskell-indentation-find-indentations', but escapes the scope
+      ;; and aborts the operation before any moving happens
+      (let* ((cc (current-column))
+             (ci (haskell-indentation-current-indentation))
+             (inds (save-excursion
+                     (move-to-column ci)
+                     (or (haskell-indentation-find-indentations)
+                         '(0))))
+             (valid (memq ci inds))
+             (cursor-in-whitespace (< cc ci))
+             ;; certain evil commands need the behaviour seen in
+             ;; `haskell-indentation-newline-and-indent'
+             (evil-special-command (and (bound-and-true-p evil-mode)
+                                        (memq this-command '(evil-open-above
+                                                             evil-open-below
+                                                             evil-replace))))
+             (on-last-indent (eq ci (car (last inds)))))
+        (if (and valid cursor-in-whitespace)
+            (move-to-column ci)
+          (haskell-indentation-reindent-to
+           (funcall
+            (if on-last-indent
+                #'haskell-indentation-previous-indentation
+              #'haskell-indentation-next-indentation)
+            (if evil-special-command
+                (save-excursion
+                  (end-of-line 0)
+                  (1- (haskell-indentation-current-indentation)))
+              ci)
+            inds
+            'nofail)
+           cursor-in-whitespace))
+        (setq haskell-indentation-dyn-last-direction (if on-last-indent 'left 'right)
+              haskell-indentation-dyn-last-indentations inds))))
+
+  )
+
+
+(message "Loading init-haskell...")
+(provide 'init-haskell-new)
