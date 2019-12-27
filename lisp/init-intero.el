@@ -22,7 +22,7 @@
 
 (defun stack-compile-command ()
   (interactive)
-  (setq-local compile-command "stack build -j4 --fast --test --bench --no-run-tests --no-run-benchmarks --ghc-options=-Werror --no-interleaved-output"))
+  (setq-local compile-command "stack build -j4 --test --bench --no-run-tests --no-run-benchmarks --no-interleaved-output"))
 
 (add-hook 'haskell-mode-hook 'stack-compile-command)
 (add-hook 'haskell-cabal-mode-hook 'stack-compile-command)
@@ -30,20 +30,18 @@
 (flycheck-add-next-checker 'intero '(warning . haskell-hlint))
 
 ;; Variables
-(setq
-  haskell-hoogle-url "http://127.0.0.1:8123/?hoogle=%s"
+(setq haskell-hoogle-url "http://127.0.0.1:8123/?hoogle=%s"
 
-  haskell-stylish-on-save t
-  ;; haskell-tags-on-save t
+      haskell-stylish-on-save t
+      ;; haskell-tags-on-save t
 
-  haskell-indentation-layout-offset 4
-  haskell-indentation-left-offset 4
+      haskell-indentation-layout-offset 4
+      haskell-indentation-left-offset 4
 
-  ;; haskell-indentation-ifte-offset 4
-  ;; haskell-indentation-show-indentations t
-  ;; haskell-indentation-show-indentations-after-eol t
-
-  )
+      ;; haskell-indentation-ifte-offset 4
+      ;; haskell-indentation-show-indentations t
+      ;; haskell-indentation-show-indentations-after-eol t
+      )
 
 (require 'evil)
 (require 'evil-leader)
@@ -254,7 +252,6 @@ to stylish-haskell."
 (haskell-fast-modules-load)
 ;; Haskell fast modules
 
-
 ;; w3m haddock
 (require 'w3m)
 (require 'w3m-haddock)
@@ -280,7 +277,6 @@ to stylish-haskell."
 
 (add-hook 'w3m-display-hook 'w3m-haddock-display)
 ;; w3m haddock
-
 
 (message "Loading init-haskell...")
 (provide 'init-intero)
