@@ -366,6 +366,7 @@
 ;; Haskell
 ;; (require 'init-haskell)
 ;; (require 'init-intero)
+(require 'init-haskell-new)
 
 ;; Rust
 ;; (require 'init-rust)
