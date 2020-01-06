@@ -9,24 +9,26 @@
 (require 'haskell-interactive-mode)
 (require 'flycheck)
 
+(use-package company-lsp
+  :ensure t)
+
 (defun haskell-company-backends ()
   (set (make-local-variable 'company-backends)
-                   (append '((company-capf company-dabbrev-code))
+                   (append '((company-lsp company-capf company-dabbrev-code))
                            company-backends)))
 
-(defun cabal-compile-command ()
+(defun stack-compile-command ()
   (interactive)
-  (setq-local compile-command "cabal build --ghc-options=\"-ferror-spans -Wall\" all"))
-
+  (setq-local compile-command "stack build -j4 --test --bench --no-run-tests --no-run-benchmarks --no-interleaved-output"))
 
 (use-package haskell-mode
-  :hook (;; (haskell-mode . flycheck-mode)
-         (haskell-mode . interactive-haskell-mode)
+  :hook ((haskell-mode . interactive-haskell-mode)
          (haskell-mode . haskell-indentation-mode)
          (haskell-mode . haskell-decl-scan-mode)
          (haskell-mode . haskell-company-backends)
-         (haskell-mode . cabal-compile-command)
-         (haskell-mode . yas-minor-mode))
+         (haskell-mode . stack-compile-command)
+         (haskell-mode . yas-minor-mode)
+         (haskell-cabal-mode . stack-compile-command))
 
   :bind (("C-c C-t" . haskell-mode-show-type-at)
          ("C-]" . haskell-mode-jump-to-def-or-tag)
@@ -37,23 +39,25 @@
          ("C-c C-k" . haskell-interactive-mode-clear)
          ("C-c C-r" . haskell-process-restart)
          ("C-c C" . haskell-process-cabal-build)
+         ("M-n" . haskell-goto-next-error)
+         ("M-p" . haskell-goto-prev-error)
+         ("C-c M-p" . haskell-goto-prev-error)
          :map haskell-cabal-mode-map
          ("C-c C-c" . haskell-compile)
          ("C-`" . haskell-interactive-bring)
          ("C-c C-k" . haskell-interactive-mode-clear)
          ("C-c C" . haskell-process-cabal-build))
 
-  :init
-  (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
-
   :config
   (setq haskell-stylish-on-save t
+        haskell-interactive-set-+c t
         haskell-indentation-layout-offset 4
         haskell-indentation-left-offset 4
-        haskell-compile-cabal-build-command "cabal build --ghc-options=\"-ferror-spans -Wall\" all"
-        haskell-compile-cabal-build-alt-command "cabal clean -s && cabal build --ghc-options=\"-ferror-spans -Wall\" all"
-        haskell-process-type 'cabal-new-repl
+        haskell-compile-cabal-build-command "stack build -j4 --test --bench --no-run-tests --no-run-benchmarks --no-interleaved-output"
+        haskell-compile-cabal-build-alt-command (concat "stack clean && " haskell-compile-cabal-build-command)
+        haskell-process-type 'stack-ghci
         haskell-process-suggest-remove-import-lines t
+        haskell-process-suggest-hoogle-imports t
         haskell-process-auto-import-loaded-modules t
         haskell-process-log t)
 
@@ -69,6 +73,7 @@
   (evil-leader/set-key-for-mode 'haskell-mode "h" 'hoogle)
   (evil-leader/set-key-for-mode 'haskell-mode "i" 'my-haskell-navigate-imports)
   (evil-leader/set-key-for-mode 'haskell-mode "t" 'haskell-mode-show-type-at)
+  ;; (evil-leader/set-key-for-mode 'haskell-mode "r" 'haskell-process-restart)
 
   (eval-after-load "align"
     '(add-to-list 'align-rules-list
@@ -136,9 +141,42 @@ indentation points to the right, we switch going to the left."
            cursor-in-whitespace))
         (setq haskell-indentation-dyn-last-direction (if on-last-indent 'left 'right)
               haskell-indentation-dyn-last-indentations inds))))
-
   )
 
 
+(use-package lsp-mode
+  :ensure t
+  :commands lsp
+  :config
+  (setq lsp-prefer-flymake nil))
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :config
+  (setq warning-minimum-level ':error) ; This is temporary for a bug in lsp-ui that pops up errors
+  )
+
+(use-package lsp-haskell
+ :ensure t
+ :config
+ (setq lsp-haskell-process-path-hie "hie-wrapper")
+
+ (add-hook 'haskell-mode-hook
+            (lambda ()
+              (lsp)
+              (lsp-ui-flycheck-enable t)
+              (lsp-ui-sideline-enable nil)))
+
+ ;; For ghcide
+ ;; (setq lsp-haskell-process-path-hie "ghcide"
+ ;;       lsp-haskell-process-args-hie '())
+
+ (lsp-haskell-set-liquid-off)
+
+ ;; Comment/uncomment this line to see interactions between lsp client/server.
+ ;; (setq lsp-log-io t)
+ )
+
 (message "Loading init-haskell...")
-(provide 'init-haskell-cabal)
+(provide 'init-haskell-lsp)

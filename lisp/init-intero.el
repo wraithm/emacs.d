@@ -256,7 +256,7 @@ to stylish-haskell."
 (require 'w3m)
 (require 'w3m-haddock)
 (setq haskell-w3m-haddock-dirs
-      '("~/bitnomial/.stack-work/install/x86_64-osx/nightly-2017-09-06/8.2.1/doc"))
+      '("~/bitnomial/.stack-work/install/x86_64-osx/4156c909938f34abe7880a5f504828068a2ece79ddbe80cbbb7080213b6860aa/8.6.5/doc"))
 
 (setq w3m-mode-map (make-sparse-keymap))
 
