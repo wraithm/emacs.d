@@ -14,19 +14,18 @@
                    (append '((company-capf company-dabbrev-code))
                            company-backends)))
 
-(defun cabal-compile-command ()
+(defun stack-compile-command ()
   (interactive)
-  (setq-local compile-command "cabal build --ghc-options=\"-ferror-spans -Wall\" all"))
-
+  (setq-local compile-command "stack build -j4 --test --bench --no-run-tests --no-run-benchmarks --no-interleaved-output"))
 
 (use-package haskell-mode
-  :hook (;; (haskell-mode . flycheck-mode)
-         (haskell-mode . interactive-haskell-mode)
+  :hook ((haskell-mode . interactive-haskell-mode)
          (haskell-mode . haskell-indentation-mode)
          (haskell-mode . haskell-decl-scan-mode)
          (haskell-mode . haskell-company-backends)
-         (haskell-mode . cabal-compile-command)
-         (haskell-mode . yas-minor-mode))
+         (haskell-mode . stack-compile-command)
+         (haskell-mode . yas-minor-mode)
+         (haskell-cabal-mode . stack-compile-command))
 
   :bind (("C-c C-t" . haskell-mode-show-type-at)
          ("C-]" . haskell-mode-jump-to-def-or-tag)
@@ -37,23 +36,24 @@
          ("C-c C-k" . haskell-interactive-mode-clear)
          ("C-c C-r" . haskell-process-restart)
          ("C-c C" . haskell-process-cabal-build)
+         ("M-n" . haskell-goto-next-error)
+         ("M-p" . haskell-goto-prev-error)
+         ("C-c M-p" . haskell-goto-prev-error)
          :map haskell-cabal-mode-map
          ("C-c C-c" . haskell-compile)
          ("C-`" . haskell-interactive-bring)
          ("C-c C-k" . haskell-interactive-mode-clear)
          ("C-c C" . haskell-process-cabal-build))
 
-  :init
-  (add-to-list 'flycheck-disabled-checkers 'haskell-stack-ghc)
-
   :config
   (setq haskell-stylish-on-save t
         haskell-indentation-layout-offset 4
         haskell-indentation-left-offset 4
-        haskell-compile-cabal-build-command "cabal build --ghc-options=\"-ferror-spans -Wall\" all"
-        haskell-compile-cabal-build-alt-command "cabal clean -s && cabal build --ghc-options=\"-ferror-spans -Wall\" all"
-        haskell-process-type 'cabal-new-repl
+        haskell-compile-cabal-build-command "stack build -j4 --test --bench --no-run-tests --no-run-benchmarks --no-interleaved-output"
+        haskell-compile-cabal-build-alt-command (concat "stack clean && " haskell-compile-cabal-build-command)
+        haskell-process-type 'stack-ghci
         haskell-process-suggest-remove-import-lines t
+        haskell-process-suggest-hoogle-imports t
         haskell-process-auto-import-loaded-modules t
         haskell-process-log t)
 
@@ -69,6 +69,7 @@
   (evil-leader/set-key-for-mode 'haskell-mode "h" 'hoogle)
   (evil-leader/set-key-for-mode 'haskell-mode "i" 'my-haskell-navigate-imports)
   (evil-leader/set-key-for-mode 'haskell-mode "t" 'haskell-mode-show-type-at)
+  (evil-leader/set-key-for-mode 'haskell-mode "r" 'haskell-process-restart)
 
   (eval-after-load "align"
     '(add-to-list 'align-rules-list
@@ -139,6 +140,24 @@ indentation points to the right, we switch going to the left."
 
   )
 
+;; For automatic fix flycheck at point
+(use-package attrap :ensure t)
+
+(use-package dante
+  :ensure t
+  :after haskell-mode
+  :commands 'dante-mode
+  :hook (haskell-mode . dante-mode)
+  :config
+  (setq dante-load-flags '("+c" "-Wall" "-ferror-spans" "-Wwarn=missing-home-modules" "-fno-diagnostics-show-caret"))
+  (setq dante-methods '(new-build stack bare-cabal bare-ghci))
+
+  (add-hook 'dante-mode-hook
+            '(lambda ()
+               (setq-local flycheck-check-syntax-automatically '(save mode-enabled))
+               (flycheck-add-next-checker 'haskell-dante '(warning . haskell-hlint))))
+  )
+
 
 (message "Loading init-haskell...")
-(provide 'init-haskell-cabal)
+(provide 'init-haskell-dante)
