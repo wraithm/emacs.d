@@ -165,7 +165,7 @@ indentation points to the right, we switch going to the left."
  (add-hook 'haskell-mode-hook
             (lambda ()
               (lsp)
-              (lsp-ui-flycheck-enable t)
+              (lsp-flycheck-enable t)
               (lsp-ui-sideline-enable nil)))
 
  ;; For ghcide
@@ -173,6 +173,7 @@ indentation points to the right, we switch going to the left."
  ;;       lsp-haskell-process-args-hie '())
 
  (lsp-haskell-set-liquid-off)
+ (lsp-haskell-set-hlint-on)
 
  ;; Comment/uncomment this line to see interactions between lsp client/server.
  ;; (setq lsp-log-io t)
