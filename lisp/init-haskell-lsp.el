@@ -19,7 +19,7 @@
 
 (defun stack-compile-command ()
   (interactive)
-  (setq-local compile-command "stack build -j4 --test --bench --no-run-tests --no-run-benchmarks --no-interleaved-output"))
+  (setq compile-command "stack build -j4 --test --bench --no-run-tests --no-run-benchmarks --no-interleaved-output"))
 
 (use-package haskell-mode
   :hook ((haskell-mode . interactive-haskell-mode)
@@ -148,7 +148,7 @@ indentation points to the right, we switch going to the left."
   :ensure t
   :commands lsp
   :config
-  (setq lsp-prefer-flymake nil))
+  (setq lsp-diagnostic-package :flycheck))
 
 (use-package lsp-ui
   :ensure t
