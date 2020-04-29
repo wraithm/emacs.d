@@ -148,7 +148,8 @@ indentation points to the right, we switch going to the left."
   :ensure t
   :commands lsp
   :config
-  (setq lsp-diagnostic-package :flycheck))
+  (setq lsp-diagnostic-package :flycheck
+        lsp-enable-xref nil))
 
 (use-package lsp-ui
   :ensure t
