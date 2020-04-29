@@ -129,6 +129,7 @@
 ;; (global-auto-revert-mode t)
 (windmove-default-keybindings)
 ;; (define-key global-map (kbd "RET") 'newline-and-indent)
+(define-key key-translation-map (kbd "S-SPC") (kbd "_"))
 
 (remove-hook 'find-file-hooks 'vc-find-file-hook)
 (setq vc-handled-backends nil) ; to disable vc-mode entirely
