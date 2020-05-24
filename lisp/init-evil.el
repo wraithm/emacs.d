@@ -36,8 +36,8 @@
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
   "b" 'switch-to-buffer
-  "g" 'ag
-  "G" 'projectile-ag
+  "g" 'counsel-rg
+  "G" 'projectile-ripgrep
   "l" 'ibuffer
   "L" 'projectile-ibuffer
   "f" 'find-file
@@ -45,14 +45,14 @@
   "e" 'first-error
   "j" 'flycheck-first-error
   "n" 'next-error
-  "c" 'compile
+  "c" 'projectile-compile-project ; used to be 'compile
   "r" 'recompile
   "w" 'save-buffer
   "k" 'kill-buffer-and-window
   "a" 'align-regexp)
 
 ;; key-bindings
-(global-set-key (kbd "C-c g") 'ag)
+(global-set-key (kbd "C-c g") 'rg)
 (global-set-key (kbd "C-c a") 'align-regexp)
 (global-set-key (kbd "C-c C-c") 'compile)
 (global-set-key (kbd "C-c r") 'recompile)
@@ -118,5 +118,7 @@
 (evil-set-initial-state 'sql-interactive-mode 'emacs)
 
 (use-package evil-indent-textobject)
+
+;; (use-package evil-magit)
 
 (provide 'init-evil)

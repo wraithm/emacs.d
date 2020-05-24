@@ -17,18 +17,12 @@
                    (append '((company-lsp company-capf company-dabbrev-code))
                            company-backends)))
 
-(defun stack-compile-command ()
-  (interactive)
-  (setq compile-command "stack build --test --bench --no-run-tests --no-run-benchmarks --no-interleaved-output"))
-
 (use-package haskell-mode
   :hook ((haskell-mode . interactive-haskell-mode)
          (haskell-mode . haskell-indentation-mode)
          (haskell-mode . haskell-decl-scan-mode)
          (haskell-mode . haskell-company-backends)
-         (haskell-mode . stack-compile-command)
-         (haskell-mode . yas-minor-mode)
-         (haskell-cabal-mode . stack-compile-command))
+         (haskell-mode . yas-minor-mode))
 
   :bind (("C-c C-t" . haskell-mode-show-type-at)
          ("C-]" . haskell-mode-jump-to-def-or-tag)
@@ -53,9 +47,9 @@
         haskell-interactive-set-+c t
         haskell-indentation-layout-offset 4
         haskell-indentation-left-offset 4
-        haskell-compile-cabal-build-command "stack build --test --bench --no-run-tests --no-run-benchmarks --no-interleaved-output"
-        haskell-compile-cabal-build-alt-command (concat "stack clean && " haskell-compile-cabal-build-command)
-        haskell-process-type 'stack-ghci
+        haskell-compile-cabal-build-command "cabal build --ghc-option=-ferror-spans all"
+        haskell-compile-cabal-build-alt-command (concat "cabal clean && " haskell-compile-cabal-build-command)
+        haskell-process-type 'cabal-repl
         haskell-process-suggest-remove-import-lines t
         haskell-process-suggest-hoogle-imports t
         haskell-process-auto-import-loaded-modules t
@@ -144,9 +138,12 @@ indentation points to the right, we switch going to the left."
 
   )
 
-(projectile-register-project-type 'haskell-stack '("stack.yaml")
-    :compile haskell-compile-cabal-build-command
-    :test "stack build --test")
+(projectile-register-project-type 'haskell-cabal '("cabal.project")
+                  :compile "cabal build --ghc-option=-ferror-spans -j all"
+                  :test "cabal test -j --keep-going all"
+                  ;; :run "cabal run bitnomial-local-whatever"
+                  ;; :test-suffix ".hs")
+                  )
 
 (use-package lsp-mode
   :ensure t
@@ -194,4 +191,4 @@ indentation points to the right, we switch going to the left."
  )
 
 (message "Loading init-haskell...")
-(provide 'init-haskell-lsp)
+(provide 'init-haskell-lsp-cabal)

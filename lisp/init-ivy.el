@@ -76,10 +76,10 @@
 (require 'counsel-tramp)
 
 (evil-leader/set-key
-  "g" 'counsel-ag
-  ;; "g" 'counsel-projectile-ag
+  "g" 'counsel-rg
+  ;; "g" 'counsel-projectile-rg
   "s" 'counsel-tramp
-  "G" 'ag
+  "G" 'rg
   "x" 'counsel-M-x
   "u" 'ivy-imenu-goto)
 
